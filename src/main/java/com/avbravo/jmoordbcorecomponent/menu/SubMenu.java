@@ -4,7 +4,9 @@
  */
 package com.avbravo.jmoordbcorecomponent.menu;
 
+import com.avbravo.jmoordbcorecomponent.HrefInfo;
 import com.avbravo.jmoordbcorecomponent.ImageInfo;
+import com.avbravo.jmoordbcorecomponent.enumerations.TypeMenu;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +16,8 @@ import java.util.List;
  */
 public class SubMenu {
 
-    private String label;
+    private HrefInfo hrefInfo;
+    private String ariaControls;
     private ImageInfo imageInfo;
     private List<MenuItem> menuItems = new ArrayList<>();
     private List<String> roles = new ArrayList<>();
@@ -22,20 +25,29 @@ public class SubMenu {
     public SubMenu() {
     }
 
-    public SubMenu(String label, ImageInfo imageInfo, List<MenuItem> menuItems, List<String> roles) {
-        this.label = label;
+    public SubMenu(HrefInfo hrefInfo, ImageInfo imageInfo, List<MenuItem> menuItems, List<String> roles, String ariaControls) {
+        this.hrefInfo = hrefInfo;
         this.imageInfo = imageInfo;
         this.menuItems = menuItems;
         this.roles = roles;
+        this.ariaControls = ariaControls;
     }
 
     // <editor-fold defaultstate="collapsed" desc="set/get">
-    public String getLabel() {
-        return label;
+    public String getAriaControls() {
+        return ariaControls;
     }
 
-    public void setLabel(String label) {
-        this.label = label;
+    public void setAriaControls(String ariaControls) {
+        this.ariaControls = ariaControls;
+    }
+
+    public HrefInfo getHrefInfo() {
+        return hrefInfo;
+    }
+
+    public void setHrefInfo(HrefInfo hrefInfo) {
+        this.hrefInfo = hrefInfo;
     }
 
     public List<MenuItem> getMenuItems() {
@@ -45,8 +57,6 @@ public class SubMenu {
     public void setMenuItems(List<MenuItem> menuItems) {
         this.menuItems = menuItems;
     }
-
-   
 
     public ImageInfo getImageInfo() {
         return imageInfo;
@@ -65,15 +75,28 @@ public class SubMenu {
     }
 
     // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="BoxMenu toBoxMenu()">
+    public BoxMenu toBoxMenu() {
+
+        return new BoxMenu<>(this, TypeMenu.SUBMENU);
+    }
+// </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="Builder()">
+
     public static class Builder {
 
-        private String label;
+        private String ariaControls;
+        private HrefInfo hrefInfo;
         private ImageInfo imageInfo;
         private List<MenuItem> menuItems = new ArrayList<>();
         List<String> roles = new ArrayList<>();
 
-        public Builder label(String label) {
-            this.label = label;
+        public Builder hrefInfo(HrefInfo hrefInfo) {
+            this.hrefInfo = hrefInfo;
+            return this;
+        }
+        public Builder ariaControls(String ariaControls) {
+            this.ariaControls = ariaControls;
             return this;
         }
 
@@ -81,21 +104,23 @@ public class SubMenu {
             this.imageInfo = imageInfo;
             return this;
         }
+
         public Builder menuItems(List<MenuItem> menuItems) {
             this.menuItems = menuItems;
             return this;
         }
+
         public Builder roles(List<String> roles) {
             this.roles = roles;
             return this;
         }
-        
-        
 
         public SubMenu build() {
-            return new SubMenu(label, imageInfo, menuItems, roles);
+            return new SubMenu(hrefInfo, imageInfo, menuItems, roles,ariaControls);
 
         }
 
     }
+
+    // </editor-fold>
 }

@@ -15,23 +15,31 @@ import java.util.List;
 public class MenuBar {
 
     
-    private List<Menu> menus = new ArrayList<>();
-    private List<SubMenu> subMenus = new ArrayList<>();
+    private List<BoxMenu> boxMenus = new ArrayList<>();
+//    private List<SubMenu> subMenus = new ArrayList<>();
     private List<String> roles = new ArrayList<>();
     private String action;
 
     public MenuBar() {
     }
 
-  
-    // <editor-fold defaultstate="collapsed" desc="set/get">
-    public List<SubMenu> getSubMenus() {
-        return subMenus;
+    public MenuBar(String action,List<BoxMenu> boxMenus ) {
+        this.action = action;
+        this.boxMenus  = boxMenus;
     }
 
-    public void setSubMenus(List<SubMenu> subMenus) {
-        this.subMenus = subMenus;
-    }
+    
+    
+  
+    // <editor-fold defaultstate="collapsed" desc="set/get">
+    
+//    public List<SubMenu> getSubMenus() {
+//        return subMenus;
+//    }
+//
+//    public void setSubMenus(List<SubMenu> subMenus) {
+//        this.subMenus = subMenus;
+//    }
 
     public String getAction() {
         return action;
@@ -53,7 +61,7 @@ public class MenuBar {
 
     // </editor-fold>
     public static class Builder {
-
+private List<BoxMenu> boxMenus = new ArrayList<>();
         private String label;
         private String action;
         private ImageInfo imageInfo;
@@ -63,6 +71,10 @@ public class MenuBar {
 
         public Builder label(String label) {
             this.label = label;
+            return this;
+        }
+        public Builder boxMenus(List<BoxMenu> boxMenus) {
+            this.boxMenus = boxMenus;
             return this;
         }
 
@@ -87,7 +99,7 @@ public class MenuBar {
         }
 
         public MenuBar build() {
-            return new MenuBar();
+            return new MenuBar(action, boxMenus);
 
         }
 

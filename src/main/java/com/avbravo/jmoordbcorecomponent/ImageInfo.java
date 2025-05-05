@@ -39,6 +39,20 @@ public class ImageInfo {
     }
 // </editor-fold>
 
+    
+    public static ImageInfo imageInfoMenuItem(){
+        ImageInfo imageInfo = new ImageInfo();
+        try {
+            imageInfo.setLibrary("jmoordbcoreui");
+            imageInfo.setName("images/svg/botones/menuitem.svg");
+            
+        } catch (Exception e) {
+            System.out.println(" "+e.getLocalizedMessage());
+        }
+        return imageInfo;
+    }
+    // <editor-fold defaultstate="collapsed" desc="Builder ">
+
     public static class Builder {
 
         private String library;
@@ -59,5 +73,7 @@ public class ImageInfo {
 
         }
     }
+    
+    // </editor-fold>
 
 }

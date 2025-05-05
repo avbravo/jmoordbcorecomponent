@@ -7,6 +7,7 @@ package com.avbravo.jmoordbcorecomponent.menu;
 import com.avbravo.jmoordbcorecomponent.BadgeSpanInfo;
 import com.avbravo.jmoordbcorecomponent.HrefInfo;
 import com.avbravo.jmoordbcorecomponent.ImageInfo;
+import com.avbravo.jmoordbcorecomponent.enumerations.TypeMenu;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,13 +25,21 @@ public class MenuItem {
     public MenuItem() {
     }
 
-    public MenuItem(ImageInfo imageInfo, List<String> roles,BadgeSpanInfo badgeSpanInfo) {
+    public MenuItem(ImageInfo imageInfo, List<String> roles, BadgeSpanInfo badgeSpanInfo, HrefInfo hrefInfo) {
         this.imageInfo = imageInfo;
         this.roles = roles;
         this.badgeSpanInfo = badgeSpanInfo;
+        this.hrefInfo = hrefInfo;
     }
 
     // <editor-fold defaultstate="collapsed" desc="set/get">
+    public HrefInfo getHrefInfo() {
+        return hrefInfo;
+    }
+
+    public void setHrefInfo(HrefInfo hrefInfo) {
+        this.hrefInfo = hrefInfo;
+    }
 
     public BadgeSpanInfo getBadgeSpanInfo() {
         return badgeSpanInfo;
@@ -39,10 +48,6 @@ public class MenuItem {
     public void setBadgeSpanInfo(BadgeSpanInfo badgeSpanInfo) {
         this.badgeSpanInfo = badgeSpanInfo;
     }
-    
-    
-    
-  
 
     public ImageInfo getImageInfo() {
         return imageInfo;
@@ -61,30 +66,46 @@ public class MenuItem {
     }
 
     // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="BoxMenu toBoxMenu()">
+    public BoxMenu toBoxMenu() {
+
+        return new BoxMenu<>(this, TypeMenu.MENUITEM);
+    }
+// </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="Builder">
+
     public static class Builder {
 
         private ImageInfo imageInfo;
+        private HrefInfo hrefInfo;
         private List<String> roles = new ArrayList<>();
         private BadgeSpanInfo badgeSpanInfo;
 
         public Builder badgeSpanInfo(BadgeSpanInfo badgeSpanInfo) {
-            this.badgeSpanInfo= badgeSpanInfo;
+            this.badgeSpanInfo = badgeSpanInfo;
             return this;
         }
-       
+
         public Builder imageInfo(ImageInfo imageInfo) {
             this.imageInfo = imageInfo;
             return this;
         }
+
+        public Builder hrefInfo(HrefInfo hrefInfo) {
+            this.hrefInfo = hrefInfo;
+            return this;
+        }
+
         public Builder roles(List<String> roles) {
             this.roles = roles;
             return this;
         }
 
         public MenuItem build() {
-            return new MenuItem(imageInfo, roles, badgeSpanInfo);
+            return new MenuItem(imageInfo, roles, badgeSpanInfo, hrefInfo);
 
         }
 
     }
+    // </editor-fold>
 }
