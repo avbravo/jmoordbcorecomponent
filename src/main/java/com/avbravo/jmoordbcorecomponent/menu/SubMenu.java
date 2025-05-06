@@ -19,16 +19,16 @@ public class SubMenu {
     private HrefInfo hrefInfo;
     private String ariaControls;
     private ImageInfo imageInfo;
-    private List<MenuItem> menuItems = new ArrayList<>();
+    private List<BoxMenu> boxMenus = new ArrayList<>();
     private List<String> roles = new ArrayList<>();
 
     public SubMenu() {
     }
 
-    public SubMenu(HrefInfo hrefInfo, ImageInfo imageInfo, List<MenuItem> menuItems, List<String> roles, String ariaControls) {
+    public SubMenu(HrefInfo hrefInfo, ImageInfo imageInfo, List<BoxMenu> boxMenus, List<String> roles, String ariaControls) {
         this.hrefInfo = hrefInfo;
         this.imageInfo = imageInfo;
-        this.menuItems = menuItems;
+        this.boxMenus = boxMenus;
         this.roles = roles;
         this.ariaControls = ariaControls;
     }
@@ -50,12 +50,12 @@ public class SubMenu {
         this.hrefInfo = hrefInfo;
     }
 
-    public List<MenuItem> getMenuItems() {
-        return menuItems;
+    public List<BoxMenu> getBoxMenus() {
+        return boxMenus;
     }
 
-    public void setMenuItems(List<MenuItem> menuItems) {
-        this.menuItems = menuItems;
+    public void setBoxMenus(List<BoxMenu> boxMenus) {
+        this.boxMenus = boxMenus;
     }
 
     public ImageInfo getImageInfo() {
@@ -88,7 +88,7 @@ public class SubMenu {
         private String ariaControls;
         private HrefInfo hrefInfo;
         private ImageInfo imageInfo;
-        private List<MenuItem> menuItems = new ArrayList<>();
+        private List<BoxMenu> boxMenus = new ArrayList<>();
         List<String> roles = new ArrayList<>();
 
         public Builder hrefInfo(HrefInfo hrefInfo) {
@@ -105,8 +105,8 @@ public class SubMenu {
             return this;
         }
 
-        public Builder menuItems(List<MenuItem> menuItems) {
-            this.menuItems = menuItems;
+        public Builder boxMenus(List<BoxMenu> boxMenus) {
+            this.boxMenus = boxMenus;
             return this;
         }
 
@@ -116,7 +116,7 @@ public class SubMenu {
         }
 
         public SubMenu build() {
-            return new SubMenu(hrefInfo, imageInfo, menuItems, roles,ariaControls);
+            return new SubMenu(hrefInfo, imageInfo, boxMenus, roles,ariaControls);
 
         }
 

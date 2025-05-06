@@ -14,33 +14,20 @@ import java.util.List;
  */
 public class MenuBar {
 
-    
     private List<BoxMenu> boxMenus = new ArrayList<>();
-//    private List<SubMenu> subMenus = new ArrayList<>();
     private List<String> roles = new ArrayList<>();
     private String action;
 
     public MenuBar() {
     }
 
-    public MenuBar(String action,List<BoxMenu> boxMenus ) {
+    public MenuBar(String action, List<BoxMenu> boxMenus,List<String> roles) {
         this.action = action;
-        this.boxMenus  = boxMenus;
+        this.boxMenus = boxMenus;
+        this.roles = roles;
     }
 
-    
-    
-  
     // <editor-fold defaultstate="collapsed" desc="set/get">
-    
-//    public List<SubMenu> getSubMenus() {
-//        return subMenus;
-//    }
-//
-//    public void setSubMenus(List<SubMenu> subMenus) {
-//        this.subMenus = subMenus;
-//    }
-
     public String getAction() {
         return action;
     }
@@ -48,8 +35,6 @@ public class MenuBar {
     public void setAction(String action) {
         this.action = action;
     }
-
-    
 
     public List<String> getRoles() {
         return roles;
@@ -61,35 +46,14 @@ public class MenuBar {
 
     // </editor-fold>
     public static class Builder {
-private List<BoxMenu> boxMenus = new ArrayList<>();
-        private String label;
+
+        private List<BoxMenu> boxMenus = new ArrayList<>();
         private String action;
-        private ImageInfo imageInfo;
-        private List<SubMenu> subMenus = new ArrayList<>();
-        private List<MenuItem> menuItems = new ArrayList<>();
+
         List<String> roles = new ArrayList<>();
 
-        public Builder label(String label) {
-            this.label = label;
-            return this;
-        }
         public Builder boxMenus(List<BoxMenu> boxMenus) {
             this.boxMenus = boxMenus;
-            return this;
-        }
-
-        public Builder imageInfo(ImageInfo imageInfo) {
-            this.imageInfo = imageInfo;
-            return this;
-        }
-
-        public Builder menuItems(List<MenuItem> menuItems) {
-            this.menuItems = menuItems;
-            return this;
-        }
-
-        public Builder subMenus(List<SubMenu> subMenus) {
-            this.subMenus = subMenus;
             return this;
         }
 
@@ -97,9 +61,13 @@ private List<BoxMenu> boxMenus = new ArrayList<>();
             this.roles = roles;
             return this;
         }
+        public Builder action(String action) {
+            this.action = action;
+            return this;
+        }
 
         public MenuBar build() {
-            return new MenuBar(action, boxMenus);
+            return new MenuBar(action, boxMenus, roles);
 
         }
 
