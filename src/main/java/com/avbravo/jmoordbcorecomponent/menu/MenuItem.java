@@ -7,7 +7,6 @@ package com.avbravo.jmoordbcorecomponent.menu;
 import com.avbravo.jmoordbcorecomponent.BadgeSpanInfo;
 import com.avbravo.jmoordbcorecomponent.HrefInfo;
 import com.avbravo.jmoordbcorecomponent.ImageInfo;
-import com.avbravo.jmoordbcorecomponent.enumerations.TypeMenu;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,10 +67,9 @@ public class MenuItem {
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="BoxMenu toBoxMenu()">
     public BoxMenu toBoxMenu() {
-
-        return new BoxMenu<>(this, "MENUITEM");
+       return new BoxMenu().add(this);
     }
-// </editor-fold>
+   // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Builder">
 
     public static class Builder {

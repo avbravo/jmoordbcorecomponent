@@ -26,11 +26,13 @@ public class Template {
     private Canva canva;
     // Menu
     private MenuBar menuBar;
+    
+    private String leftMenu;
 
     public Template() {
     }
 
-    public Template(Footer footer, String logoTitle, ImageInfo imageInfoLogoNormal, ImageInfo imageInfoLogoMini, String logoMiniImageSize, NavHeader navHeader, Canva canva, MenuBar menuBar) {
+    public Template(Footer footer, String logoTitle, ImageInfo imageInfoLogoNormal, ImageInfo imageInfoLogoMini, String logoMiniImageSize, NavHeader navHeader, Canva canva, MenuBar menuBar,String leftMenu) {
         this.footer = footer;
         this.logoTitle = logoTitle;
         this.imageInfoLogoNormal = imageInfoLogoNormal;
@@ -39,11 +41,22 @@ public class Template {
         this.navHeader = navHeader;
         this.canva = canva;
         this.menuBar = menuBar;
+        this.leftMenu = leftMenu;
     }
 
 
 // <editor-fold defaultstate="collapsed" desc="set/get">
 
+    public String getLeftMenu() {
+        return leftMenu;
+    }
+
+    public void setLeftMenu(String leftMenu) {
+        this.leftMenu = leftMenu;
+    }
+
+    
+    
     public MenuBar getMenuBar() {
         return menuBar;
     }
@@ -128,9 +141,14 @@ public class Template {
         private Canva canva;
         // Menu
         private MenuBar menuBar;
+          private String leftMenu;
 
         public Builder canva(Canva canva) {
             this.canva = canva;
+            return this;
+        }
+        public Builder leftMenu(String leftMenu) {
+            this.leftMenu = leftMenu;
             return this;
         }
 
@@ -176,7 +194,7 @@ public class Template {
         }
 
         public Template build() {
-            return new Template(footer, logoTitle, imageInfoLogoNormal, imageInfoLogoMini, logoMiniImageSize, navHeader, canva, menuBar);
+            return new Template(footer, logoTitle, imageInfoLogoNormal, imageInfoLogoMini, logoMiniImageSize, navHeader, canva, menuBar,leftMenu);
 
         }
 

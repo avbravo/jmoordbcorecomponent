@@ -24,13 +24,11 @@ public class SeparatorMenu {
 
   
     
-        // <editor-fold defaultstate="collapsed" desc="BoxMenu toBoxMenu()">
+    // <editor-fold defaultstate="collapsed" desc="BoxMenu toBoxMenu()">
     public BoxMenu toBoxMenu() {
-
-        return new BoxMenu<>(this, "SEPARATOR");
+       return new BoxMenu().add(this);
     }
-// </editor-fold>
-    
+   // </editor-fold>
 
  
     

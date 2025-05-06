@@ -77,10 +77,9 @@ public class SubMenu {
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="BoxMenu toBoxMenu()">
     public BoxMenu toBoxMenu() {
-
-        return new BoxMenu<>(this, "SUBMENU");
+       return new BoxMenu().add(this);
     }
-// </editor-fold>
+   // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Builder()">
 
     public static class Builder {

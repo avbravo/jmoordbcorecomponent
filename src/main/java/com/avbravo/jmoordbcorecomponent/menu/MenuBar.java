@@ -28,6 +28,18 @@ public class MenuBar {
     }
 
     // <editor-fold defaultstate="collapsed" desc="set/get">
+
+    public List<BoxMenu> getBoxMenus() {
+        return boxMenus;
+    }
+
+    public void setBoxMenus(List<BoxMenu> boxMenus) {
+        this.boxMenus = boxMenus;
+    }
+    
+    
+    
+    
     public String getAction() {
         return action;
     }
