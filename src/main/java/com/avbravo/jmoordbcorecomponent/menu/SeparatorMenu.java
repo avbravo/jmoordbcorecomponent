@@ -27,7 +27,7 @@ public class SeparatorMenu {
         // <editor-fold defaultstate="collapsed" desc="BoxMenu toBoxMenu()">
     public BoxMenu toBoxMenu() {
 
-        return new BoxMenu<>(this, TypeMenu.SEPARATOR);
+        return new BoxMenu<>(this, "SEPARATOR");
     }
 // </editor-fold>
     

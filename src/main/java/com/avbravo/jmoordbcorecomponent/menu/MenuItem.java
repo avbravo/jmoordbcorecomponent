@@ -69,7 +69,7 @@ public class MenuItem {
     // <editor-fold defaultstate="collapsed" desc="BoxMenu toBoxMenu()">
     public BoxMenu toBoxMenu() {
 
-        return new BoxMenu<>(this, TypeMenu.MENUITEM);
+        return new BoxMenu<>(this, "MENUITEM");
     }
 // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Builder">

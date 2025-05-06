@@ -86,7 +86,7 @@ public class GroupMenu {
             // <editor-fold defaultstate="collapsed" desc="BoxMenu toBoxMenu()">
     public BoxMenu toBoxMenu() {
 
-        return new BoxMenu<>(this, TypeMenu.GROUPMENU);
+        return new BoxMenu<>(this, "GROUPMENU");
     }
     
     // <editor-fold defaultstate="collapsed" desc="Builder">

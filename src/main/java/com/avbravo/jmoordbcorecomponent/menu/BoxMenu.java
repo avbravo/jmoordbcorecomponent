@@ -16,18 +16,19 @@ import java.util.List;
  */
 public class BoxMenu <T>{
   private T item;
-    private TypeMenu typeMenu;
+    private String typeMenu;
   
     
 
     public BoxMenu() {
     }
 
-    public BoxMenu(T item, TypeMenu typeMenu) {
+    public BoxMenu(T item, String typeMenu) {
         this.item = item;
         this.typeMenu = typeMenu;
     }
 
+   
     
    
 
@@ -41,13 +42,15 @@ public class BoxMenu <T>{
         this.item = item;
     }
 
-    public TypeMenu getTypeMenu() {
+    public String getTypeMenu() {
         return typeMenu;
     }
 
-    public void setTypeMenu(TypeMenu typeMenu) {
+    public void setTypeMenu(String typeMenu) {
         this.typeMenu = typeMenu;
     }
+
+   
    
 
     
