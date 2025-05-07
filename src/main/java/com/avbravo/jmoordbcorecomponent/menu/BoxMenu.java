@@ -149,7 +149,7 @@ public class BoxMenu {
             sb.append("      </svg>\n");
             sb.append("     </i>\n");
             sb.append("    </a>\n");
-            sb.append("    <ul class=\"sub-nav collapse\" id=\"horizontal-menu\" data-bs-parent=\"#sidebar-menu\">\n");
+            sb.append("    <ul class=\"sub-nav collapse\" id=\""+subMenu.getAriaControls()+"\" data-bs-parent=\"#sidebar-menu\">\n");
             this.draw = sb.toString();
 
             
