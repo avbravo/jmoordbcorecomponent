@@ -4,9 +4,6 @@
  */
 package com.avbravo.jmoordbcorecomponent.menu;
 
-import com.avbravo.jmoordbcorecomponent.BadgeSpanInfo;
-import com.avbravo.jmoordbcorecomponent.HrefInfo;
-import com.avbravo.jmoordbcorecomponent.ImageInfo;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,81 +13,145 @@ import java.util.List;
  */
 public class MenuItem {
 
-    private BadgeSpanInfo badgeSpanInfo;
-    private HrefInfo hrefInfo;
-    private ImageInfo imageInfo;
+    private String action;
+    private String text;
+    private String minText;
+    private String imageLibrary;
+    private String imageName;
+    private String badgeSpanLabel;
+    private String badgeSpanType;
+
+//    private ImageInfo imageInfo;
     private List<String> roles = new ArrayList<>();
 
     public MenuItem() {
     }
 
-    public MenuItem(ImageInfo imageInfo, List<String> roles, BadgeSpanInfo badgeSpanInfo, HrefInfo hrefInfo) {
-        this.imageInfo = imageInfo;
-        this.roles = roles;
-        this.badgeSpanInfo = badgeSpanInfo;
-        this.hrefInfo = hrefInfo;
+    public MenuItem(String action, String text, String minText, String imageLibrary, String imageName, String badgeSpanLabel, String badgeSpanType) {
+        this.action = action;
+        this.text = text;
+        this.minText = minText;
+        this.imageLibrary = imageLibrary;
+        this.imageName = imageName;
+        this.badgeSpanLabel = badgeSpanLabel;
+        this.badgeSpanType = badgeSpanType;
     }
 
-    // <editor-fold defaultstate="collapsed" desc="set/get">
-    public HrefInfo getHrefInfo() {
-        return hrefInfo;
+    public String getAction() {
+        return action;
     }
 
-    public void setHrefInfo(HrefInfo hrefInfo) {
-        this.hrefInfo = hrefInfo;
+    public void setAction(String action) {
+        this.action = action;
     }
 
-    public BadgeSpanInfo getBadgeSpanInfo() {
-        return badgeSpanInfo;
+    public String getText() {
+        return text;
     }
 
-    public void setBadgeSpanInfo(BadgeSpanInfo badgeSpanInfo) {
-        this.badgeSpanInfo = badgeSpanInfo;
+    public void setText(String text) {
+        this.text = text;
     }
 
-    public ImageInfo getImageInfo() {
-        return imageInfo;
+    public String getMinText() {
+        return minText;
     }
 
-    public void setImageInfo(ImageInfo imageInfo) {
-        this.imageInfo = imageInfo;
+    public void setMinText(String minText) {
+        this.minText = minText;
+    }
+
+    public String getImageLibrary() {
+        return imageLibrary;
+    }
+
+    public void setImageLibrary(String imageLibrary) {
+        this.imageLibrary = imageLibrary;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
+    public String getBadgeSpanLabel() {
+        return badgeSpanLabel;
+    }
+
+    public void setBadgeSpanLabel(String badgeSpanLabel) {
+        this.badgeSpanLabel = badgeSpanLabel;
+    }
+
+    public String getBadgeSpanType() {
+        return badgeSpanType;
+    }
+
+    public void setBadgeSpanType(String badgeSpanType) {
+        this.badgeSpanType = badgeSpanType;
     }
 
     public List<String> getRoles() {
         return roles;
     }
 
+    // <editor-fold defaultstate="collapsed" desc="set/get">
     public void setRoles(List<String> roles) {
         this.roles = roles;
     }
 
-    // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="BoxMenu toBoxMenu()">
     public BoxMenu toBoxMenu() {
        return new BoxMenu().add(this);
     }
-   // </editor-fold>
+    // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Builder">
-
     public static class Builder {
 
-        private ImageInfo imageInfo;
-        private HrefInfo hrefInfo;
+        private String action;
+        private String text;
+        private String minText;
+        private String imageLibrary;
+        private String imageName;
+        private String badgeSpanLabel;
+        private String badgeSpanType;
         private List<String> roles = new ArrayList<>();
-        private BadgeSpanInfo badgeSpanInfo;
 
-        public Builder badgeSpanInfo(BadgeSpanInfo badgeSpanInfo) {
-            this.badgeSpanInfo = badgeSpanInfo;
+        public Builder action(String action) {
+            this.action = action;
             return this;
         }
 
-        public Builder imageInfo(ImageInfo imageInfo) {
-            this.imageInfo = imageInfo;
+        public Builder text(String text) {
+            this.text = text;
             return this;
         }
 
-        public Builder hrefInfo(HrefInfo hrefInfo) {
-            this.hrefInfo = hrefInfo;
+        public Builder minText(String minText) {
+            this.minText = minText;
+            return this;
+        }
+
+        public Builder imageLibrary(String imageLibrary) {
+            this.imageLibrary = imageLibrary;
+            return this;
+        }
+
+        public Builder imageName(String imageName) {
+            this.imageName = imageName;
+            return this;
+        }
+
+        public Builder badgeSpanLabel(String badgeSpanLabel) {
+            this.badgeSpanLabel = badgeSpanLabel;
+            return this;
+        }
+
+        public Builder badgeSpanType(String badgeSpanType) {
+            this.badgeSpanType = badgeSpanType;
             return this;
         }
 
@@ -100,7 +161,7 @@ public class MenuItem {
         }
 
         public MenuItem build() {
-            return new MenuItem(imageInfo, roles, badgeSpanInfo, hrefInfo);
+            return new MenuItem(action, text, minText, imageLibrary, imageName, badgeSpanLabel, badgeSpanType);
 
         }
 
