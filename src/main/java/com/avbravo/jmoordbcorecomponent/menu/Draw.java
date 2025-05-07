@@ -31,4 +31,22 @@ public class Draw {
     }
 
 // </editor-fold>
+
+// <editor-fold defaultstate="collapsed" desc="String image(String library, String name)">
+    public static String image(String library, String name) {
+        String result = "";
+        try {
+            if (library.equals("primefaces")) {
+                result = "<i class=\"" + name + "\"></i>\n ";
+            } else {
+                result = "<img src=\"/jakarta.faces.resource/" + name+ ".xhtml?ln=" + library+ "\">\n";
+            }
+
+        } catch (Exception e) {
+            Messages.error(e.getLocalizedMessage());
+        }
+        return result;
+    }
+
+// </editor-fold>
 }

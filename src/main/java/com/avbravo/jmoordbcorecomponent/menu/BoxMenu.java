@@ -16,6 +16,7 @@ public class BoxMenu {
 
     private GroupMenu groupMenu = new GroupMenu();
     private MenuItem menuItem = new MenuItem();
+    private MenuItemX menuItemX = new MenuItemX();
     private SeparatorMenu separatorMenu = new SeparatorMenu();
     private SubMenu subMenu = new SubMenu();
     private String draw = new String();
@@ -23,7 +24,7 @@ public class BoxMenu {
     public BoxMenu() {
     }
 
-    public BoxMenu(GroupMenu groupMenu, MenuItem menuItem, SeparatorMenu separatorMenu, SubMenu subMenu, String typeMenu, String draw) {
+    public BoxMenu(GroupMenu groupMenu, MenuItem menuItem, MenuItemX menuItemX,SeparatorMenu separatorMenu, SubMenu subMenu, String typeMenu, String draw) {
         this.typeMenu = typeMenu;
         this.menuItem = menuItem;
         this.groupMenu = groupMenu;
@@ -119,6 +120,31 @@ public class BoxMenu {
                 sb.append("        <span class=\"item-name\"> " + menuItem.getHrefInfo().getText() + "</span>\n");
             } else {
                 sb.append("        <span class=\"item-name\"> " + menuItem.getHrefInfo().getText() + " <span class=\"badge rounded-pill " + menuItem.getBadgeSpanInfo().getType() + " item-name\">" + menuItem.getBadgeSpanInfo().getLabel() + "</span> </span>\n");
+            }
+            sb.append("     </a>\n");
+            sb.append(" </li>\n");
+            this.draw = sb.toString();
+        } catch (Exception e) {
+            Messages.error(e.getLocalizedMessage());
+        }
+        return this;
+    }
+    // <editor-fold defaultstate="collapsed" desc="add(MenuItemX menuItemX)">
+    public BoxMenu add(MenuItemX menuItemX) {
+        try {
+            this.menuItemX = menuItemX;
+            this.typeMenu = "MENUITEM";
+            StringBuilder sb = new StringBuilder();
+            sb.append(" <li class=\"nav-item\">\n");
+            sb.append("     <a class=\"nav-link \" href=\"" + menuItemX.getAction()+ "\">\n");
+            sb.append("        <i class=\"icon\">\n");
+            sb.append("            " + Draw.image(menuItemX.getImageLibrary(),menuItemX.getImageName()));
+            sb.append("        </i>\n");
+            sb.append("        <i class=\"sidenav-mini-icon\"> " + menuItemX.getMinText() + " </i>\n");
+            if (menuItemX.getBadgeSpanLabel()== null || menuItemX.getBadgeSpanLabel().equals("")) {
+                sb.append("        <span class=\"item-name\"> " + menuItemX.getText() + "</span>\n");
+            } else {
+                sb.append("        <span class=\"item-name\"> " + menuItemX.getText() + " <span class=\"badge rounded-pill " + menuItemX.getBadgeSpanType() + " item-name\">" + menuItemX.getBadgeSpanLabel() + "</span> </span>\n");
             }
             sb.append("     </a>\n");
             sb.append(" </li>\n");
