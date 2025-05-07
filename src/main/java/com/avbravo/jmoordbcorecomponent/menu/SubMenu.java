@@ -16,38 +16,78 @@ import java.util.List;
  */
 public class SubMenu {
 
-    private HrefInfo hrefInfo;
+    private String action;
+    private String text;
+    private String minText;
+    private String imageLibrary;
+    private String imageName;
     private String ariaControls;
-    private ImageInfo imageInfo;
+
     private List<BoxMenu> boxMenus = new ArrayList<>();
     private List<String> roles = new ArrayList<>();
 
     public SubMenu() {
     }
 
-    public SubMenu(HrefInfo hrefInfo, ImageInfo imageInfo, List<BoxMenu> boxMenus, List<String> roles, String ariaControls) {
-        this.hrefInfo = hrefInfo;
-        this.imageInfo = imageInfo;
+    public SubMenu(String action, String text, String minText, String imageLibrary, String imageName, List<BoxMenu> boxMenus, List<String> roles, String ariaControls) {
+       this.action = action;
+        this.text = text;
+        this.minText = minText;
+        this.imageLibrary = imageLibrary;
+        this.imageName = imageName;
         this.boxMenus = boxMenus;
         this.roles = roles;
         this.ariaControls = ariaControls;
     }
 
     // <editor-fold defaultstate="collapsed" desc="set/get">
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public String getMinText() {
+        return minText;
+    }
+
+    public void setMinText(String minText) {
+        this.minText = minText;
+    }
+
+    public String getImageLibrary() {
+        return imageLibrary;
+    }
+
+    public void setImageLibrary(String imageLibrary) {
+        this.imageLibrary = imageLibrary;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
     public String getAriaControls() {
         return ariaControls;
     }
 
     public void setAriaControls(String ariaControls) {
         this.ariaControls = ariaControls;
-    }
-
-    public HrefInfo getHrefInfo() {
-        return hrefInfo;
-    }
-
-    public void setHrefInfo(HrefInfo hrefInfo) {
-        this.hrefInfo = hrefInfo;
     }
 
     public List<BoxMenu> getBoxMenus() {
@@ -58,14 +98,6 @@ public class SubMenu {
         this.boxMenus = boxMenus;
     }
 
-    public ImageInfo getImageInfo() {
-        return imageInfo;
-    }
-
-    public void setImageInfo(ImageInfo imageInfo) {
-        this.imageInfo = imageInfo;
-    }
-
     public List<String> getRoles() {
         return roles;
     }
@@ -73,6 +105,7 @@ public class SubMenu {
     public void setRoles(List<String> roles) {
         this.roles = roles;
     }
+    
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="BoxMenu toBoxMenu()">
@@ -83,26 +116,47 @@ public class SubMenu {
     // <editor-fold defaultstate="collapsed" desc="Builder()">
 
     public static class Builder {
-
+    private String action;
+    private String text;
+    private String minText;
+    private String imageLibrary;
+    private String imageName;
         private String ariaControls;
-        private HrefInfo hrefInfo;
-        private ImageInfo imageInfo;
+
         private List<BoxMenu> boxMenus = new ArrayList<>();
         List<String> roles = new ArrayList<>();
 
-        public Builder hrefInfo(HrefInfo hrefInfo) {
-            this.hrefInfo = hrefInfo;
+        public Builder action(String action) {
+            this.action = action;
             return this;
         }
+
+        public Builder text(String text) {
+            this.text = text;
+            return this;
+        }
+
+        public Builder minText(String minText) {
+            this.minText = minText;
+            return this;
+        }
+
+        public Builder imageLibrary(String imageLibrary) {
+            this.imageLibrary = imageLibrary;
+            return this;
+        }
+
+        public Builder imageName(String imageName) {
+            this.imageName = imageName;
+            return this;
+        }
+
         public Builder ariaControls(String ariaControls) {
             this.ariaControls = ariaControls;
             return this;
         }
 
-        public Builder imageInfo(ImageInfo imageInfo) {
-            this.imageInfo = imageInfo;
-            return this;
-        }
+      
 
         public Builder boxMenus(List<BoxMenu> boxMenus) {
             this.boxMenus = boxMenus;
@@ -115,7 +169,7 @@ public class SubMenu {
         }
 
         public SubMenu build() {
-            return new SubMenu(hrefInfo, imageInfo, boxMenus, roles,ariaControls);
+            return new SubMenu(action, text, minText, imageLibrary, imageName, boxMenus, roles, ariaControls);
 
         }
 

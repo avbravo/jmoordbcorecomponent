@@ -17,6 +17,7 @@ public class MenuBar {
     private List<BoxMenu> boxMenus = new ArrayList<>();
     private List<String> roles = new ArrayList<>();
     private String action;
+    
 
     public MenuBar() {
     }

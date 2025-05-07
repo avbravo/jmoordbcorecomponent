@@ -139,12 +139,12 @@ public class BoxMenu {
             this.typeMenu = "SUBMENU";
             StringBuilder sb = new StringBuilder();
             sb.append("<li class=\"nav-item\">\n");
-            sb.append("     <a class=\"nav-link\" data-bs-toggle=\"collapse\" href=\""+subMenu.getHrefInfo().getHref()+"\" role=\"button\" aria-expanded=\"false\" aria-controls=\""+subMenu.getAriaControls()+"\">\n");
+            sb.append("     <a class=\"nav-link\" data-bs-toggle=\"collapse\" href=\""+subMenu.getAction()+"\" role=\"button\" aria-expanded=\"false\" aria-controls=\""+subMenu.getAriaControls()+"\">\n");
             sb.append("        <i class=\"icon\">\n");
-            sb.append("            " + Draw.image(subMenu.getImageInfo()));
+             sb.append("            " + Draw.image(menuItem.getImageLibrary(),menuItem.getImageName()));
                   sb.append("        </i>\n");
-            sb.append("       <i class=\"sidenav-mini-icon\"> "+subMenu.getHrefInfo().getMinText()+" </i>\n");
-            sb.append("        <span class=\"item-name\">"+subMenu.getHrefInfo().getText()+"</span>\n");
+            sb.append("       <i class=\"sidenav-mini-icon\"> "+subMenu.getMinText()+" </i>\n");
+            sb.append("        <span class=\"item-name\">"+subMenu.getText()+"</span>\n");
             sb.append("          <i class=\"right-icon\">\n");
             sb.append("       <svg class=\"icon-18\" xmlns=\"http://www.w3.org/2000/svg\" width=\"18\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n");
             sb.append("            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M9 5l7 7-7 7\" />\n");
