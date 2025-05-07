@@ -27,12 +27,13 @@ public class Template {
     // Menu
     private MenuBar menuBar;
     
-    private String leftMenu;
+// TopHeader
+    private TopHeader topHeader;
 
     public Template() {
     }
 
-    public Template(Footer footer, String logoTitle, ImageInfo imageInfoLogoNormal, ImageInfo imageInfoLogoMini, String logoMiniImageSize, NavHeader navHeader, Canva canva, MenuBar menuBar,String leftMenu) {
+    public Template(Footer footer, String logoTitle, ImageInfo imageInfoLogoNormal, ImageInfo imageInfoLogoMini, String logoMiniImageSize, NavHeader navHeader, Canva canva, MenuBar menuBar,TopHeader topHeader) {
         this.footer = footer;
         this.logoTitle = logoTitle;
         this.imageInfoLogoNormal = imageInfoLogoNormal;
@@ -41,21 +42,22 @@ public class Template {
         this.navHeader = navHeader;
         this.canva = canva;
         this.menuBar = menuBar;
-        this.leftMenu = leftMenu;
+        this.topHeader = topHeader;
+
     }
 
 
 // <editor-fold defaultstate="collapsed" desc="set/get">
 
-    public String getLeftMenu() {
-        return leftMenu;
+    public TopHeader getTopHeader() {
+        return topHeader;
     }
 
-    public void setLeftMenu(String leftMenu) {
-        this.leftMenu = leftMenu;
+    public void setTopHeader(TopHeader topHeader) {
+        this.topHeader = topHeader;
     }
 
-    
+   
     
     public MenuBar getMenuBar() {
         return menuBar;
@@ -141,16 +143,18 @@ public class Template {
         private Canva canva;
         // Menu
         private MenuBar menuBar;
-          private String leftMenu;
+//TopHeader
+        TopHeader topHeader;
 
         public Builder canva(Canva canva) {
             this.canva = canva;
             return this;
         }
-        public Builder leftMenu(String leftMenu) {
-            this.leftMenu = leftMenu;
+        public Builder topHeader(TopHeader topHeader) {
+            this.topHeader = topHeader;
             return this;
         }
+       
 
         public Builder menuBar(MenuBar menuBar) {
             this.menuBar = menuBar;
@@ -194,7 +198,7 @@ public class Template {
         }
 
         public Template build() {
-            return new Template(footer, logoTitle, imageInfoLogoNormal, imageInfoLogoMini, logoMiniImageSize, navHeader, canva, menuBar,leftMenu);
+            return new Template(footer, logoTitle, imageInfoLogoNormal, imageInfoLogoMini, logoMiniImageSize, navHeader, canva, menuBar,topHeader);
 
         }
 

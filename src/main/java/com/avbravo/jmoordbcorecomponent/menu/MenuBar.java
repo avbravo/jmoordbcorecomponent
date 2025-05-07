@@ -17,19 +17,32 @@ public class MenuBar {
     private List<BoxMenu> boxMenus = new ArrayList<>();
     private List<String> roles = new ArrayList<>();
     private String action;
+    private String draw;
     
 
     public MenuBar() {
     }
 
-    public MenuBar(String action, List<BoxMenu> boxMenus,List<String> roles) {
+    public MenuBar(String action, List<BoxMenu> boxMenus,List<String> roles,String draw) {
         this.action = action;
         this.boxMenus = boxMenus;
         this.roles = roles;
+        this.draw = draw;
     }
 
     // <editor-fold defaultstate="collapsed" desc="set/get">
 
+    public String getDraw() {
+        return draw;
+    }
+
+    public void setDraw(String draw) {
+        this.draw = draw;
+    }
+
+    
+    
+    
     public List<BoxMenu> getBoxMenus() {
         return boxMenus;
     }
@@ -62,6 +75,7 @@ public class MenuBar {
 
         private List<BoxMenu> boxMenus = new ArrayList<>();
         private String action;
+        private String draw;
 
         List<String> roles = new ArrayList<>();
 
@@ -80,9 +94,17 @@ public class MenuBar {
         }
 
         public MenuBar build() {
-            return new MenuBar(action, boxMenus, roles);
+           StringBuilder  leftMenuStringBuilder = new StringBuilder();
+           for (BoxMenu boxMenu :boxMenus) {
+                leftMenuStringBuilder.append(BoxMenuServices.generateBoxMenu(boxMenu));
+            }
+           draw = leftMenuStringBuilder.toString();
+
+            return new MenuBar(action, boxMenus, roles,draw);
 
         }
+        
+        
 
     }
 }

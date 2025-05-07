@@ -141,7 +141,7 @@ public class BoxMenu {
             sb.append("<li class=\"nav-item\">\n");
             sb.append("     <a class=\"nav-link\" data-bs-toggle=\"collapse\" href=\""+subMenu.getAction()+"\" role=\"button\" aria-expanded=\"false\" aria-controls=\""+subMenu.getAriaControls()+"\">\n");
             sb.append("        <i class=\"icon\">\n");
-             sb.append("            " + Draw.image(menuItem.getImageLibrary(),menuItem.getImageName()));
+             sb.append("            " + Draw.image(subMenu.getImageLibrary(),subMenu.getImageName()));
                   sb.append("        </i>\n");
             sb.append("       <i class=\"sidenav-mini-icon\"> "+subMenu.getMinText()+" </i>\n");
             sb.append("        <span class=\"item-name\">"+subMenu.getText()+"</span>\n");
