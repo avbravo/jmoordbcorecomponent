@@ -39,7 +39,7 @@ public class TopHeader {
     public TopHeader() {
     }
 
-    public TopHeader(String username, String nombre, String perfil, String action, String profileMenu, String profileMenuAction, String privacySettingMenu, String privacySettingMenuAction, String logoutMenu, String logoutMenuAction, String searchText, String searchValue, TopHeaderLanguage topHeaderLanguageDefault, String imageLibraryNotificacion, String imageNameNotificacion, String textNotificacion, List<TopHeaderNotificacion> topHeaderNotificacions, String textMessage, String imageLibraryMessage, String imageNameMessage, List<TopHeaderMessage> topHeaderMessages) {
+    public TopHeader(String username, String nombre, String perfil, String action, String profileMenu, String profileMenuAction, String privacySettingMenu, String privacySettingMenuAction, String logoutMenu, String logoutMenuAction, String searchText, String searchValue, TopHeaderLanguage topHeaderLanguageDefault, List<TopHeaderLanguage> topHeaderLanguages,String imageLibraryNotificacion, String imageNameNotificacion, String textNotificacion, List<TopHeaderNotificacion> topHeaderNotificacions, String textMessage, String imageLibraryMessage, String imageNameMessage, List<TopHeaderMessage> topHeaderMessages) {
         this.username = username;
         this.nombre = nombre;
         this.perfil = perfil;
@@ -61,6 +61,7 @@ public class TopHeader {
         this.imageLibraryMessage = imageLibraryMessage;
         this.imageNameMessage = imageNameMessage;
         this.topHeaderMessages = topHeaderMessages;
+        this.topHeaderLanguages = topHeaderLanguages;
     }
 
    
@@ -388,7 +389,7 @@ public class TopHeader {
         }
 
         public TopHeader build() {
-            return new TopHeader(username, nombre, perfil, action, profileMenu, profileMenuAction, privacySettingMenu, privacySettingMenuAction, logoutMenu, logoutMenuAction, searchText, searchValue, topHeaderLanguageDefault, imageLibraryNotificacion, imageNameNotificacion, textNotificacion, topHeaderNotificacions, textMessage, imageLibraryMessage, imageNameMessage, topHeaderMessages);
+            return new TopHeader(username, nombre, perfil, action, profileMenu, profileMenuAction, privacySettingMenu, privacySettingMenuAction, logoutMenu, logoutMenuAction, searchText, searchValue, topHeaderLanguageDefault, topHeaderLanguages, imageLibraryNotificacion, imageNameNotificacion, textNotificacion, topHeaderNotificacions, textMessage, imageLibraryMessage, imageNameMessage, topHeaderMessages);
 
         }
 
