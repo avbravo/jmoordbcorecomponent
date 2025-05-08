@@ -10,4 +10,5 @@
         <maven.compiler.release>21</maven.compiler.release>
         <exec.mainClass>com.avbravo.jmoordbcorecomponent.Jmoordbcorecomponent</exec.mainClass>
     </properties>
+    
 </project>
