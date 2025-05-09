@@ -29,17 +29,19 @@ public class TopHeader {
     private List<TopHeaderLanguage> topHeaderLanguages = new ArrayList<>();
     private String imageLibraryNotificacion;
     private String imageNameNotificacion;
+    private String imageContextRootNotificacion;
     private String textNotificacion;
     private List<TopHeaderNotificacion> topHeaderNotificacions;
-     private String textMessage;
-       private String imageLibraryMessage;
+    private String textMessage;
+    private String imageLibraryMessage;
     private String imageNameMessage;
+     private String imageContextRootMessage;
     private List<TopHeaderMessage> topHeaderMessages;
 
     public TopHeader() {
     }
 
-    public TopHeader(String username, String nombre, String perfil, String action, String profileMenu, String profileMenuAction, String privacySettingMenu, String privacySettingMenuAction, String logoutMenu, String logoutMenuAction, String searchText, String searchValue, TopHeaderLanguage topHeaderLanguageDefault, List<TopHeaderLanguage> topHeaderLanguages,String imageLibraryNotificacion, String imageNameNotificacion, String textNotificacion, List<TopHeaderNotificacion> topHeaderNotificacions, String textMessage, String imageLibraryMessage, String imageNameMessage, List<TopHeaderMessage> topHeaderMessages) {
+    public TopHeader(String username, String nombre, String perfil, String action, String profileMenu, String profileMenuAction, String privacySettingMenu, String privacySettingMenuAction, String logoutMenu, String logoutMenuAction, String searchText, String searchValue, TopHeaderLanguage topHeaderLanguageDefault, String imageLibraryNotificacion, String imageNameNotificacion, String imageContextRootNotificacion, String textNotificacion, List<TopHeaderNotificacion> topHeaderNotificacions, String textMessage, String imageLibraryMessage, String imageNameMessage, String imageContextRootMessage, List<TopHeaderMessage> topHeaderMessages,List<TopHeaderLanguage> topHeaderLanguages) {
         this.username = username;
         this.nombre = nombre;
         this.perfil = perfil;
@@ -55,23 +57,40 @@ public class TopHeader {
         this.topHeaderLanguageDefault = topHeaderLanguageDefault;
         this.imageLibraryNotificacion = imageLibraryNotificacion;
         this.imageNameNotificacion = imageNameNotificacion;
+        this.imageContextRootNotificacion = imageContextRootNotificacion;
         this.textNotificacion = textNotificacion;
         this.topHeaderNotificacions = topHeaderNotificacions;
         this.textMessage = textMessage;
         this.imageLibraryMessage = imageLibraryMessage;
         this.imageNameMessage = imageNameMessage;
+        this.imageContextRootMessage = imageContextRootMessage;
         this.topHeaderMessages = topHeaderMessages;
         this.topHeaderLanguages = topHeaderLanguages;
     }
 
-   
     
-  
+
+    public String getImageContextRootNotificacion() {
+        return imageContextRootNotificacion;
+    }
+
+    public void setImageContextRootNotificacion(String imageContextRootNotificacion) {
+        this.imageContextRootNotificacion = imageContextRootNotificacion;
+    }
+
+    public String getImageContextRootMessage() {
+        return imageContextRootMessage;
+    }
 
     // <editor-fold defaultstate="collapsed" desc="set/get()">
-  public String getTextMessage() {
+    public void setImageContextRootMessage(String imageContextRootMessage) {
+        this.imageContextRootMessage = imageContextRootMessage;
+    }
+
+    public String getTextMessage() {
         return textMessage;
     }
+
     public String getImageLibraryMessage() {
         return imageLibraryMessage;
     }
@@ -87,9 +106,7 @@ public class TopHeader {
     public void setImageNameMessage(String imageNameMessage) {
         this.imageNameMessage = imageNameMessage;
     }
-    
-    
-    
+
     public void setTextMessage(String textMessage) {
         this.textMessage = textMessage;
     }
@@ -274,26 +291,44 @@ public class TopHeader {
         private List<TopHeaderLanguage> topHeaderLanguages = new ArrayList<>();
         private String imageLibraryNotificacion;
         private String imageNameNotificacion;
+        private String imageContextRoot;
         private String textNotificacion;
+        private String imageContextRootNotificacion;
         private List<TopHeaderNotificacion> topHeaderNotificacions;
-            private String textMessage;
-                private String imageLibraryMessage;
-    private String imageNameMessage;
+        private String textMessage;
+        private String imageLibraryMessage;
+        private String imageNameMessage;
+        private String imageContextRootMessage;
         private List<TopHeaderMessage> topHeaderMessages;
 
         public Builder topHeaderMessages(List<TopHeaderMessage> topHeaderMessages) {
-            this.topHeaderMessages =topHeaderMessages;
+            this.topHeaderMessages = topHeaderMessages;
             return this;
         }
+
         public Builder searchText(String searchText) {
             this.searchText = searchText;
             return this;
         }
-        public Builder textMessage(String textMessage) {
-            this.textMessage=textMessage;
+        public Builder imageContextRootNotificacion(String imageContextRootNotificacion) {
+            this.imageContextRootNotificacion = imageContextRootNotificacion;
             return this;
         }
- public Builder imageLibraryMessage(String imageLibraryMessage) {
+        public Builder imageContextRootMessage(String imageContextRootMessage) {
+            this.imageContextRootMessage = imageContextRootMessage;
+            return this;
+        }
+        public Builder imageContextRoot(String imageContextRoot) {
+            this.imageContextRoot=imageContextRoot;
+            return this;
+        }
+
+        public Builder textMessage(String textMessage) {
+            this.textMessage = textMessage;
+            return this;
+        }
+
+        public Builder imageLibraryMessage(String imageLibraryMessage) {
             this.imageLibraryMessage = imageLibraryMessage;
             return this;
         }
@@ -389,7 +424,7 @@ public class TopHeader {
         }
 
         public TopHeader build() {
-            return new TopHeader(username, nombre, perfil, action, profileMenu, profileMenuAction, privacySettingMenu, privacySettingMenuAction, logoutMenu, logoutMenuAction, searchText, searchValue, topHeaderLanguageDefault, topHeaderLanguages, imageLibraryNotificacion, imageNameNotificacion, textNotificacion, topHeaderNotificacions, textMessage, imageLibraryMessage, imageNameMessage, topHeaderMessages);
+            return new TopHeader(username, nombre, perfil, action, profileMenu, profileMenuAction, privacySettingMenu, privacySettingMenuAction, logoutMenu, logoutMenuAction, searchText, searchValue, topHeaderLanguageDefault, imageLibraryNotificacion, imageNameNotificacion, imageContextRootNotificacion, textNotificacion, topHeaderNotificacions, textMessage, imageLibraryMessage, imageNameMessage, imageContextRootMessage, topHeaderMessages, topHeaderLanguages);
 
         }
 

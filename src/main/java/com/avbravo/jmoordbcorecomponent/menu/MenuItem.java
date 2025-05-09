@@ -18,6 +18,7 @@ public class MenuItem {
     private String minText;
     private String imageLibrary;
     private String imageName;
+    private String imageContextRoot;
     private String badgeSpanLabel;
     private String badgeSpanType;
 
@@ -27,7 +28,7 @@ public class MenuItem {
     public MenuItem() {
     }
 
-    public MenuItem(String action, String text, String minText, String imageLibrary, String imageName, String badgeSpanLabel, String badgeSpanType) {
+    public MenuItem(String action, String text, String minText, String imageLibrary, String imageName, String badgeSpanLabel, String badgeSpanType, String imageContextRoot) {
         this.action = action;
         this.text = text;
         this.minText = minText;
@@ -35,8 +36,21 @@ public class MenuItem {
         this.imageName = imageName;
         this.badgeSpanLabel = badgeSpanLabel;
         this.badgeSpanType = badgeSpanType;
+        this.imageContextRoot = imageContextRoot;
     }
 
+    // <editor-fold defaultstate="collapsed" desc="metodo()">
+
+    public String getImageContextRoot() {
+        return imageContextRoot;
+    }
+
+    public void setImageContextRoot(String imageContextRoot) {
+        this.imageContextRoot = imageContextRoot;
+    }
+
+    
+    
     public String getAction() {
         return action;
     }
@@ -96,11 +110,12 @@ public class MenuItem {
     public List<String> getRoles() {
         return roles;
     }
-
-    // <editor-fold defaultstate="collapsed" desc="set/get">
+    
     public void setRoles(List<String> roles) {
         this.roles = roles;
     }
+
+// </editor-fold>
 
 
     // <editor-fold defaultstate="collapsed" desc="BoxMenu toBoxMenu()">
@@ -116,12 +131,17 @@ public class MenuItem {
         private String minText;
         private String imageLibrary;
         private String imageName;
+        private String imageContextRoot;
         private String badgeSpanLabel;
         private String badgeSpanType;
         private List<String> roles = new ArrayList<>();
 
         public Builder action(String action) {
             this.action = action;
+            return this;
+        }
+        public Builder imageContextRoot(String imageContextRoot) {
+            this.imageContextRoot = imageContextRoot;
             return this;
         }
 
@@ -161,7 +181,7 @@ public class MenuItem {
         }
 
         public MenuItem build() {
-            return new MenuItem(action, text, minText, imageLibrary, imageName, badgeSpanLabel, badgeSpanType);
+            return new MenuItem(action, text, minText, imageLibrary, imageName, badgeSpanLabel, badgeSpanType, imageContextRoot);
 
         }
 

@@ -21,6 +21,7 @@ public class SubMenu {
     private String minText;
     private String imageLibrary;
     private String imageName;
+    private String imageContextRoot;
     private String ariaControls;
 
     private List<BoxMenu> boxMenus = new ArrayList<>();
@@ -29,7 +30,7 @@ public class SubMenu {
     public SubMenu() {
     }
 
-    public SubMenu(String action, String text, String minText, String imageLibrary, String imageName, List<BoxMenu> boxMenus, List<String> roles, String ariaControls) {
+    public SubMenu(String action, String text, String minText, String imageLibrary, String imageName, List<BoxMenu> boxMenus, List<String> roles, String ariaControls,String imageContextRoot) {
        this.action = action;
         this.text = text;
         this.minText = minText;
@@ -38,10 +39,21 @@ public class SubMenu {
         this.boxMenus = boxMenus;
         this.roles = roles;
         this.ariaControls = ariaControls;
+        this.imageContextRoot = imageContextRoot;
     }
 
     // <editor-fold defaultstate="collapsed" desc="set/get">
 
+    public String getImageContextRoot() {
+        return imageContextRoot;
+    }
+
+    public void setImageContextRoot(String imageContextRoot) {
+        this.imageContextRoot = imageContextRoot;
+    }
+
+    
+    
     public String getAction() {
         return action;
     }
@@ -122,12 +134,17 @@ public class SubMenu {
     private String imageLibrary;
     private String imageName;
         private String ariaControls;
+        private String imageContextRoot;
 
         private List<BoxMenu> boxMenus = new ArrayList<>();
         List<String> roles = new ArrayList<>();
 
         public Builder action(String action) {
             this.action = action;
+            return this;
+        }
+        public Builder imageContextRoot(String imageContextRoot) {
+            this.imageContextRoot = imageContextRoot;
             return this;
         }
 
@@ -169,7 +186,7 @@ public class SubMenu {
         }
 
         public SubMenu build() {
-            return new SubMenu(action, text, minText, imageLibrary, imageName, boxMenus, roles, ariaControls);
+            return new SubMenu(action, text, minText, imageLibrary, imageName, boxMenus, roles, ariaControls, imageContextRoot);
 
         }
 

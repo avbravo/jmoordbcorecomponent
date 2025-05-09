@@ -14,18 +14,28 @@ public class TopHeaderLanguage {
     private String action;
     private String imageLibrary;
     private String imageName;
+    private String imageContextRoot;
 
     public TopHeaderLanguage() {
     }
 
-    public TopHeaderLanguage(String text, String action, String imageLibrary, String imageName) {
+    public TopHeaderLanguage(String text, String action, String imageLibrary, String imageName, String contextRoot, String imageContextRoot) {
         this.text = text;
         this.action = action;
         this.imageLibrary = imageLibrary;
         this.imageName = imageName;
+        this.imageContextRoot = imageContextRoot;
     }
 
     // <editor-fold defaultstate="collapsed" desc="set/get()">
+    public String getImageContextRoot() {
+        return imageContextRoot;
+    }
+
+    public void setImageContextRoot(String imageContextRoot) {
+        this.imageContextRoot = imageContextRoot;
+    }
+
     public String getText() {
         return text;
     }
@@ -62,31 +72,39 @@ public class TopHeaderLanguage {
     // <editor-fold defaultstate="collapsed" desc="Builder()">
     public static class Builder {
 
-       private String text;
-    private String action;
-    private String imageLibrary;
-    private String imageName;
+        private String text;
+        private String action;
+        private String imageLibrary;
+        private String imageName;
+        private String imageContextRoot;
 
         public Builder text(String text) {
-            this.text= text;
+            this.text = text;
             return this;
         }
+
+        public Builder imageContextRoot(String imageContextRoot) {
+            this.imageContextRoot = imageContextRoot;
+            return this;
+        }
+
         public Builder action(String action) {
-            this.action= action;
+            this.action = action;
             return this;
         }
+
         public Builder imageLibrary(String imageLibrary) {
-            this.imageLibrary= imageLibrary;
+            this.imageLibrary = imageLibrary;
             return this;
         }
+
         public Builder imageName(String imageName) {
-            this.imageName= imageName;
+            this.imageName = imageName;
             return this;
         }
-       
 
         public TopHeaderLanguage build() {
-            return new TopHeaderLanguage(text, action, imageLibrary, imageName);
+            return new TopHeaderLanguage(text, action, imageLibrary, imageName, imageContextRoot, imageContextRoot);
 
         }
 

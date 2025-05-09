@@ -16,25 +16,38 @@ public class TopHeaderMessage {
     private String action;
     private String imageLibrary;
     private String imageName;
+ private String imageContextRoot;
 
 
     public TopHeaderMessage() {
     }
 
-   public TopHeaderMessage(String title, String subtitle, String footer, String action, String imageLibrary, String imageName) {
+   public TopHeaderMessage(String title, String subtitle, String footer, String action, String imageLibrary, String imageName,String imageContextRoot) {
         this.title = title;
         this.subtitle = subtitle;
         this.footer = footer;
         this.action = action;
         this.imageLibrary = imageLibrary;
         this.imageName = imageName;
+        this.imageContextRoot = imageContextRoot;
     }
 
-    public String getAction() {
-        return action;
-    }
+   
 
     // <editor-fold defaultstate="collapsed" desc="set/get()">
+ public String getAction() {
+        return action;
+    }
+    public String getImageContextRoot() {
+        return imageContextRoot;
+    }
+
+    public void setImageContextRoot(String imageContextRoot) {
+        this.imageContextRoot = imageContextRoot;
+    }
+    
+    
+    
     public void setAction(String action) {
         this.action = action;
     }
@@ -92,7 +105,12 @@ public class TopHeaderMessage {
        private String action;
     private String imageLibrary;
     private String imageName;
+     private String imageContextRoot;
 
+        public Builder imageContextRoot(String imageContextRoot) {
+            this.imageContextRoot= imageContextRoot;
+            return this;
+        }
         public Builder action(String action) {
             this.action = action;
             return this;
@@ -121,7 +139,7 @@ public class TopHeaderMessage {
        
 
         public TopHeaderMessage build() {
-            return new TopHeaderMessage(title, subtitle, footer, action, imageLibrary, imageName);
+            return new TopHeaderMessage(title, subtitle, footer, action, imageLibrary, imageName, imageContextRoot);
 
         }
 

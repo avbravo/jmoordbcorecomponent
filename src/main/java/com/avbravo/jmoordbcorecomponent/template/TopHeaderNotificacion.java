@@ -16,18 +16,19 @@ public class TopHeaderNotificacion {
     private String action;
     private String imageLibrary;
     private String imageName;
-
+    private String imageContextRoot;
 
     public TopHeaderNotificacion() {
     }
 
-   public TopHeaderNotificacion(String title, String subtitle, String footer, String action, String imageLibrary, String imageName) {
+    public TopHeaderNotificacion(String title, String subtitle, String footer, String action, String imageLibrary, String imageName,String imageContextRoot) {
         this.title = title;
         this.subtitle = subtitle;
         this.footer = footer;
         this.action = action;
         this.imageLibrary = imageLibrary;
         this.imageName = imageName;
+        this.imageContextRoot = imageContextRoot;
     }
 
     public String getAction() {
@@ -35,6 +36,17 @@ public class TopHeaderNotificacion {
     }
 
     // <editor-fold defaultstate="collapsed" desc="set/get()">
+
+    public String getImageContextRoot() {
+        return imageContextRoot;
+    }
+
+    public void setImageContextRoot(String imageContextRoot) {
+        this.imageContextRoot = imageContextRoot;
+    }
+    
+    
+    
     public void setAction(String action) {
         this.action = action;
     }
@@ -43,7 +55,6 @@ public class TopHeaderNotificacion {
         return title;
     }
 
- 
     public void setTitle(String title) {
         this.title = title;
     }
@@ -80,48 +91,54 @@ public class TopHeaderNotificacion {
         this.imageName = imageName;
     }
     // </editor-fold>
-    
-    
-    
+
 // <editor-fold defaultstate="collapsed" desc="Builder()">
     public static class Builder {
 
-     private String title;
-    private String subtitle;
-    private String footer;
-       private String action;
-    private String imageLibrary;
-    private String imageName;
+        private String title;
+        private String subtitle;
+        private String footer;
+        private String action;
+        private String imageLibrary;
+        private String imageName;
+       private  String imageContextRoot;
 
         public Builder action(String action) {
             this.action = action;
             return this;
         }
+        public Builder imageContextRoot(String imageContextRoot) {
+            this.imageContextRoot = imageContextRoot;
+            return this;
+        }
+
         public Builder title(String title) {
             this.title = title;
             return this;
         }
+
         public Builder subtitle(String subtitle) {
             this.subtitle = subtitle;
             return this;
         }
+
         public Builder footer(String footer) {
             this.footer = footer;
             return this;
         }
+
         public Builder imageLibrary(String imageLibrary) {
             this.imageLibrary = imageLibrary;
             return this;
         }
+
         public Builder imageName(String imageName) {
-            this.imageName= imageName;
+            this.imageName = imageName;
             return this;
         }
 
-       
-
         public TopHeaderNotificacion build() {
-            return new TopHeaderNotificacion(title, subtitle, footer, action, imageLibrary, imageName);
+            return new TopHeaderNotificacion(title, subtitle, footer, action, imageLibrary, imageName, imageContextRoot);
 
         }
 

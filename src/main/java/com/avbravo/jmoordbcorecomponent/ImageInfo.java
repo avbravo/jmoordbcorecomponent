@@ -12,16 +12,29 @@ public class ImageInfo {
 
     private String library;
     private String name;
+    private String imageContextRoot;
 
     public ImageInfo() {
     }
 
-    public ImageInfo(String library, String name) {
+    public ImageInfo(String library, String name, String imageContextRoot) {
         this.library = library;
         this.name = name;
+        this.imageContextRoot = imageContextRoot;
     }
 
     // <editor-fold defaultstate="collapsed" desc="set/get">
+
+    public String getImageContextRoot() {
+        return imageContextRoot;
+    }
+
+    public void setImageContextRoot(String imageContextRoot) {
+        this.imageContextRoot = imageContextRoot;
+    }
+    
+    
+    
     public String getLibrary() {
         return library;
     }
@@ -39,15 +52,14 @@ public class ImageInfo {
     }
 // </editor-fold>
 
-    
-    public static ImageInfo imageInfoMenuItem(){
+    public static ImageInfo imageInfoMenuItem() {
         ImageInfo imageInfo = new ImageInfo();
         try {
             imageInfo.setLibrary("jmoordbcoreui");
             imageInfo.setName("images/svg/botones/menuitem.svg");
-            
+
         } catch (Exception e) {
-            System.out.println(" "+e.getLocalizedMessage());
+            System.out.println(" " + e.getLocalizedMessage());
         }
         return imageInfo;
     }
@@ -57,7 +69,12 @@ public class ImageInfo {
 
         private String library;
         private String name;
+        private String imageContextRoot;
 
+        public Builder imageContextRoot(String imageContextRoot) {
+            this.imageContextRoot = imageContextRoot;
+            return this;
+        }
         public Builder library(String library) {
             this.library = library;
             return this;
@@ -69,11 +86,10 @@ public class ImageInfo {
         }
 
         public ImageInfo build() {
-            return new ImageInfo(library, name);
+            return new ImageInfo(library, name, imageContextRoot);
 
         }
     }
-    
-    // </editor-fold>
 
+    // </editor-fold>
 }

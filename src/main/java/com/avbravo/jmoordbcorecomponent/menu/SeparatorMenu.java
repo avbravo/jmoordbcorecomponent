@@ -4,13 +4,6 @@
  */
 package com.avbravo.jmoordbcorecomponent.menu;
 
-import com.avbravo.jmoordbcorecomponent.BadgeSpanInfo;
-import com.avbravo.jmoordbcorecomponent.HrefInfo;
-import com.avbravo.jmoordbcorecomponent.ImageInfo;
-import com.avbravo.jmoordbcorecomponent.enumerations.TypeMenu;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  *
  * @author avbravo

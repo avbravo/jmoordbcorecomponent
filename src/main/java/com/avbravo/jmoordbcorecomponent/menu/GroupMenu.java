@@ -4,7 +4,6 @@
  */
 package com.avbravo.jmoordbcorecomponent.menu;
 
-import com.avbravo.jmoordbcorecomponent.enumerations.TypeMenu;
 import java.util.ArrayList;
 import java.util.List;
 

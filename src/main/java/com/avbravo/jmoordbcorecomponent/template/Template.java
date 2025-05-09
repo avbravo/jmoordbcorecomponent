@@ -18,6 +18,7 @@ public class Template {
 //Images Logo
     private ImageInfo imageInfoLogoNormal;
     private ImageInfo imageInfoLogoMini;
+    private String imageContextRoot;
 
     private String logoMiniImageSize;
     //NavHeader Section
@@ -26,14 +27,14 @@ public class Template {
     private Canva canva;
     // Menu
     private MenuBar menuBar;
-    
+
 // TopHeader
     private TopHeader topHeader;
 
     public Template() {
     }
 
-    public Template(Footer footer, String logoTitle, ImageInfo imageInfoLogoNormal, ImageInfo imageInfoLogoMini, String logoMiniImageSize, NavHeader navHeader, Canva canva, MenuBar menuBar,TopHeader topHeader) {
+    public Template(Footer footer, String logoTitle, ImageInfo imageInfoLogoNormal, ImageInfo imageInfoLogoMini, String logoMiniImageSize, NavHeader navHeader, Canva canva, MenuBar menuBar, TopHeader topHeader, String imageContextRoot) {
         this.footer = footer;
         this.logoTitle = logoTitle;
         this.imageInfoLogoNormal = imageInfoLogoNormal;
@@ -43,12 +44,22 @@ public class Template {
         this.canva = canva;
         this.menuBar = menuBar;
         this.topHeader = topHeader;
+        this.imageContextRoot= imageContextRoot;
 
     }
 
-
 // <editor-fold defaultstate="collapsed" desc="set/get">
 
+    public String getImageContextRoot() {
+        return imageContextRoot;
+    }
+
+    public void setImageContextRoot(String imageContextRoot) {
+        this.imageContextRoot = imageContextRoot;
+    }
+    
+    
+    
     public TopHeader getTopHeader() {
         return topHeader;
     }
@@ -57,8 +68,6 @@ public class Template {
         this.topHeader = topHeader;
     }
 
-   
-    
     public MenuBar getMenuBar() {
         return menuBar;
     }
@@ -66,9 +75,6 @@ public class Template {
     public void setMenuBar(MenuBar menuBar) {
         this.menuBar = menuBar;
     }
-   
-    
-    
 
     public Canva getCanva() {
         return canva;
@@ -134,6 +140,7 @@ public class Template {
 //Images Logo
         private ImageInfo imageInfoLogoNormal;
         private ImageInfo imageInfoLogoMini;
+        private String imageContextRoot;
 
         private String logoMiniImageSize;
 
@@ -150,11 +157,15 @@ public class Template {
             this.canva = canva;
             return this;
         }
+        public Builder imageContextRoot(String imageContextRoot) {
+            this.imageContextRoot = imageContextRoot;
+            return this;
+        }
+
         public Builder topHeader(TopHeader topHeader) {
             this.topHeader = topHeader;
             return this;
         }
-       
 
         public Builder menuBar(MenuBar menuBar) {
             this.menuBar = menuBar;
@@ -198,7 +209,7 @@ public class Template {
         }
 
         public Template build() {
-            return new Template(footer, logoTitle, imageInfoLogoNormal, imageInfoLogoMini, logoMiniImageSize, navHeader, canva, menuBar,topHeader);
+            return new Template(footer, logoTitle, imageInfoLogoNormal, imageInfoLogoMini, logoMiniImageSize, navHeader, canva, menuBar, topHeader, imageContextRoot);
 
         }
 

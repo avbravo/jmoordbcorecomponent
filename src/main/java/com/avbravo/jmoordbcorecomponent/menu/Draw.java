@@ -21,7 +21,9 @@ public class Draw {
             if (imageInfo.getLibrary().equals("primefaces")) {
                 result = "<i class=\"" + imageInfo.getName() + "\"></i>\n ";
             } else {
-                result = "<img src=\"/jakarta.faces.resource/" + imageInfo.getName() + ".xhtml?ln=" + imageInfo.getLibrary() + "\">\n";
+//                result = "<img src=\"/jakarta.faces.resource/" + imageInfo.getName() + ".xhtml?ln=" + imageInfo.getLibrary() + "\">\n";
+//                result = "<img src=\"/"+imageInfo.getImageContextRoot()+"/jakarta.faces.resource/" + imageInfo.getName() + ".xhtml?ln=" + imageInfo.getLibrary() + "\">\n";
+                result = "<img src=\""+imageInfo.getImageContextRoot()+"/jakarta.faces.resource/" + imageInfo.getName() + ".xhtml?ln=" + imageInfo.getLibrary() + "\">\n";
             }
 
         } catch (Exception e) {
@@ -32,14 +34,16 @@ public class Draw {
 
 // </editor-fold>
 
-// <editor-fold defaultstate="collapsed" desc="String image(String library, String name)">
-    public static String image(String library, String name) {
+// <editor-fold defaultstate="collapsed" desc="String image(String library, String name,String imageContextRoot)">
+    public static String image(String library, String name,String imageContextRoot) {
         String result = "";
         try {
             if (library.equals("primefaces")) {
                 result = "<i class=\"" + name + "\"></i>\n ";
             } else {
-                result = "<img src=\"/jakarta.faces.resource/" + name+ ".xhtml?ln=" + library+ "\">\n";
+//                result = "<img src=\"/jakarta.faces.resource/" + name+ ".xhtml?ln=" + library+ "\">\n";
+//                result = "<img src=\"/"+imageContextRoot+"/jakarta.faces.resource/" + name+ ".xhtml?ln=" + library+ "\">\n";
+                result = "<img src=\""+imageContextRoot+"/jakarta.faces.resource/" + name+ ".xhtml?ln=" + library+ "\">\n";
             }
 
         } catch (Exception e) {
