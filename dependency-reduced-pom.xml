@@ -34,16 +34,25 @@
       </plugin>
     </plugins>
   </build>
+  <dependencies>
+    <dependency>
+      <groupId>com.google.auto.service</groupId>
+      <artifactId>auto-service</artifactId>
+      <version>1.1.1</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
   <properties>
     <maven.compiler.release>21</maven.compiler.release>
     <exec.mainClass>com.avbravo.jmoordbcorecomponent.Jmoordbcorecomponent.Main</exec.mainClass>
-    <maven.compiler.source>21</maven.compiler.source>
+    <auto-service.version>1.1.1</auto-service.version>
     <mongodb.version>4.6.0</mongodb.version>
-    <microprofile.version>7.0</microprofile.version>
     <openpdf.version>2.0.3</openpdf.version>
-    <jakartaee-api.version>10.0.0</jakartaee-api.version>
     <primefaces.version>15.0.3</primefaces.version>
-    <maven.compiler.target>21</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>21</maven.compiler.source>
+    <microprofile.version>7.0</microprofile.version>
+    <jakartaee-api.version>10.0.0</jakartaee-api.version>
+    <maven.compiler.target>21</maven.compiler.target>
   </properties>
 </project>
