@@ -47,15 +47,15 @@ public class FacesUtil {
     }
 
     public static void showInfo(String msg) {
-        addMessage(FacesMessage.SEVERITY_INFO, "Info Message", msg);
+        addMessage(FacesMessage.SEVERITY_INFO, "Información", msg);
     }
 
     public static void showWarn(String msg) {
-        addMessage(FacesMessage.SEVERITY_WARN, "Warn Message", msg);
+        addMessage(FacesMessage.SEVERITY_WARN, "Advertencia", msg);
     }
 
     public static void showError(String msg) {
-        addMessage(FacesMessage.SEVERITY_ERROR, "Error Message", msg);
+        addMessage(FacesMessage.SEVERITY_ERROR, "Error", msg);
     }
 
     public static void showSticky(String msg) {

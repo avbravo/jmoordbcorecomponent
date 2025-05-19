@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
  *
  * @authoravbravo
  */
-@Named
+ @Named
 @SessionScoped
 public class JmoordbCoreResourcesFiles implements Serializable {
 
@@ -38,10 +38,16 @@ public class JmoordbCoreResourcesFiles implements Serializable {
     }
 
     public void saveLocale() {
+        try {
+            
+       
         currentLocale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
         mrb = ResourceBundle.getBundle(pathMessagesProperties, currentLocale);
         crb = ResourceBundle.getBundle(pathConfigurationProperties, currentLocale);
-        corerb = ResourceBundle.getBundle("com.jmoordbcoreuiutils.properties.core", currentLocale);
+        corerb = ResourceBundle.getBundle("com.jmoordbcore.properties.core", currentLocale);
+         } catch (Exception e) {
+             System.out.println("saveLocale() "+e.getLocalizedMessage());
+        }
     }
 
   
