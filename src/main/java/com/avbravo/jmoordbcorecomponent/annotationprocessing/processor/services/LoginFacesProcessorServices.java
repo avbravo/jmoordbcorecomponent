@@ -11,6 +11,7 @@ import javax.tools.Diagnostic;
  * @author avbravo
  */
 public class LoginFacesProcessorServices {
+
     // <editor-fold defaultstate="collapsed" desc="String imports()">
     public String imports() {
         String result = "";
@@ -38,14 +39,14 @@ public class LoginFacesProcessorServices {
                            import org.eclipse.microprofile.config.inject.ConfigProperty;
                            """;
         } catch (Exception e) {
-            System.out.println(" "+e.getLocalizedMessage());
+            System.out.println(" " + e.getLocalizedMessage());
         }
         return result;
     }
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="String header()">
-   public  String header() {
+    public String header() {
         String result = "";
         try {
             result = """
@@ -53,17 +54,17 @@ public class LoginFacesProcessorServices {
                      @SessionScoped
                     """;
         } catch (Exception e) {
-              System.out.println(" "+e.getLocalizedMessage());
+            System.out.println(" " + e.getLocalizedMessage());
         }
         return result;
     }
 // </editor-fold>
-   
+
     // <editor-fold defaultstate="collapsed" desc="fields()">
-   public String fields(){
-       String result ="";
-       try {
-           result = """
+    public String fields() {
+        String result = "";
+        try {
+            result = """
                     // <editor-fold defaultstate="collapsed" desc="fields">
                     
                         private static final long serialVersionUID = 1L;
@@ -94,18 +95,19 @@ public class LoginFacesProcessorServices {
                     // </editor-fold>
                     
                     """;
-           
-       } catch (Exception e) {
-           System.out.println(" "+e.getLocalizedMessage());
-       }
-       return result;
-   }
+
+        } catch (Exception e) {
+            System.out.println(" " + e.getLocalizedMessage());
+        }
+        return result;
+    }
 // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="services()">
-   public String services(){
-       String result ="";
-       try {
-           result = """
+
+    public String services() {
+        String result = "";
+        try {
+            result = """
                       // <editor-fold defaultstate="collapsed" desc="@Services">
                         @Inject
                         ApplicativeServices applicativeServices;
@@ -113,18 +115,19 @@ public class LoginFacesProcessorServices {
                         UserServices userServices;
                     // </editor-fold>
                     """;
-           
-       } catch (Exception e) {
-           System.out.println(" "+e.getLocalizedMessage());
-       }
-       return result;
-   }
+
+        } catch (Exception e) {
+            System.out.println(" " + e.getLocalizedMessage());
+        }
+        return result;
+    }
 // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="inject()">
-   public String inject(){
-       String result ="";
-       try {
-           result = """
+
+    public String inject() {
+        String result = "";
+        try {
+            result = """
                    // <editor-fold defaultstate="collapsed" desc="@Inject">
                          @Inject
                          App app;
@@ -147,19 +150,19 @@ public class LoginFacesProcessorServices {
                          JmoordbCoreResourcesFiles rf;
                      // </editor-fold>
                     """;
-           
-       } catch (Exception e) {
-           System.out.println(" "+e.getLocalizedMessage());
-       }
-       return result;
-   }
+
+        } catch (Exception e) {
+            System.out.println(" " + e.getLocalizedMessage());
+        }
+        return result;
+    }
 // </editor-fold>
-   
-   // <editor-fold defaultstate="collapsed" desc="microprofileConfig()">
-   public String microprofileConfig(){
-       String result ="";
-       try {
-           result = """
+
+    // <editor-fold defaultstate="collapsed" desc="microprofileConfig()">
+    public String microprofileConfig() {
+        String result = "";
+        try {
+            result = """
                  
                      // <editor-fold defaultstate="collapsed" desc="Microprofile Config">
                          @Inject
@@ -173,18 +176,19 @@ public class LoginFacesProcessorServices {
                          private Provider<String> applicativeURL;
                          // </editor-fold>   
                     """;
-           
-       } catch (Exception e) {
-           System.out.println(" "+e.getLocalizedMessage());
-       }
-       return result;
-   }
+
+        } catch (Exception e) {
+            System.out.println(" " + e.getLocalizedMessage());
+        }
+        return result;
+    }
 // </editor-fold>
-   // <editor-fold defaultstate="collapsed" desc="setGet()">
-   public String setGet(){
-       String result ="";
-       try {
-           result = """
+    // <editor-fold defaultstate="collapsed" desc="setGet()">
+
+    public String setGet() {
+        String result = "";
+        try {
+            result = """
                       // <editor-fold defaultstate="collapsed" desc="set/get()">
                              public User getUserLogged() {
                                  return userLogged;
@@ -276,36 +280,36 @@ public class LoginFacesProcessorServices {
                          
                          // </editor-fold>
                     """;
-           
-       } catch (Exception e) {
-           System.out.println(" "+e.getLocalizedMessage());
-       }
-       return result;
-   }
-// </editor-fold>
-   
-   
-   // <editor-fold defaultstate="collapsed" desc="constructor(String nameOfClass)">
-   public String constructor(String nameOfClass){
-       StringBuilder result = new StringBuilder();
-       try {
-           result.append("\n/**");
-           result.append("\n* * Creates a new instance of "+nameOfClass);
-           result.append("\n*/");
-           result.append("\n public "+nameOfClass+"(){");
-           result.append("}");
 
-       } catch (Exception e) {
-           System.out.println(" "+e.getLocalizedMessage());
-       }
-       return result.toString();
-   }
+        } catch (Exception e) {
+            System.out.println(" " + e.getLocalizedMessage());
+        }
+        return result;
+    }
 // </editor-fold>
-   // <editor-fold defaultstate="collapsed" desc="init()">
-   public String init(){
-       String result = new String();
-       try {
-          result = """
+
+    // <editor-fold defaultstate="collapsed" desc="constructor(String nameOfClass)">
+    public String constructor(String nameOfClass) {
+        StringBuilder result = new StringBuilder();
+        try {
+            result.append("\n/**");
+            result.append("\n* * Creates a new instance of " + nameOfClass);
+            result.append("\n*/");
+            result.append("\n public " + nameOfClass + "(){");
+            result.append("}");
+
+        } catch (Exception e) {
+            System.out.println(" " + e.getLocalizedMessage());
+        }
+        return result.toString();
+    }
+// </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="init()">
+
+    public String init() {
+        String result = new String();
+        try {
+            result = """
                     // <editor-fold defaultstate="collapsed" desc="init()">
                     @PostConstruct
                        public void init() {
@@ -320,17 +324,18 @@ public class LoginFacesProcessorServices {
                    // </editor-fold>
                    """;
 
-       } catch (Exception e) {
-           System.out.println(" "+e.getLocalizedMessage());
-       }
-       return result.toString();
-   }
+        } catch (Exception e) {
+            System.out.println(" " + e.getLocalizedMessage());
+        }
+        return result.toString();
+    }
 // </editor-fold>
-   // <editor-fold defaultstate="collapsed" desc="preDestroy()">
-   public String preDestroy(){
-       String result = new String();
-       try {
-          result = """
+    // <editor-fold defaultstate="collapsed" desc="preDestroy()">
+
+    public String preDestroy() {
+        String result = new String();
+        try {
+            result = """
                    // <editor-fold defaultstate="collapsed" desc="void preDestroy()">
                            @PreDestroy
                            public void preDestroy() {
@@ -340,17 +345,18 @@ public class LoginFacesProcessorServices {
                            // </editor-fold>
                    """;
 
-       } catch (Exception e) {
-           System.out.println(" "+e.getLocalizedMessage());
-       }
-       return result.toString();
-   }
+        } catch (Exception e) {
+            System.out.println(" " + e.getLocalizedMessage());
+        }
+        return result.toString();
+    }
 // </editor-fold>
-   // <editor-fold defaultstate="collapsed" desc="login()">
-   public String login(){
-       String result = new String();
-       try {
-          result = """
+    // <editor-fold defaultstate="collapsed" desc="login()">
+
+    public String login() {
+        String result = new String();
+        try {
+            result = """
                       // <editor-fold defaultstate="collapsed" desc="String login()">
                   
                       @Override
@@ -400,18 +406,18 @@ public class LoginFacesProcessorServices {
                   // </editor-fold>
                    """;
 
-       } catch (Exception e) {
-           System.out.println(" "+e.getLocalizedMessage());
-       }
-       return result.toString();
-   }
+        } catch (Exception e) {
+            System.out.println(" " + e.getLocalizedMessage());
+        }
+        return result.toString();
+    }
 // </editor-fold>
-  
-   // <editor-fold defaultstate="collapsed" desc="logout()">
-   public String logout(){
-       String result = new String();
-       try {
-          result = """
+
+    // <editor-fold defaultstate="collapsed" desc="logout()">
+    public String logout() {
+        String result = new String();
+        try {
+            result = """
                     // <editor-fold defaultstate="collapsed" desc="logout()">
                   
                       @Override
@@ -422,10 +428,202 @@ public class LoginFacesProcessorServices {
                   // </editor-fold>
                    """;
 
-       } catch (Exception e) {
-           System.out.println(" "+e.getLocalizedMessage());
-       }
-       return result.toString();
-   }
+        } catch (Exception e) {
+            System.out.println(" " + e.getLocalizedMessage());
+        }
+        return result.toString();
+    }
+// </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="saveToMediaContext()">
+
+    public String saveToMediaContext() {
+        String result = new String();
+        try {
+            result = """
+               // <editor-fold defaultstate="collapsed" desc="String saveToMediaContext(String pathOfFile, String... nameOfFile)">
+                        public String saveToMediaContext(String pathOfFile, String... nameOfFile) {
+                            try {
+                                String name = pathOfFile;
+                    
+                                if (nameOfFile.length != 0) {
+                                    name = nameOfFile[0];
+                                }
+                    
+                                if (!pathBaseLinuxAddUserHomeStoreInCollections.get()) {
+                                    pathOfFile = FacesUtil.userHome() + pathOfFile;
+                    
+                                }
+                    
+                                jmoordbCoreMediaContext.put("pathOfFile", pathOfFile);
+                                jmoordbCoreMediaContext.put("nameOfFile", name);
+                                jmoordbCoreMediaManager.init();
+                            } catch (Exception e) {
+                    
+                            }
+                    
+                            return "";
+                        }
+                        // </editor-fold>
+                   """;
+
+        } catch (Exception e) {
+            System.out.println(" " + e.getLocalizedMessage());
+        }
+        return result.toString();
+    }
+// </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="repairPathOfFile()">
+
+    public String repairPathOfFile() {
+        String result = new String();
+        try {
+            result = """
+                 // <editor-fold defaultstate="collapsed" desc="String repairPathOfFile(String pathOfFile)">
+                            public String repairPathOfFile(String pathOfFile) {
+                                try {
+                                    if (!pathBaseLinuxAddUserHomeStoreInCollections.get()) {
+                                        pathOfFile = FacesUtil.userHome() + pathOfFile;
+                                    }
+                        
+                                } catch (Exception e) {
+                                    FacesUtil.errorMessage(FacesUtil.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+                                }
+                        
+                                return pathOfFile;
+                            }
+                        
+                            // </editor-fold>
+                   """;
+
+        } catch (Exception e) {
+            System.out.println(" " + e.getLocalizedMessage());
+        }
+        return result.toString();
+    }
+// </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="onProfileChange()">
+
+    public String onProfileChange() {
+        String result = new String();
+        try {
+            result = """
+                 // <editor-fold defaultstate="collapsed" desc=" onProfileChange()">
+                                public void onProfileChange() {
+                                    try {
+                            
+                                        if (profileLogged == null || profileLogged.getDepartamentView() == null) {
+                                            //No se ha seleccionado departamemto
+                                            profileLogged = new Profile();
+                                        }
+                            
+                                    } catch (Exception e) {
+                                        FacesUtil.errorMessage(FacesUtil.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+                                    }
+                            
+                                }
+                            // </editor-fold>
+                            
+                   """;
+
+        } catch (Exception e) {
+            System.out.println(" " + e.getLocalizedMessage());
+        }
+        return result.toString();
+    }
+// </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="searchApplicative()">
+
+    public String searchApplicative(){
+        String result = new String();
+        try {
+            result = """
+                // <editor-fold defaultstate="collapsed" desc="Boolean searchApplicative()">
+                                /**
+                                 * Consulta medoante un Search
+                                 *
+                                 * @return
+                                 */
+                                public Boolean searchApplicative() {
+                                    Boolean result = Boolean.FALSE;
+                                    try {
+                            
+                                        applicativeLogged = applicativeServices.findByIdapplicative(idapplicative.get().longValue()).get();
+                                        if (applicativeLogged == null || applicativeLogged.getIdapplicative() == null) {
+                                            applicativeLogged = new Applicative();
+                                        } else {
+                                            result = Boolean.TRUE;
+                                        }
+                                    } catch (Exception e) {
+                                        FacesUtil.errorMessage(FacesUtil.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+                                    }
+                                    return result;
+                                }
+                                // </editor-fold>
+                            
+                   """;
+
+        } catch (Exception e) {
+            System.out.println(" " + e.getLocalizedMessage());
+        }
+        return result.toString();
+    }
+// </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="validateApplicativeRole()">
+
+    public String validateApplicativeRole(){
+        String result = new String();
+        try {
+            result = """
+               // <editor-fold defaultstate="collapsed" desc="Boolean validateApplicativeRole(JmoordbResourcesFiles rf, Applicativerole  applicativeroleLogged, Applicative applicativeLogged, Profile profileLogged)">
+                                /**
+                                 * Valida el applicative role
+                                 *
+                                 * @param rf
+                                 * @param applicativeroleLogged
+                                 * @param applicativeLogged
+                                 * @param profileLogged
+                                 * @return
+                                 */
+                                public Boolean validateApplicativeRole(JmoordbResourcesFiles rf, Applicative applicativeLogged, Profile profileLogged) {
+                                    Boolean result = Boolean.FALSE;
+                                    try {
+                            
+                                        for (Applicativerole a : applicativeLogged.getApplicativerole()) {
+                                            if (a.getIdrole().equals(profileLogged.getRole().getIdrole())) {
+                            
+                                                if (a.getActive() && profileLogged.getActive()) {
+                                                    applicativeroleLogged = a;
+                            
+                                                    result = Boolean.TRUE;
+                            
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        if (result) {
+                                            if (applicativeLogged.getPath() == null || applicativeLogged.getPath().equals("")) {
+                                                FacesUtil.warningMessage(rf.fromCore("warning.roleapplicativepathempty"));
+                                                result = Boolean.FALSE;
+                                            }
+                                        } else {
+                                            FacesUtil.warningMessage(rf.fromCore("warning.roleapplicativenotvalido"));
+                            
+                                        }
+                            
+                                    } catch (Exception e) {
+                                        FacesUtil.errorMessage(FacesUtil.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+                            
+                                    }
+                                    return result;
+                                }
+                            // </editor-fold>
+                            
+                   """;
+
+        } catch (Exception e) {
+            System.out.println(" " + e.getLocalizedMessage());
+        }
+        return result.toString();
+    }
 // </editor-fold>
 }

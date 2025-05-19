@@ -62,9 +62,9 @@ public class LoginFacesProcessor extends AbstractProcessor {
                 bufferedWriter.append(builderName);
                 bufferedWriter.append(" implements Serializable, LoginSecurity {");
                 bufferedWriter.newLine();
- bufferedWriter.append(loginFacesProcessorServices.fields());
+                bufferedWriter.append(loginFacesProcessorServices.fields());
                 bufferedWriter.newLine();
-                
+
                 bufferedWriter.append(loginFacesProcessorServices.services());
                 bufferedWriter.append(loginFacesProcessorServices.inject());
                 bufferedWriter.append(loginFacesProcessorServices.microprofileConfig());
@@ -74,12 +74,16 @@ public class LoginFacesProcessor extends AbstractProcessor {
                 bufferedWriter.append(loginFacesProcessorServices.preDestroy());
                 bufferedWriter.append(loginFacesProcessorServices.login());
                 bufferedWriter.append(loginFacesProcessorServices.logout());
-                
+                bufferedWriter.append(loginFacesProcessorServices.saveToMediaContext());
+                bufferedWriter.append(loginFacesProcessorServices.repairPathOfFile());
+                bufferedWriter.append(loginFacesProcessorServices.onProfileChange());
+                bufferedWriter.append(loginFacesProcessorServices.searchApplicative());
+                bufferedWriter.append(loginFacesProcessorServices.validateApplicativeRole());
+
 //                bufferedWriter.append("\n\tprivate ");
 //                bufferedWriter.append(element.getSimpleName().toString());
 //                bufferedWriter.append(" object ");
 //                bufferedWriter.append(" = new " + element.getSimpleName().toString() + "();");
-
                 bufferedWriter.newLine();
 
                 if (element.getKind().isClass()) {
