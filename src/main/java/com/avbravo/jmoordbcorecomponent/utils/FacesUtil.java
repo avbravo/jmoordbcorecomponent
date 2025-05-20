@@ -50,6 +50,9 @@ public class FacesUtil {
         addMessage(FacesMessage.SEVERITY_INFO, "Información", msg);
     }
 
+    public static void showWarn(String title,String msg) {
+        addMessage(FacesMessage.SEVERITY_WARN, title, msg);
+    }
     public static void showWarn(String msg) {
         addMessage(FacesMessage.SEVERITY_WARN, "Advertencia", msg);
     }
