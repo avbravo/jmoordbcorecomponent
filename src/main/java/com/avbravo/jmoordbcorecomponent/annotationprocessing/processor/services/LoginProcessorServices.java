@@ -10,41 +10,40 @@ import com.avbravo.jmoordbcorecomponent.utils.ProcessorUtil;
  *
  * @author avbravo
  */
-public class LoginFacesProcessorServices {
+public class LoginProcessorServices {
 
     // <editor-fold defaultstate="collapsed" desc="String imports(String packagePath)">
     public String imports(String packagePath) {
         String result = "";
         try {
             result = """
-                           import com.avbravo.jmoordbcorecomponent.security.*;
-                           import com.avbravo.jmoordbcorecomponent.model.*;
-                           import com.avbravo.jmoordbcorecomponent.utils.*;
-                           import com.avbravo.jmoordbcorecomponent.utils.media.*;
-                           import com.jmoordbcoreencripter.jmoordbencripter.Encryptor;
-                           import jakarta.security.enterprise.SecurityContext;
-                           import jakarta.annotation.PostConstruct;
-                           import jakarta.annotation.PreDestroy;
-                           import jakarta.inject.Named;
-                           import jakarta.enterprise.context.SessionScoped;
-                           import jakarta.faces.application.FacesMessage;
-                           import jakarta.faces.context.ExternalContext;
-                           import jakarta.faces.context.FacesContext;
-                           import jakarta.inject.Inject;
-                           import jakarta.inject.Provider;
-                           import jakarta.security.enterprise.AuthenticationStatus;
-                           import jakarta.security.enterprise.authentication.mechanism.http.AuthenticationParameters;
-                           import jakarta.security.enterprise.credential.UsernamePasswordCredential;
-                           import jakarta.servlet.http.HttpServletRequest;
-                           import jakarta.servlet.http.HttpServletResponse;
-                           import jakarta.servlet.http.HttpSession;
-                           import jakarta.validation.constraints.NotNull;
-                           import java.io.Serializable;
-                           import java.util.ArrayList;
-                           import java.util.List;
-                           import java.util.Optional;
-                           import org.eclipse.microprofile.config.Config;
-                           import org.eclipse.microprofile.config.inject.ConfigProperty;
+import com.avbravo.jmoordbcorecomponent.model.*;
+import com.avbravo.jmoordbcorecomponent.utils.*;
+import com.avbravo.jmoordbcorecomponent.utils.media.*;
+import com.jmoordbcoreencripter.jmoordbencripter.Encryptor;
+import jakarta.security.enterprise.SecurityContext;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
+import jakarta.inject.Named;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.inject.Inject;
+import jakarta.inject.Provider;
+import jakarta.security.enterprise.AuthenticationStatus;
+import jakarta.security.enterprise.authentication.mechanism.http.AuthenticationParameters;
+import jakarta.security.enterprise.credential.UsernamePasswordCredential;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import org.eclipse.microprofile.config.Config;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
                            """;
             result += "import " + ProcessorUtil.getPackageNameModel(packagePath) + ".*;\n";
             result += "import " + ProcessorUtil.getPackageNameServices(packagePath) + ".*;\n";
