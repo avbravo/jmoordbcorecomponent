@@ -10,7 +10,7 @@ import com.avbravo.jmoordbcorecomponent.utils.ProcessorUtil;
  *
  * @author avbravo
  */
-public class LoginProcessorServices {
+public class LoginSecurityProcessorServices {
 
     // <editor-fold defaultstate="collapsed" desc="String imports(String packagePath)">
     public String imports(String packagePath) {

@@ -8,7 +8,7 @@ package com.avbravo.jmoordbcorecomponent.annotationprocessing.processor;
  *
  * @author avbravo
  */
-import com.avbravo.jmoordbcorecomponent.annotationprocessing.processor.services.LoginProcessorServices;
+import com.avbravo.jmoordbcorecomponent.annotationprocessing.processor.services.LoginSecurityProcessorServices;
 import java.io.IOException;
 import java.util.Set;
 
@@ -27,19 +27,19 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.PackageElement;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
-import com.avbravo.jmoordbcorecomponent.annotationprocessing.Login;
+import com.avbravo.jmoordbcorecomponent.annotationprocessing.LoginSecurity;
 
 @AutoService(Processor.class)
-@SupportedAnnotationTypes("com.avbravo.jmoordbcorecomponent.annotationprocessing.Login")
+@SupportedAnnotationTypes("com.avbravo.jmoordbcorecomponent.annotationprocessing.LoginSecurity")
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
-public class LoginProcessor extends AbstractProcessor {
+public class LoginSecurityProcessor extends AbstractProcessor {
 
-    LoginProcessorServices loginProcessorServices = new LoginProcessorServices();
+    LoginSecurityProcessorServices loginProcessorServices = new LoginSecurityProcessorServices();
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
 
-        for (Element element : roundEnv.getElementsAnnotatedWith(Login.class)) {
+        for (Element element : roundEnv.getElementsAnnotatedWith(LoginSecurity.class)) {
             JavaFileObject builderClass = null;
             PackageElement packageElement = (PackageElement) element.getEnclosingElement();
             BufferedWriter bufferedWriter = null;
