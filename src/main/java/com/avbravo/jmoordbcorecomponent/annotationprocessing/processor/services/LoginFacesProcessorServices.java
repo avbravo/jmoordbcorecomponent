@@ -4,7 +4,7 @@
  */
 package com.avbravo.jmoordbcorecomponent.annotationprocessing.processor.services;
 
-import javax.tools.Diagnostic;
+import com.avbravo.jmoordbcorecomponent.utils.ProcessorUtil;
 
 /**
  *
@@ -12,12 +12,16 @@ import javax.tools.Diagnostic;
  */
 public class LoginFacesProcessorServices {
 
-    // <editor-fold defaultstate="collapsed" desc="String imports()">
-    public String imports() {
+    // <editor-fold defaultstate="collapsed" desc="String imports(String packagePath)">
+    public String imports(String packagePath) {
         String result = "";
         try {
             result = """
-                           import com.avbravo.jmoordbcorecomponent.security.LoginSecurity;
+                           import com.avbravo.jmoordbcorecomponent.security.*;
+                           import com.avbravo.jmoordbcorecomponent.model.*;
+                           import com.avbravo.jmoordbcorecomponent.utils.*;
+                           import com.avbravo.jmoordbcorecomponent.utils.media.*;
+                           import com.jmoordbcoreencripter.jmoordbencripter.Encryptor;
                            import jakarta.security.enterprise.SecurityContext;
                            import jakarta.annotation.PostConstruct;
                            import jakarta.annotation.PreDestroy;
@@ -33,11 +37,18 @@ public class LoginFacesProcessorServices {
                            import jakarta.security.enterprise.credential.UsernamePasswordCredential;
                            import jakarta.servlet.http.HttpServletRequest;
                            import jakarta.servlet.http.HttpServletResponse;
+                           import jakarta.servlet.http.HttpSession;
                            import jakarta.validation.constraints.NotNull;
                            import java.io.Serializable;
+                           import java.util.ArrayList;
+                           import java.util.List;
+                           import java.util.Optional;
                            import org.eclipse.microprofile.config.Config;
                            import org.eclipse.microprofile.config.inject.ConfigProperty;
                            """;
+            result += "import " + ProcessorUtil.getPackageNameModel(packagePath) + ".*;\n";
+            result += "import " + ProcessorUtil.getPackageNameServices(packagePath) + ".*;\n";
+            result += "import " + ProcessorUtil.getPackageNameConfiguration(packagePath) + ".*;\n";
         } catch (Exception e) {
             System.out.println(" " + e.getLocalizedMessage());
         }
@@ -65,7 +76,7 @@ public class LoginFacesProcessorServices {
         String result = "";
         try {
             result = """
-                    // <editor-fold defaultstate="collapsed" desc="fields">
+// <editor-fold defaultstate="collapsed" desc="fields">
                     
                         private static final long serialVersionUID = 1L;
                     
@@ -87,13 +98,18 @@ public class LoginFacesProcessorServices {
                          */
                         private Boolean isLogged = Boolean.FALSE;
                         private Boolean isValidUser = Boolean.FALSE;
-                    
+                        private Boolean isValidApplicative = Boolean.FALSE;
+                        private Boolean isValidRoles = Boolean.FALSE;
+                        private Integer contadorIntentos = 0;
                         UserCredential userCredential = new UserCredential();
                         ProfileStore profie;
                         private String selectedOption;
                         private String name = "";
+                        private Profile profileLogged = new Profile();
+                        private List<Profile> profileLoggeds = new ArrayList<>();
+                        private Applicativerole applicativeroleLogged = new Applicativerole();
                     // </editor-fold>
-                    
+                                        
                     """;
 
         } catch (Exception e) {
@@ -128,7 +144,7 @@ public class LoginFacesProcessorServices {
         String result = "";
         try {
             result = """
-                   // <editor-fold defaultstate="collapsed" desc="@Inject">
+                    // <editor-fold defaultstate="collapsed" desc="@Inject">
                          @Inject
                          App app;
                      
@@ -158,23 +174,33 @@ public class LoginFacesProcessorServices {
     }
 // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="secretKey()">
+    public String secretKey() {
+        String result = "";
+        try {
+            result = """
+                     // <editor-fold defaultstate="collapsed" desc="SecretKey()">
+                         private String secretKey = "SCox1jmWrkma$*opne2Amwz";
+                         // </editor-fold>
+                    """;
+
+        } catch (Exception e) {
+            System.out.println(" " + e.getLocalizedMessage());
+        }
+        return result;
+    }
+// </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="microprofileConfig()">
     public String microprofileConfig() {
         String result = "";
         try {
             result = """
                  
-                     // <editor-fold defaultstate="collapsed" desc="Microprofile Config">
+                   // <editor-fold defaultstate="collapsed" desc="MicroprofileConfigReader()">
                          @Inject
-                         private Config config;
-                         @Inject
-                         @ConfigProperty(name = "idapplicative")
-                         private Provider<Integer> idapplicative;
-                     
-                         @Inject
-                         @ConfigProperty(name = "applicativeURL")
-                         private Provider<String> applicativeURL;
-                         // </editor-fold>   
+                         MicroprofileConfigReader mcr;
+                     // </editor-fold>
                     """;
 
         } catch (Exception e) {
@@ -190,6 +216,22 @@ public class LoginFacesProcessorServices {
         try {
             result = """
                       // <editor-fold defaultstate="collapsed" desc="set/get()">
+                           public Profile getProfileLogged() {
+                                 return profileLogged;
+                             }
+                         
+                             public void setProfileLogged(Profile profileLogged) {
+                                 this.profileLogged = profileLogged;
+                             }
+                         
+                             public List<Profile> getProfileLoggeds() {
+                                 return profileLoggeds;
+                             }
+                         
+                             public void setProfileLoggeds(List<Profile> profileLoggeds) {
+                                 this.profileLoggeds = profileLoggeds;
+                             }
+                         
                              public User getUserLogged() {
                                  return userLogged;
                              }
@@ -277,7 +319,6 @@ public class LoginFacesProcessorServices {
                              public void setIsValidUser(Boolean isValidUser) {
                                  this.isValidUser = isValidUser;
                              }
-                         
                          // </editor-fold>
                     """;
 
@@ -292,11 +333,13 @@ public class LoginFacesProcessorServices {
     public String constructor(String nameOfClass) {
         StringBuilder result = new StringBuilder();
         try {
+            result.append("// <editor-fold defaultstate=\"collapsed\" desc=\"set/get()\">");
             result.append("\n/**");
             result.append("\n* * Creates a new instance of " + nameOfClass);
             result.append("\n*/");
             result.append("\n public " + nameOfClass + "(){");
             result.append("}");
+            result.append("// </editor-fold>");
 
         } catch (Exception e) {
             System.out.println(" " + e.getLocalizedMessage());
@@ -311,16 +354,22 @@ public class LoginFacesProcessorServices {
         try {
             result = """
                     // <editor-fold defaultstate="collapsed" desc="init()">
-                    @PostConstruct
-                       public void init() {
-                           userCredential = new UserCredential();
-                           isLogged = Boolean.FALSE;
-                           isValidUser = Boolean.FALSE;
-                           userLogged = new User();
-                           var seconds = Long.parseLong(String.valueOf(facesContext.getExternalContext().getSessionMaxInactiveInterval()));
-                           System.out.println("seconds: " + seconds);
-                           //var endTime = JmoordbCoreDateUtil.secondsToHourMinuteSecondsTiempo(seconds);
-                       }
+                      @PostConstruct
+                           public void init() {
+                               try {
+                                   userCredential = new UserCredential();
+                                   isLogged = Boolean.FALSE;
+                                   isValidUser = Boolean.FALSE;
+                                   userLogged = new User();
+                                   applicativeroleLogged = new Applicativerole();
+                                   var seconds = Long.parseLong(String.valueOf(facesContext.getExternalContext().getSessionMaxInactiveInterval()));
+                                   System.out.println("seconds: " + seconds);
+                               } catch (Exception e) {
+                                   FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+                               }
+                       
+                               //var endTime = JmoordbCoreDateUtil.secondsToHourMinuteSecondsTiempo(seconds);
+                           }
                    // </editor-fold>
                    """;
 
@@ -337,7 +386,7 @@ public class LoginFacesProcessorServices {
         try {
             result = """
                    // <editor-fold defaultstate="collapsed" desc="void preDestroy()">
-                           @PreDestroy
+                        @PreDestroy
                            public void preDestroy() {
                        
                            }
@@ -351,58 +400,180 @@ public class LoginFacesProcessorServices {
         return result.toString();
     }
 // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="login()">
 
+// <editor-fold defaultstate="collapsed" desc="next()">
+    public String next() {
+        String result = new String();
+        try {
+            result = """
+                   // <editor-fold defaultstate="collapsed" desc="void next()">
+                    @Override
+                               public String next() {
+                                   try {
+                                       isValidUser = Boolean.FALSE;
+                                       isLogged = Boolean.FALSE;
+                                       profileLogged = new Profile();
+                           
+                                       contadorIntentos = 0;
+                                       isLogged = Boolean.FALSE;
+                                       profileLogged = new Profile();
+                                       profileLoggeds = new ArrayList<>();
+                                       /**
+                                        * Busca applicative
+                                        */
+                                       isValidApplicative = searchApplicative();
+                           
+                                       if (!isValidApplicative) {
+                                           FacesUtil.showWarn(rf.fromCore("applicativeconfiguration.restrictivelogin"));
+                                           return "";
+                                       }
+                           
+                                       /**
+                                        * Carga el app configuration
+                                        */
+                                       isValidRoles = validateRoles(rf, applicativeLogged);
+                                       if (!isValidRoles) {
+                                           return "";
+                                       }
+                           
+                                       if (username == null || username.equals("")) {
+                                           FacesUtil.showWarn(rf.fromCore("warning.usernameisempty"));
+                                           return "";
+                                       }
+                                       Optional<User> userOptional = userServices.findByUsername(username);
+                                       if (!userOptional.isPresent()) {
+                                           FacesUtil.showWarn(rf.fromCore("login.usernamenotvalid"));
+                                           return "";
+                                       }
+                           
+                                       userLogged = userOptional.get();
+                                       if (!userLogged.getActive()) {
+                                           FacesUtil.showWarn(rf.fromCore("login.inactive"));
+                                           return "";
+                                       }
+                           
+                                       profileLoggeds = new ArrayList<>();
+                                       isValidUser = validateProfileUser(profileLoggeds, userLogged, rf, applicativeLogged);
+                                       if (!isValidUser) {
+                                           return "";
+                                       }
+                                       /**
+                                        * Guarda el contexto de la lista de Profiles
+                                        */
+                                       JmoordbCoreContext.put("LoginFaces.profileLoggeds", profileLoggeds);
+                                       profileLogged = profileLoggeds.get(0);
+                                       return "index.xhtml";
+                           
+                                   } catch (Exception e) {
+                                       FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+                                   }
+                                   return "";
+                               }
+                      // </editor-fold>
+                   """;
+
+        } catch (Exception e) {
+            System.out.println(" " + e.getLocalizedMessage());
+        }
+        return result.toString();
+    }
+// </editor-fold>    
+
+    // <editor-fold defaultstate="collapsed" desc="login()">
     public String login() {
         String result = new String();
         try {
             result = """
                       // <editor-fold defaultstate="collapsed" desc="String login()">
                   
-                      @Override
-                      public String login() {
-                          try {
-                  
-                              isLogged = Boolean.FALSE;
-                              System.out.println("llego al login");
-                              System.out.println("<--| username: " + username + " password: " + password + " |-->");
-                              // FacesUtil.showWarn(rf.fromCore("warning.usernameisempty"));
-                              AuthenticationStatus status = continueAuthentication();
-                              System.out.println("status " + status.toString());
-                              if (status == null) {
-                                  FacesUtil.showWarn("Status es null");
-                                  return "";
+                       @Override
+                          public String login() {
+                              try {
+                                  if (isLogged) {
+                                      System.out.println("" + FacesUtil.nameOfMethod() + "isLogged" + isLogged);
+                                      JmoordbCoreContext.put("pageInView", "index.xhtml");
+                                      return "/" + applicativeLogged.getPath() + "/" + "index.xhmtl";
+                                  }
+                                  isLogged = Boolean.FALSE;
+                                  isLogged = Boolean.FALSE;
+                                  if (password == null || password.equals("")) {
+                                      FacesUtil.showWarn(rf.fromCore("warning.passwordisempty"));
+                                      return "";
+                                  }
+                      
+                                  if (profileLogged == null || profileLogged.getRole() == null) {
+                                      FacesUtil.showWarn(rf.fromCore("warning.profilenotselected"));
+                                      return "";
+                                  }
+                      
+                                  /**
+                                   * Validar el password
+                                   */
+                                  // Desencriptar el password de la base de datos
+                                  String encripter = Encryptor.encrypt(password, secretKey);
+                      
+                                  String passwordDecrypter = Encryptor.decrypt(userLogged.getPassword(), secretKey, FacesUtil.nameOfClassAndMethod());
+                      
+                                  if (passwordDecrypter.equals(password)) {
+                                      //AplicarIdentityStore
+                                  } else {
+                                      FacesUtil.showWarn(rf.fromCore("warning.passwordnotmatch"));
+                                      if (contadorIntentos >= 3) {
+                                          FacesUtil.showWarn(rf.fromCore("warning.warning"), rf.fromCore("warning.demasiadosintentosfallidoscambiepassword"));
+                      
+                                          return "/olvidopassword.xhtml";
+                                      }
+                                      contadorIntentos++;
+                                      return "";
+                                  }
+                      
+                                  /**
+                                   * Guarda el role en el Conext
+                                   */
+                                  if (!validateApplicativeRole(rf, applicativeLogged, profileLogged)) {
+                                      return "";
+                                  }
+                                  JmoordbCoreContext.put("LoginFaces.profileLogged", profileLogged);
+                                  JmoordbCoreContext.put("LoginFaces.applicativeroleLogged", applicativeLogged);
+                                  JmoordbCoreContext.put("LoginFaces.applicative", applicativeLogged);
+                      
+                                  AuthenticationStatus status = continueAuthentication();
+                                  System.out.println("status " + status.toString());
+                                  if (status == null) {
+                                      FacesUtil.showWarn("Status es null");
+                                      return "";
+                                  }
+                                  switch (status) {
+                                      case SEND_CONTINUE:
+                      
+                                          facesContext.responseComplete();
+                                          FacesUtil.showWarn("SEND_CONTINUE");
+                                          break;
+                                      case SEND_FAILURE:
+                                          System.out.println("SEND_FAILURE");
+                                          FacesUtil.showError("Authentication failed");
+                                          break;
+                                      case SUCCESS:
+                                          //Aplica el tema del usuario
+                                          FacesUtil.showInfo("SUCCESS");
+                                          isLogged = Boolean.TRUE;
+                                          JmoordbCoreContext.put("LoginFaces.userLogged", userLogged);
+                                          FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(username + " Welcome :" + password + " " + selectedOption));
+                      //                    return "/" + applicativeroleLogged.getPath() + "/" + "dashboard.xhmtl";
+                                          return "/" + "dashboard.xhmtl";
+                      
+                                      //    return new CredentialValidationResult(username, new HashSet<>(Arrays.asList(roleForWebSecurity)));
+                                      //  JmoordbCoreContext.put("LoginFaces.userLogged", userLogged);
+                                      case NOT_DONE:
+                                          FacesUtil.showInfo("NOT_DONE");
+                                  }
+                      
+                      //            return "dashboard.xhtml";
+                              } catch (Exception e) {
+                                  FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
                               }
-                              switch (status) {
-                                  case SEND_CONTINUE:
-                  
-                                      facesContext.responseComplete();
-                                      FacesUtil.showWarn("SEND_CONTINUE");
-                                      break;
-                                  case SEND_FAILURE:
-                                      System.out.println("SEND_FAILURE");
-                                      FacesUtil.showError("Authentication failed");
-                                      break;
-                                  case SUCCESS:
-                                      //Aplica el tema del usuario
-                                      System.out.println("SUCCESS");
-                                      FacesUtil.showInfo("SUCCESS");
-                                      isLogged = Boolean.TRUE;
-                  
-                                  //    return new CredentialValidationResult(username, new HashSet<>(Arrays.asList(roleForWebSecurity)));
-                                  //  JmoordbCoreContext.put("LoginFaces.userLogged", userLogged);
-                                  case NOT_DONE:
-                                      FacesUtil.showInfo("NOT_DONE");
-                              }
-                              FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(username + " Welcome :" + password + " " + selectedOption));
-                              System.out.println("-----> call dashboard.xhtml");
-                              return "dashboard.xhtml";
-                  
-                          } catch (Exception e) {
-                              FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+                              return "";
                           }
-                          return "";
-                      }
                   // </editor-fold>
                    """;
 
@@ -420,11 +591,13 @@ public class LoginFacesProcessorServices {
             result = """
                     // <editor-fold defaultstate="collapsed" desc="logout()">
                   
-                      @Override
                       public String logout() {
-                          System.out.println("Logout....");
-                          return "";
-                      }
+                              String path = mcr.getApplicativePath();
+                              isLogged = Boolean.FALSE;
+                              System.out.println("[]: " + path);
+                              return logout(path + "/index.xhtml?faces-redirect=true");
+                      
+                          }
                   // </editor-fold>
                    """;
 
@@ -434,95 +607,92 @@ public class LoginFacesProcessorServices {
         return result.toString();
     }
 // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="saveToMediaContext()">
 
-    public String saveToMediaContext() {
+// <editor-fold defaultstate="collapsed" desc="logoutPath()">
+    public String logoutPath() {
         String result = new String();
         try {
             result = """
-               // <editor-fold defaultstate="collapsed" desc="String saveToMediaContext(String pathOfFile, String... nameOfFile)">
-                        public String saveToMediaContext(String pathOfFile, String... nameOfFile) {
+                    // <editor-fold defaultstate="collapsed" desc="logout(String path)">
+                    public String logout(String path) {
+                                  Boolean loggedIn = false;
+                                  try {
+                                      //     String ip = FacesUtil.getIp() == null ? "" : FacesUtil.getIp();
+                                      HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+                                      if (session != null) {
+                                          session.invalidate();
+                                      }
+                          
+                          //            String url = (path);
+                          //            FacesContext fc = FacesContext.getCurrentInstance();
+                          //            ExternalContext ec = fc.getExternalContext();
+                          //            ec.redirect(url);
+                                      /**
+                                       *
+                                       */
+                                      init();
+                                      return path;
+                                  } catch (Exception e) {
+                                      FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+                                  }
+                                  return path;
+                    }
+                  // </editor-fold>
+                   """;
+
+        } catch (Exception e) {
+            System.out.println(" " + e.getLocalizedMessage());
+        }
+        return result.toString();
+    }
+
+// </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="back()">
+    public String back() {
+        String result = new String();
+        try {
+            result = """
+                    // <editor-fold defaultstate="collapsed" desc="back()">                  
+                     public String back() {
+                                  try {
+                                      System.out.println(":::::::::::: llego a back()");
+                                      isValidUser = Boolean.FALSE;
+                                  } catch (Exception e) {
+                                      FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+                                  }
+                                  return "/index.xhtml";
+                    }                          
+                  // </editor-fold>
+                   """;
+
+        } catch (Exception e) {
+            System.out.println(" " + e.getLocalizedMessage());
+        }
+        return result.toString();
+    }
+// </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="reset()">
+
+    public String reset() {
+        String result = new String();
+        try {
+            result = """
+                    // <editor-fold defaultstate="collapsed" desc="reset()">                  
+                    @Override
+                        public String reset() {
                             try {
-                                String name = pathOfFile;
-                    
-                                if (nameOfFile.length != 0) {
-                                    name = nameOfFile[0];
+                                if (emailRecovery == null || emailRecovery.isEmpty() || emailRecovery.isBlank()) {
+                                    FacesUtil.showWarn(rf.getMrb().getString("warning.ingreseemailrecuperacion"));
+                                    return "";
                                 }
-                    
-                                if (!pathBaseLinuxAddUserHomeStoreInCollections.get()) {
-                                    pathOfFile = FacesUtil.userHome() + pathOfFile;
-                    
-                                }
-                    
-                                jmoordbCoreMediaContext.put("pathOfFile", pathOfFile);
-                                jmoordbCoreMediaContext.put("nameOfFile", name);
-                                jmoordbCoreMediaManager.init();
+                                return "confirmemail.xhtml";
                             } catch (Exception e) {
-                    
+                                FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
                             }
                     
                             return "";
-                        }
-                        // </editor-fold>
-                   """;
-
-        } catch (Exception e) {
-            System.out.println(" " + e.getLocalizedMessage());
-        }
-        return result.toString();
-    }
-// </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="repairPathOfFile()">
-
-    public String repairPathOfFile() {
-        String result = new String();
-        try {
-            result = """
-                 // <editor-fold defaultstate="collapsed" desc="String repairPathOfFile(String pathOfFile)">
-                            public String repairPathOfFile(String pathOfFile) {
-                                try {
-                                    if (!pathBaseLinuxAddUserHomeStoreInCollections.get()) {
-                                        pathOfFile = FacesUtil.userHome() + pathOfFile;
-                                    }
-                        
-                                } catch (Exception e) {
-                                    FacesUtil.errorMessage(FacesUtil.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
-                                }
-                        
-                                return pathOfFile;
-                            }
-                        
-                            // </editor-fold>
-                   """;
-
-        } catch (Exception e) {
-            System.out.println(" " + e.getLocalizedMessage());
-        }
-        return result.toString();
-    }
-// </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="onProfileChange()">
-
-    public String onProfileChange() {
-        String result = new String();
-        try {
-            result = """
-                 // <editor-fold defaultstate="collapsed" desc=" onProfileChange()">
-                                public void onProfileChange() {
-                                    try {
-                            
-                                        if (profileLogged == null || profileLogged.getDepartamentView() == null) {
-                                            //No se ha seleccionado departamemto
-                                            profileLogged = new Profile();
-                                        }
-                            
-                                    } catch (Exception e) {
-                                        FacesUtil.errorMessage(FacesUtil.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
-                                    }
-                            
-                                }
-                            // </editor-fold>
-                            
+                        }     
+                  // </editor-fold>
                    """;
 
         } catch (Exception e) {
@@ -533,7 +703,7 @@ public class LoginFacesProcessorServices {
 // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="searchApplicative()">
 
-    public String searchApplicative(){
+    public String searchApplicative() {
         String result = new String();
         try {
             result = """
@@ -544,20 +714,19 @@ public class LoginFacesProcessorServices {
                                  * @return
                                  */
                                 public Boolean searchApplicative() {
-                                    Boolean result = Boolean.FALSE;
-                                    try {
-                            
-                                        applicativeLogged = applicativeServices.findByIdapplicative(idapplicative.get().longValue()).get();
-                                        if (applicativeLogged == null || applicativeLogged.getIdapplicative() == null) {
-                                            applicativeLogged = new Applicative();
-                                        } else {
-                                            result = Boolean.TRUE;
+                                        Boolean result = Boolean.FALSE;
+                                        try {
+                                            applicativeLogged = applicativeServices.findByIdapplicative(mcr.getIdapplicative().longValue()).get();
+                                            if (applicativeLogged == null || applicativeLogged.getIdapplicative() == null) {
+                                                applicativeLogged = new Applicative();
+                                            } else {
+                                                result = Boolean.TRUE;
+                                            }
+                                        } catch (Exception e) {
+                                            FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
                                         }
-                                    } catch (Exception e) {
-                                        FacesUtil.errorMessage(FacesUtil.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+                                        return result;
                                     }
-                                    return result;
-                                }
                                 // </editor-fold>
                             
                    """;
@@ -568,54 +737,72 @@ public class LoginFacesProcessorServices {
         return result.toString();
     }
 // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="validateApplicativeRole()">
+    // <editor-fold defaultstate="collapsed" desc="goDashboard()">
 
-    public String validateApplicativeRole(){
+    public String goDashboard(){
+        String result = new String();
+        try {
+            result = """
+            // <editor-fold defaultstate="collapsed" desc="Boolean goDashboard()">
+                public String goDashboard() {
+                            try {
+
+                            } catch (Exception e) {
+                                FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+                            }
+                            return "dashboard";
+                        }
+            // </editor-fold>
+                            
+                   """;
+
+        } catch (Exception e) {
+            System.out.println(" " + e.getLocalizedMessage());
+        }
+        return result.toString();
+    }
+// </editor-fold>
+
+      // <editor-fold defaultstate="collapsed" desc="validateApplicativeRole()">
+    public String validateApplicativeRole() {
         String result = new String();
         try {
             result = """
                // <editor-fold defaultstate="collapsed" desc="Boolean validateApplicativeRole(JmoordbResourcesFiles rf, Applicativerole  applicativeroleLogged, Applicative applicativeLogged, Profile profileLogged)">
-                                /**
-                                 * Valida el applicative role
-                                 *
-                                 * @param rf
-                                 * @param applicativeroleLogged
-                                 * @param applicativeLogged
-                                 * @param profileLogged
-                                 * @return
-                                 */
-                                public Boolean validateApplicativeRole(JmoordbResourcesFiles rf, Applicative applicativeLogged, Profile profileLogged) {
-                                    Boolean result = Boolean.FALSE;
-                                    try {
-                            
-                                        for (Applicativerole a : applicativeLogged.getApplicativerole()) {
-                                            if (a.getIdrole().equals(profileLogged.getRole().getIdrole())) {
-                            
-                                                if (a.getActive() && profileLogged.getActive()) {
-                                                    applicativeroleLogged = a;
-                            
-                                                    result = Boolean.TRUE;
-                            
-                                                    break;
+                              /**
+                                     * Valida el applicative role
+                                     *
+                                     * @param rf
+                                     * @param applicativeroleLogged
+                                     * @param applicativeLogged
+                                     * @param profileLogged
+                                     * @return
+                                     */
+                                    public Boolean validateApplicativeRole(JmoordbCoreResourcesFiles rf, Applicative applicativeLogged, Profile profileLogged) {
+                                        Boolean result = Boolean.FALSE;
+                                        try {
+                                            for (Applicativerole a : applicativeLogged.getApplicativerole()) {
+                                                if (a.getIdrole().equals(profileLogged.getRole().getIdrole())) {
+                                                    if (a.getActive() && profileLogged.getActive()) {
+                                                        applicativeroleLogged = a;
+                                                        result = Boolean.TRUE;
+                                                        break;
+                                                    }
                                                 }
                                             }
-                                        }
-                                        if (result) {
-                                            if (applicativeLogged.getPath() == null || applicativeLogged.getPath().equals("")) {
-                                                FacesUtil.warningMessage(rf.fromCore("warning.roleapplicativepathempty"));
-                                                result = Boolean.FALSE;
+                                            if (result) {
+                                                if (applicativeLogged.getPath() == null || applicativeLogged.getPath().equals("")) {
+                                                    FacesUtil.showWarn(rf.fromCore("warning.roleapplicativepathempty"));
+                                                    result = Boolean.FALSE;
+                                                }
+                                            } else {
+                                                FacesUtil.showWarn(rf.fromCore("warning.roleapplicativenotvalido"));
                                             }
-                                        } else {
-                                            FacesUtil.warningMessage(rf.fromCore("warning.roleapplicativenotvalido"));
-                            
+                                        } catch (Exception e) {
+                                            FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
                                         }
-                            
-                                    } catch (Exception e) {
-                                        FacesUtil.errorMessage(FacesUtil.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
-                            
+                                        return result;
                                     }
-                                    return result;
-                                }
                             // </editor-fold>
                             
                    """;
@@ -626,4 +813,33 @@ public class LoginFacesProcessorServices {
         return result.toString();
     }
 // </editor-fold>
+    
+ // <editor-fold defaultstate="collapsed" desc="continueAuthentication()">
+
+    public String continueAuthentication(){
+        String result = new String();
+        try {
+            result = """
+            // <editor-fold defaultstate="collapsed" desc="AuthenticationStatus continueAuthentication()">
+              private AuthenticationStatus continueAuthentication() {
+                                return securityContext.authenticate(
+                                        (HttpServletRequest) externalContext.getRequest(),
+                                        (HttpServletResponse) externalContext.getResponse(),
+                                        AuthenticationParameters.withParams()
+                                                .credential(new UsernamePasswordCredential(username, password))
+                                );
+                            }
+            // </editor-fold>
+                            
+                   """;
+
+        } catch (Exception e) {
+            System.out.println(" " + e.getLocalizedMessage());
+        }
+        return result.toString();
+    }
+// </editor-fold>   
+    
+    
+  
 }

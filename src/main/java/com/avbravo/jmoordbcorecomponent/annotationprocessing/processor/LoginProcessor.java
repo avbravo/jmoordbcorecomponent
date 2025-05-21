@@ -8,7 +8,6 @@ package com.avbravo.jmoordbcorecomponent.annotationprocessing.processor;
  *
  * @author avbravo
  */
-import com.avbravo.jmoordbcorecomponent.annotationprocessing.LoginFaces;
 import com.avbravo.jmoordbcorecomponent.annotationprocessing.processor.services.LoginFacesProcessorServices;
 import java.io.IOException;
 import java.util.Set;
@@ -28,18 +27,19 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.PackageElement;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
+import com.avbravo.jmoordbcorecomponent.annotationprocessing.Login;
 
 @AutoService(Processor.class)
-@SupportedAnnotationTypes("com.avbravo.jmoordbcorecomponent.annotationprocessing.LoginFaces")
+@SupportedAnnotationTypes("com.avbravo.jmoordbcorecomponent.annotationprocessing.Login")
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
-public class LoginFacesProcessor extends AbstractProcessor {
+public class LoginProcessor extends AbstractProcessor {
 
     LoginFacesProcessorServices loginFacesProcessorServices = new LoginFacesProcessorServices();
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
 
-        for (Element element : roundEnv.getElementsAnnotatedWith(LoginFaces.class)) {
+        for (Element element : roundEnv.getElementsAnnotatedWith(Login.class)) {
             JavaFileObject builderClass = null;
             PackageElement packageElement = (PackageElement) element.getEnclosingElement();
             BufferedWriter bufferedWriter = null;
@@ -55,30 +55,37 @@ public class LoginFacesProcessor extends AbstractProcessor {
                 bufferedWriter.append(packageElement.getQualifiedName().toString());
                 bufferedWriter.append(";");
                 bufferedWriter.newLine();
-                bufferedWriter.append("\n" + loginFacesProcessorServices.imports());
+                bufferedWriter.append("\n" + loginFacesProcessorServices.imports(packageElement.getQualifiedName().toString()));
                 bufferedWriter.newLine();
                 bufferedWriter.append(loginFacesProcessorServices.header());
                 bufferedWriter.append("\npublic class ");
                 bufferedWriter.append(builderName);
-                bufferedWriter.append(" implements Serializable, LoginSecurity {");
+                bufferedWriter.append(" implements Serializable, LoginSecurity,LoginValidateServices {");
                 bufferedWriter.newLine();
                 bufferedWriter.append(loginFacesProcessorServices.fields());
                 bufferedWriter.newLine();
 
                 bufferedWriter.append(loginFacesProcessorServices.services());
                 bufferedWriter.append(loginFacesProcessorServices.inject());
+                bufferedWriter.append(loginFacesProcessorServices.secretKey());
                 bufferedWriter.append(loginFacesProcessorServices.microprofileConfig());
+                bufferedWriter.append(loginFacesProcessorServices.setGet());
                 bufferedWriter.append(loginFacesProcessorServices.constructor(builderName));
                 bufferedWriter.newLine();
                 bufferedWriter.append(loginFacesProcessorServices.init());
                 bufferedWriter.append(loginFacesProcessorServices.preDestroy());
+                bufferedWriter.append(loginFacesProcessorServices.next());
+                
                 bufferedWriter.append(loginFacesProcessorServices.login());
                 bufferedWriter.append(loginFacesProcessorServices.logout());
-                bufferedWriter.append(loginFacesProcessorServices.saveToMediaContext());
-                bufferedWriter.append(loginFacesProcessorServices.repairPathOfFile());
-                bufferedWriter.append(loginFacesProcessorServices.onProfileChange());
-                bufferedWriter.append(loginFacesProcessorServices.searchApplicative());
-                bufferedWriter.append(loginFacesProcessorServices.validateApplicativeRole());
+                bufferedWriter.append(loginFacesProcessorServices.logoutPath());
+                bufferedWriter.append(loginFacesProcessorServices.back());
+                bufferedWriter.append(loginFacesProcessorServices.reset());
+                  bufferedWriter.append(loginFacesProcessorServices.searchApplicative());
+                  bufferedWriter.append(loginFacesProcessorServices.goDashboard());
+                         bufferedWriter.append(loginFacesProcessorServices.validateApplicativeRole());
+                         bufferedWriter.append(loginFacesProcessorServices.continueAuthentication());
+                     
 
 //                bufferedWriter.append("\n\tprivate ");
 //                bufferedWriter.append(element.getSimpleName().toString());
