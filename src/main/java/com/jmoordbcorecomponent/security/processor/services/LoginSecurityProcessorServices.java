@@ -404,23 +404,25 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
         String result = new String();
         try {
             result = """
-                    // <editor-fold defaultstate="collapsed" desc="init()">
-                      @PostConstruct
-                           public void init() {
-                               try {
-                                   userCredential = new UserCredential();
-                                   isLogged = Boolean.FALSE;
-                                   isValidUser = Boolean.FALSE;
-                                   userLogged = new User();
-                                   applicativeroleLogged = new Applicativerole();
-                                   var seconds = Long.parseLong(String.valueOf(facesContext.getExternalContext().getSessionMaxInactiveInterval()));
-                               } catch (Exception e) {
-                                   FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
-                               }
-                       
-                               //var endTime = JmoordbCoreDateUtil.secondsToHourMinuteSecondsTiempo(seconds);
-                           }
-                   // </editor-fold>
+// <editor-fold defaultstate="collapsed" desc="init()">
+@PostConstruct
+   public void init() {
+       try {
+           username="";
+           password ="";
+           userCredential = new UserCredential();
+           isLogged = Boolean.FALSE;
+           isValidUser = Boolean.FALSE;
+           userLogged = new User();
+           applicativeroleLogged = new Applicativerole();
+           var seconds = Long.parseLong(String.valueOf(facesContext.getExternalContext().getSessionMaxInactiveInterval()));
+       } catch (Exception e) {
+           FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+       }
+
+       //var endTime = JmoordbCoreDateUtil.secondsToHourMinuteSecondsTiempo(seconds);
+   }
+// </editor-fold>
                    """;
 
         } catch (Exception e) {
