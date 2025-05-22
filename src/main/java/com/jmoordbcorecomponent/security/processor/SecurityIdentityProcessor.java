@@ -26,7 +26,6 @@ import javax.lang.model.element.PackageElement;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 import com.jmoordbcorecomponent.security.processor.services.SecurityIdentityProcessorServices;
-import com.jmoordbcorecomponent.security.processor.services.SecurityValidateProcessorServices;
 import com.jmoordbcorecomponent.security.LoginSecurity;
 
 @AutoService(Processor.class)

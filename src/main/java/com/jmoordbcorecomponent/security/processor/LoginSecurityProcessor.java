@@ -60,7 +60,7 @@ public class LoginSecurityProcessor extends AbstractProcessor {
                 bufferedWriter.append(loginProcessorServices.header());
                 bufferedWriter.append("\npublic class ");
                 bufferedWriter.append(builderName);
-                bufferedWriter.append(" implements Serializable, SecurityValidateServices {");
+                bufferedWriter.append(" implements Serializable {");
                 bufferedWriter.newLine();
                 bufferedWriter.append(loginProcessorServices.fields());
                 bufferedWriter.newLine();
@@ -87,6 +87,8 @@ public class LoginSecurityProcessor extends AbstractProcessor {
                   bufferedWriter.append(loginProcessorServices.goDashboard());
                          bufferedWriter.append(loginProcessorServices.validateApplicativeRole());
                          bufferedWriter.append(loginProcessorServices.continueAuthentication());
+                         bufferedWriter.append(loginProcessorServices.validateProfileUser());
+                         bufferedWriter.append(loginProcessorServices.validateRoles());
                      
 
 //                bufferedWriter.append("\n\tprivate ");

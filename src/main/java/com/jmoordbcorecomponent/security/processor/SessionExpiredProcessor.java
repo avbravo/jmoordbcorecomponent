@@ -22,19 +22,18 @@ import javax.lang.model.element.TypeElement;
 
 import com.google.auto.service.AutoService;
 import java.io.BufferedWriter;
-import javax.lang.model.element.Modifier;
 import javax.lang.model.element.PackageElement;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
-import com.jmoordbcorecomponent.security.processor.services.SecurityValidateProcessorServices;
 import com.jmoordbcorecomponent.security.LoginSecurity;
+import com.jmoordbcorecomponent.security.processor.services.SessionExpiredProcessorServices;
 
 @AutoService(Processor.class)
-@SupportedAnnotationTypes("com.jmoordbcorecomponent.security.SecurityValidate")
+@SupportedAnnotationTypes("com.jmoordbcorecomponent.security.SessionExpired")
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
-public class SecurityValidateProcessor extends AbstractProcessor {
+public class SessionExpiredProcessor extends AbstractProcessor {
 
-    SecurityValidateProcessorServices securityValidateProcessorServices = new SecurityValidateProcessorServices();
+    SessionExpiredProcessorServices sessionExpiredProcessorServices = new SessionExpiredProcessorServices();
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
@@ -45,7 +44,7 @@ public class SecurityValidateProcessor extends AbstractProcessor {
             BufferedWriter bufferedWriter = null;
             try {
 //                String builderName = element.getSimpleName().toString() + "Faces";
-                String builderName = "SecurityValidateServices";
+                String builderName = "SessionExpiredFilter";
 
                 String builderGenName = packageElement.getQualifiedName().toString() + "." + builderName;
 
@@ -56,17 +55,17 @@ public class SecurityValidateProcessor extends AbstractProcessor {
                 bufferedWriter.append(packageElement.getQualifiedName().toString());
                 bufferedWriter.append(";");
                 bufferedWriter.newLine();
-                bufferedWriter.append("\n" + securityValidateProcessorServices.imports(packageElement.getQualifiedName().toString()));
-                bufferedWriter.newLine();
-                bufferedWriter.append("\npublic interface ");
-                bufferedWriter.append(builderName);
-                bufferedWriter.append(" {");
-                bufferedWriter.newLine();
-                bufferedWriter.append(securityValidateProcessorServices.methods());
+                bufferedWriter.append("\n" + sessionExpiredProcessorServices.imports(packageElement.getQualifiedName().toString()));
                 bufferedWriter.newLine();
 
-                bufferedWriter.append(securityValidateProcessorServices.validateProfileUser());
-                bufferedWriter.append(securityValidateProcessorServices.validateRoles());
+                bufferedWriter.append("\npublic class ");
+                bufferedWriter.append(builderName);
+                bufferedWriter.append(" implements Filter {");
+                bufferedWriter.newLine();
+
+                bufferedWriter.newLine();
+
+                bufferedWriter.append(sessionExpiredProcessorServices.doFilter());
 
                 bufferedWriter.newLine();
 
