@@ -172,6 +172,58 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
         return result;
     }
 // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="expired()()">
+
+    public String expired() {
+        String result = "";
+        try {
+            result = """
+                     // <editor-fold defaultstate="collapsed" desc="String expired()">
+                         public String expired() {
+                     
+                             return "errors/sessionexpired.xhtml?faces-redirect=true";
+                     
+                         }// </editor-fold>
+                     
+                    """;
+
+        } catch (Exception e) {
+            System.out.println(" " + e.getLocalizedMessage());
+        }
+        return result;
+    }
+// </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="inicializar()">
+
+    public String inicializar(){
+        String result = "";
+        try {
+            result = """
+
+                         // <editor-fold defaultstate="collapsed" desc="String inicializar()">
+                         public String inicializar() {
+                             contadorIntentos = 0;
+                             isLogged = Boolean.FALSE;
+                             isValidRoles = Boolean.FALSE;
+                     
+                             isValidUser = Boolean.FALSE;
+                             profileLoggeds = new ArrayList<>();
+                             profileLogged = new Profile();
+                             HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+                             if (session != null) {
+                                 session.invalidate();
+                             }
+                             return "";
+                         }
+                     // </editor-fold>
+                    """;
+
+        } catch (Exception e) {
+            System.out.println(" " + e.getLocalizedMessage());
+        }
+        return result;
+    }
+// </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="secretKey()">
     public String secretKey() {

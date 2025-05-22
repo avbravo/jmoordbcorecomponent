@@ -79,6 +79,8 @@ public class LoginSecurityProcessor extends AbstractProcessor {
                 bufferedWriter.append(loginProcessorServices.login());
                 bufferedWriter.append(loginProcessorServices.logout());
                 bufferedWriter.append(loginProcessorServices.logoutPath());
+                bufferedWriter.append(loginProcessorServices.inicializar());
+                bufferedWriter.append(loginProcessorServices.expired());
                 bufferedWriter.append(loginProcessorServices.back());
                 bufferedWriter.append(loginProcessorServices.reset());
                   bufferedWriter.append(loginProcessorServices.searchApplicative());
