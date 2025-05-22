@@ -414,7 +414,6 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
                                    userLogged = new User();
                                    applicativeroleLogged = new Applicativerole();
                                    var seconds = Long.parseLong(String.valueOf(facesContext.getExternalContext().getSessionMaxInactiveInterval()));
-                                   System.out.println("seconds: " + seconds);
                                } catch (Exception e) {
                                    FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
                                }
@@ -589,7 +588,6 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
               JmoordbCoreContext.put("LoginFaces.applicative", applicativeLogged);
 
               AuthenticationStatus status = continueAuthentication();
-              System.out.println("status " + status.toString());
               if (status == null) {
                   FacesUtil.showWarn("Status es null");
                   return "";
@@ -601,7 +599,6 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
                       FacesUtil.showWarn("SEND_CONTINUE");
                       break;
                   case SEND_FAILURE:
-                      System.out.println("SEND_FAILURE");
                       FacesUtil.showError("Authentication failed");
                       break;
                   case SUCCESS:
@@ -705,13 +702,13 @@ public String logout(String path) {
             result = """
 // <editor-fold defaultstate="collapsed" desc="back()">                  
  public String back() {
-              try {
-                  System.out.println(":::::::::::: llego a back()");
-                  isValidUser = Boolean.FALSE;
-              } catch (Exception e) {
-                  FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
-              }
-              return "/index.xhtml";
+      try {
+
+          isValidUser = Boolean.FALSE;
+      } catch (Exception e) {
+          FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+      }
+      return "/index.xhtml";
 }                          
 // </editor-fold>
                    """;
@@ -729,19 +726,19 @@ public String logout(String path) {
         try {
             result = """
 // <editor-fold defaultstate="collapsed" desc="reset()">                  
-    public String reset() {
-        try {
-            if (emailRecovery == null || emailRecovery.isEmpty() || emailRecovery.isBlank()) {
-                FacesUtil.showWarn(rf.getMrb().getString("warning.ingreseemailrecuperacion"));
-                return "";
-            }
-            return "confirmemail.xhtml";
-        } catch (Exception e) {
-            FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+public String reset() {
+    try {
+        if (emailRecovery == null || emailRecovery.isEmpty() || emailRecovery.isBlank()) {
+            FacesUtil.showWarn(rf.getMrb().getString("warning.ingreseemailrecuperacion"));
+            return "";
         }
+        return "confirmemail.xhtml";
+    } catch (Exception e) {
+        FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+    }
 
-        return "";
-    }     
+    return "";
+}     
 // </editor-fold>
                    """;
 
@@ -819,40 +816,40 @@ public String logout(String path) {
         try {
             result = """
 // <editor-fold defaultstate="collapsed" desc="Boolean validateApplicativeRole(JmoordbResourcesFiles rf, Applicativerole  applicativeroleLogged, Applicative applicativeLogged, Profile profileLogged)">
-  /**
-         * Valida el applicative role
-         *
-         * @param rf
-         * @param applicativeroleLogged
-         * @param applicativeLogged
-         * @param profileLogged
-         * @return
-         */
-        public Boolean validateApplicativeRole(JmoordbCoreResourcesFiles rf, Applicative applicativeLogged, Profile profileLogged) {
-            Boolean result = Boolean.FALSE;
-            try {
-                for (Applicativerole a : applicativeLogged.getApplicativerole()) {
-                    if (a.getIdrole().equals(profileLogged.getRole().getIdrole())) {
-                        if (a.getActive() && profileLogged.getActive()) {
-                            applicativeroleLogged = a;
-                            result = Boolean.TRUE;
-                            break;
-                        }
-                    }
+/**
+ * Valida el applicative role
+ *
+ * @param rf
+ * @param applicativeroleLogged
+ * @param applicativeLogged
+ * @param profileLogged
+ * @return
+ */
+public Boolean validateApplicativeRole(JmoordbCoreResourcesFiles rf, Applicative applicativeLogged, Profile profileLogged) {
+    Boolean result = Boolean.FALSE;
+    try {
+        for (Applicativerole a : applicativeLogged.getApplicativerole()) {
+            if (a.getIdrole().equals(profileLogged.getRole().getIdrole())) {
+                if (a.getActive() && profileLogged.getActive()) {
+                    applicativeroleLogged = a;
+                    result = Boolean.TRUE;
+                    break;
                 }
-                if (result) {
-                    if (applicativeLogged.getPath() == null || applicativeLogged.getPath().equals("")) {
-                        FacesUtil.showWarn(rf.fromCore("warning.roleapplicativepathempty"));
-                        result = Boolean.FALSE;
-                    }
-                } else {
-                    FacesUtil.showWarn(rf.fromCore("warning.roleapplicativenotvalido"));
-                }
-            } catch (Exception e) {
-                FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
             }
-            return result;
         }
+        if (result) {
+            if (applicativeLogged.getPath() == null || applicativeLogged.getPath().equals("")) {
+                FacesUtil.showWarn(rf.fromCore("warning.roleapplicativepathempty"));
+                result = Boolean.FALSE;
+            }
+        } else {
+            FacesUtil.showWarn(rf.fromCore("warning.roleapplicativenotvalido"));
+        }
+    } catch (Exception e) {
+        FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+    }
+    return result;
+}
 // </editor-fold>
                             
                    """;
@@ -871,14 +868,14 @@ public String logout(String path) {
         try {
             result = """
 // <editor-fold defaultstate="collapsed" desc="AuthenticationStatus continueAuthentication()">
-    private AuthenticationStatus continueAuthentication() {
-                return securityContext.authenticate(
-                        (HttpServletRequest) externalContext.getRequest(),
-                        (HttpServletResponse) externalContext.getResponse(),
-                        AuthenticationParameters.withParams()
-                                .credential(new UsernamePasswordCredential(username, password))
-                );
-            }
+private AuthenticationStatus continueAuthentication() {
+    return securityContext.authenticate(
+            (HttpServletRequest) externalContext.getRequest(),
+            (HttpServletResponse) externalContext.getResponse(),
+            AuthenticationParameters.withParams()
+                    .credential(new UsernamePasswordCredential(username, password))
+    );
+}
 // </editor-fold>
                             
                    """;
@@ -897,48 +894,48 @@ public String logout(String path) {
             result = """
 // <editor-fold defaultstate="collapsed" desc="Boolean validateProfileUser(List<Profile> profileLoggeds, User userLogged, JmoordbResourcesFiles rf, Applicative applicative)">
 public Boolean validateProfileUser(List<Profile> profileLoggeds, User userLogged, JmoordbCoreResourcesFiles rf, Applicative applicative) {
-    Boolean result = Boolean.FALSE;
-    try {
-        if (userLogged == null || userLogged.getIduser() == null) {
-            FacesUtil.showWarn(rf.fromCore("login.usernamenotvalid"));
+Boolean result = Boolean.FALSE;
+try {
+    if (userLogged == null || userLogged.getIduser() == null) {
+        FacesUtil.showWarn(rf.fromCore("login.usernamenotvalid"));
+        return result;
+    } else {
+        if (!userLogged.getActive()) {
+            FacesUtil.showWarn(rf.fromCore("login.userinactive"));
             return result;
+        }
+        if (userLogged.getProfile() == null || userLogged.getProfile().isEmpty()) {
+            FacesUtil.showWarn(rf.fromCore("login.nothaveprofile"));
+            return result;
+        }
+        /**
+         * Recorrer el profile y asignarle un valor secuencial a id
+         */
+        Long counter = 0L;
+        if (applicative.getApplicativerole() == null || applicative.getApplicativerole().isEmpty()) {
         } else {
-            if (!userLogged.getActive()) {
-                FacesUtil.showWarn(rf.fromCore("login.userinactive"));
-                return result;
-            }
-            if (userLogged.getProfile() == null || userLogged.getProfile().isEmpty()) {
-                FacesUtil.showWarn(rf.fromCore("login.nothaveprofile"));
-                return result;
-            }
-            /**
-             * Recorrer el profile y asignarle un valor secuencial a id
-             */
-            Long counter = 0L;
-            if (applicative.getApplicativerole() == null || applicative.getApplicativerole().isEmpty()) {
-            } else {
-                for (Applicativerole applicativerole : applicative.getApplicativerole()) {
-                    if (applicativerole.getActive()) {
-                        for (Profile p : userLogged.getProfile()) {
-                            if (p.getApplicativeView().getIdapplicative().equals(applicative.getIdapplicative()) && applicativerole.getIdrole().equals(p.getRole().getIdrole()) && p.getActive()) {
-                                counter++;
-                                p.setId(counter);
-                                profileLoggeds.add(p);
-                            }
+            for (Applicativerole applicativerole : applicative.getApplicativerole()) {
+                if (applicativerole.getActive()) {
+                    for (Profile p : userLogged.getProfile()) {
+                        if (p.getApplicativeView().getIdapplicative().equals(applicative.getIdapplicative()) && applicativerole.getIdrole().equals(p.getRole().getIdrole()) && p.getActive()) {
+                            counter++;
+                            p.setId(counter);
+                            profileLoggeds.add(p);
                         }
                     }
                 }
             }
-            if (profileLoggeds == null || profileLoggeds.isEmpty()) {
-                FacesUtil.showWarn(rf.fromCore("login.usernohaveprofileforthisapplicative"));
-                return result;
-            }
-            result = Boolean.TRUE;
         }
-    } catch (Exception e) {
-        FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+        if (profileLoggeds == null || profileLoggeds.isEmpty()) {
+            FacesUtil.showWarn(rf.fromCore("login.usernohaveprofileforthisapplicative"));
+            return result;
+        }
+        result = Boolean.TRUE;
     }
-    return result;
+} catch (Exception e) {
+    FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+}
+return result;
 }
 
 // </editor-fold>                   
@@ -957,35 +954,35 @@ public Boolean validateProfileUser(List<Profile> profileLoggeds, User userLogged
         try {
             result = """
 // <editor-fold defaultstate="collapsed" desc="Boolean validateRoles()">
-    /**
-     * Valida los roles del applicativo
-     *
-     * @return
-     */
-    public Boolean validateRoles(JmoordbCoreResourcesFiles rf, Applicative applicativeLogged) {
-        Boolean result = Boolean.FALSE;
-        try {
-            if (applicativeLogged.getApplicativerole() == null || applicativeLogged.getApplicativerole().isEmpty()) {
-                FacesUtil.showWarn(rf.fromCore("applicative.nohaverole"));
-                return Boolean.FALSE;
-            }
-            Optional<Applicativerole> haveActive = applicativeLogged.getApplicativerole().stream()
-                    .filter(num -> num.getActive()) // Filtrar números mayores que 10
-                    .findFirst();            // Obtener el primer elemento que cumple
-
-            // Verificar si se encontró un resultado
-            if (haveActive.isPresent()) {
-                result = Boolean.TRUE;
-            } else {
-                FacesUtil.showWarn(rf.fromCore("applicative.nohaveactiverole"));
-                return Boolean.FALSE;
-            }
-        } catch (Exception e) {
-            FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+/**
+ * Valida los roles del applicativo
+ *
+ * @return
+ */
+public Boolean validateRoles(JmoordbCoreResourcesFiles rf, Applicative applicativeLogged) {
+    Boolean result = Boolean.FALSE;
+    try {
+        if (applicativeLogged.getApplicativerole() == null || applicativeLogged.getApplicativerole().isEmpty()) {
+            FacesUtil.showWarn(rf.fromCore("applicative.nohaverole"));
+            return Boolean.FALSE;
         }
-        return result;
+        Optional<Applicativerole> haveActive = applicativeLogged.getApplicativerole().stream()
+                .filter(num -> num.getActive()) // Filtrar números mayores que 10
+                .findFirst();            // Obtener el primer elemento que cumple
+
+        // Verificar si se encontró un resultado
+        if (haveActive.isPresent()) {
+            result = Boolean.TRUE;
+        } else {
+            FacesUtil.showWarn(rf.fromCore("applicative.nohaveactiverole"));
+            return Boolean.FALSE;
+        }
+    } catch (Exception e) {
+        FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
     }
-    // </editor-fold>
+    return result;
+}
+// </editor-fold>
                     """;
 
         } catch (Exception e) {
