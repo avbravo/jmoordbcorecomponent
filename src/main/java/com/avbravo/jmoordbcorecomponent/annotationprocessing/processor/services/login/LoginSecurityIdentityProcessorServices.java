@@ -2,9 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.avbravo.jmoordbcorecomponent.annotationprocessing.processor.services;
-
-import com.avbravo.jmoordbcorecomponent.utils.ProcessorUtil;
+package com.avbravo.jmoordbcorecomponent.annotationprocessing.processor.services.login;
 
 /**
  *
@@ -44,7 +42,7 @@ public class LoginSecurityIdentityProcessorServices {
         try {
             result = """
                      @Named
-                     @SessionScoped
+                     @ApplicationScoped
                     """;
         } catch (Exception e) {
             System.out.println(" " + e.getLocalizedMessage());
@@ -53,27 +51,7 @@ public class LoginSecurityIdentityProcessorServices {
     }
 // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="String methods()">
-    public String methods() {
-        String result = "";
-        try {
-            result = """
- public String login();
-
- public String logout();
-
- public String next();
-
- public String back();
-
- public String reset();
-                    """;
-        } catch (Exception e) {
-            System.out.println(" " + e.getLocalizedMessage());
-        }
-        return result;
-    }
-// </editor-fold>
+   
 
     // <editor-fold defaultstate="collapsed" desc="inject()">
     public String inject() {
@@ -81,8 +59,6 @@ public class LoginSecurityIdentityProcessorServices {
         try {
             result = """
 // <editor-fold defaultstate="collapsed" desc="@Inject()">
-
-
     @Inject
     JmoordbCoreResourcesFiles rf;
 // </editor-fold>                  
@@ -99,13 +75,13 @@ public class LoginSecurityIdentityProcessorServices {
     public String constructor(String nameOfClass) {
         StringBuilder result = new StringBuilder();
         try {
-            result.append("// <editor-fold defaultstate=\"collapsed\" desc=\"set/get()\">");
+            result.append("\n// <editor-fold defaultstate=\"collapsed\" desc=\""+  nameOfClass+"()\">");
             result.append("\n/**");
             result.append("\n* * Creates a new instance of " + nameOfClass);
             result.append("\n*/");
             result.append("\n public " + nameOfClass + "(){");
-            result.append("}");
-            result.append("// </editor-fold>");
+            result.append("}\n");
+            result.append("// </editor-fold>\n");
 
         } catch (Exception e) {
             System.out.println(" " + e.getLocalizedMessage());

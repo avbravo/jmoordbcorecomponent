@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.avbravo.jmoordbcorecomponent.annotationprocessing.processor;
+package com.avbravo.jmoordbcorecomponent.annotationprocessing.processor.login;
 
 /**
  *
@@ -25,8 +25,8 @@ import java.io.BufferedWriter;
 import javax.lang.model.element.PackageElement;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
-import com.avbravo.jmoordbcorecomponent.annotationprocessing.processor.services.LoginSecurityIdentityProcessorServices;
-import com.avbravo.jmoordbcorecomponent.annotationprocessing.processor.services.LoginValidateProcessorServices;
+import com.avbravo.jmoordbcorecomponent.annotationprocessing.processor.services.login.LoginSecurityIdentityProcessorServices;
+import com.avbravo.jmoordbcorecomponent.annotationprocessing.processor.services.login.LoginValidateProcessorServices;
 import com.avbravo.jmoordbcorecomponent.annotationprocessing.LoginSecurity;
 
 @AutoService(Processor.class)
@@ -70,6 +70,7 @@ public class LoginSecurityIdentityProcessor extends AbstractProcessor {
                 bufferedWriter.append(loginSecurityIdentityProcessorServices.inject());
                 bufferedWriter.append(loginSecurityIdentityProcessorServices.constructor(builderName));
                 bufferedWriter.append(loginSecurityIdentityProcessorServices.validate());
+                bufferedWriter.append(loginSecurityIdentityProcessorServices.isValidData());
 
                 bufferedWriter.newLine();
 
