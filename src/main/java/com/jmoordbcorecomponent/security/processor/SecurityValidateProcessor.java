@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.avbravo.jmoordbcorecomponent.annotationprocessing.processor.login;
+package com.jmoordbcorecomponent.security.processor;
 
 /**
  *
@@ -26,15 +26,15 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.PackageElement;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
-import com.avbravo.jmoordbcorecomponent.annotationprocessing.processor.services.login.LoginValidateProcessorServices;
-import com.avbravo.jmoordbcorecomponent.annotationprocessing.LoginSecurity;
+import com.jmoordbcorecomponent.security.processor.services.SecurityValidateProcessorServices;
+import com.jmoordbcorecomponent.security.LoginSecurity;
 
 @AutoService(Processor.class)
-@SupportedAnnotationTypes("com.avbravo.jmoordbcorecomponent.annotationprocessing.LoginValidate")
+@SupportedAnnotationTypes("com.jmoordbcorecomponent.security.SecurityValidate")
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
-public class LoginValidateProcessor extends AbstractProcessor {
+public class SecurityValidateProcessor extends AbstractProcessor {
 
-    LoginValidateProcessorServices loginValidateProcessorServices = new LoginValidateProcessorServices();
+    SecurityValidateProcessorServices securityValidateProcessorServices = new SecurityValidateProcessorServices();
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
@@ -45,7 +45,7 @@ public class LoginValidateProcessor extends AbstractProcessor {
             BufferedWriter bufferedWriter = null;
             try {
 //                String builderName = element.getSimpleName().toString() + "Faces";
-                String builderName = "LoginValidateServices";
+                String builderName = "SecurityValidateServices";
 
                 String builderGenName = packageElement.getQualifiedName().toString() + "." + builderName;
 
@@ -56,17 +56,17 @@ public class LoginValidateProcessor extends AbstractProcessor {
                 bufferedWriter.append(packageElement.getQualifiedName().toString());
                 bufferedWriter.append(";");
                 bufferedWriter.newLine();
-                bufferedWriter.append("\n" + loginValidateProcessorServices.imports(packageElement.getQualifiedName().toString()));
+                bufferedWriter.append("\n" + securityValidateProcessorServices.imports(packageElement.getQualifiedName().toString()));
                 bufferedWriter.newLine();
                 bufferedWriter.append("\npublic interface ");
                 bufferedWriter.append(builderName);
                 bufferedWriter.append(" {");
                 bufferedWriter.newLine();
-                bufferedWriter.append(loginValidateProcessorServices.methods());
+                bufferedWriter.append(securityValidateProcessorServices.methods());
                 bufferedWriter.newLine();
 
-                bufferedWriter.append(loginValidateProcessorServices.validateProfileUser());
-                bufferedWriter.append(loginValidateProcessorServices.validateRoles());
+                bufferedWriter.append(securityValidateProcessorServices.validateProfileUser());
+                bufferedWriter.append(securityValidateProcessorServices.validateRoles());
 
                 bufferedWriter.newLine();
 

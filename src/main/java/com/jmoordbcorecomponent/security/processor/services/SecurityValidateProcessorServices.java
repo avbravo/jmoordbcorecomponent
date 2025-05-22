@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.avbravo.jmoordbcorecomponent.annotationprocessing.processor.services.login;
+package com.jmoordbcorecomponent.security.processor.services;
 
 import com.avbravo.jmoordbcorecomponent.utils.ProcessorUtil;
 
@@ -10,7 +10,7 @@ import com.avbravo.jmoordbcorecomponent.utils.ProcessorUtil;
  *
  * @author avbravo
  */
-public class LoginValidateProcessorServices {
+public class SecurityValidateProcessorServices {
 
     // <editor-fold defaultstate="collapsed" desc="String imports(String packagePath)">
     public String imports(String packagePath) {

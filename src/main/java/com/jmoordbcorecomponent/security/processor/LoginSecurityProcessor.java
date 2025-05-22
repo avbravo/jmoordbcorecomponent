@@ -2,13 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.avbravo.jmoordbcorecomponent.annotationprocessing.processor.login;
+package com.jmoordbcorecomponent.security.processor;
 
 /**
  *
  * @author avbravo
  */
-import com.avbravo.jmoordbcorecomponent.annotationprocessing.processor.services.login.LoginSecurityProcessorServices;
+import com.jmoordbcorecomponent.security.processor.services.LoginSecurityProcessorServices;
 import java.io.IOException;
 import java.util.Set;
 
@@ -27,10 +27,10 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.PackageElement;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
-import com.avbravo.jmoordbcorecomponent.annotationprocessing.LoginSecurity;
+import com.jmoordbcorecomponent.security.LoginSecurity;
 
 @AutoService(Processor.class)
-@SupportedAnnotationTypes("com.avbravo.jmoordbcorecomponent.annotationprocessing.LoginSecurity")
+@SupportedAnnotationTypes("com.jmoordbcorecomponent.security.LoginSecurity")
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
 public class LoginSecurityProcessor extends AbstractProcessor {
 
@@ -60,7 +60,7 @@ public class LoginSecurityProcessor extends AbstractProcessor {
                 bufferedWriter.append(loginProcessorServices.header());
                 bufferedWriter.append("\npublic class ");
                 bufferedWriter.append(builderName);
-                bufferedWriter.append(" implements Serializable, LoginValidateServices {");
+                bufferedWriter.append(" implements Serializable, SecurityValidateServices {");
                 bufferedWriter.newLine();
                 bufferedWriter.append(loginProcessorServices.fields());
                 bufferedWriter.newLine();

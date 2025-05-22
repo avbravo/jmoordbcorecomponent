@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.avbravo.jmoordbcorecomponent.annotationprocessing.processor.services.login;
+package com.jmoordbcorecomponent.security.processor.services;
 
 import com.avbravo.jmoordbcorecomponent.utils.ProcessorUtil;
 
@@ -77,37 +77,37 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
             result = """
 // <editor-fold defaultstate="collapsed" desc="fields">
                     
-                        private static final long serialVersionUID = 1L;
-                    
-                        private Applicative applicativeLogged = new Applicative();
-                    
-                        @NotNull
-                        private String username;
-                        private String password;
-                    
-                        private String emailRecovery;
-                    
-                        @NotNull
-                        private boolean rememberMe;
-                    
-                        @NotNull
-                        private User userLogged = new User();
-                        /**
-                         *
-                         */
-                        private Boolean isLogged = Boolean.FALSE;
-                        private Boolean isValidUser = Boolean.FALSE;
-                        private Boolean isValidApplicative = Boolean.FALSE;
-                        private Boolean isValidRoles = Boolean.FALSE;
-                        private Integer contadorIntentos = 0;
-                        UserCredential userCredential = new UserCredential();
-                        ProfileStore profie;
-                        private String selectedOption;
-                        private String name = "";
-                        private Profile profileLogged = new Profile();
-                        private List<Profile> profileLoggeds = new ArrayList<>();
-                        private Applicativerole applicativeroleLogged = new Applicativerole();
-                    // </editor-fold>
+    private static final long serialVersionUID = 1L;
+
+    private Applicative applicativeLogged = new Applicative();
+
+    @NotNull
+    private String username;
+    private String password;
+
+    private String emailRecovery;
+
+    @NotNull
+    private boolean rememberMe;
+
+    @NotNull
+    private User userLogged = new User();
+    /**
+     *
+     */
+    private Boolean isLogged = Boolean.FALSE;
+    private Boolean isValidUser = Boolean.FALSE;
+    private Boolean isValidApplicative = Boolean.FALSE;
+    private Boolean isValidRoles = Boolean.FALSE;
+    private Integer contadorIntentos = 0;
+    UserCredential userCredential = new UserCredential();
+    ProfileStore profie;
+    private String selectedOption;
+    private String name = "";
+    private Profile profileLogged = new Profile();
+    private List<Profile> profileLoggeds = new ArrayList<>();
+    private Applicativerole applicativeroleLogged = new Applicativerole();
+// </editor-fold>
                                         
                     """;
 
