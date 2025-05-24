@@ -61,6 +61,7 @@ public class SecurityIdentityProcessorServices {
 // <editor-fold defaultstate="collapsed" desc="@Inject()">
     @Inject
     JmoordbCoreResourcesFiles rf;
+    private String roleForWebSecurity = " ";                 
 // </editor-fold>                  
                      """;
 
@@ -111,15 +112,14 @@ public class SecurityIdentityProcessorServices {
         /**
          * Obtiene el rol que se obtuvo en el login
          */
-//        Profile profile = (Profile) JmoordbCoreContext.get("LoginFaces.profileLogged");
-//        if (profile == null || profile.getId() == null) {
-//       
-//            return CredentialValidationResult.NOT_VALIDATED_RESULT;
-//        }
-//        roleForWebSecurity = profile.getRole().getRole();
+        Profile profile = (Profile) JmoordbCoreContext.get("LoginFaces.profileLogged");
+        if (profile == null || profile.getId() == null) {      
+           return CredentialValidationResult.NOT_VALIDATED_RESULT;
+        }
+       roleForWebSecurity = profile.getRole().getRole();
 
-//        return new CredentialValidationResult(username, new HashSet<>(Arrays.asList(roleForWebSecurity)));
-        return new CredentialValidationResult(username, new HashSet<>(Arrays.asList("admin")));
+      return new CredentialValidationResult(username, new HashSet<>(Arrays.asList(roleForWebSecurity)));
+//        return new CredentialValidationResult(username, new HashSet<>(Arrays.asList("admin")));
 
     }
 //
