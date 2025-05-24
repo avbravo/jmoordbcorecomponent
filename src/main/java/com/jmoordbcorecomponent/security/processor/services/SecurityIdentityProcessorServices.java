@@ -4,6 +4,8 @@
  */
 package com.jmoordbcorecomponent.security.processor.services;
 
+import com.avbravo.jmoordbcorecomponent.utils.ProcessorUtil;
+
 /**
  *
  * @author avbravo
@@ -18,6 +20,7 @@ public class SecurityIdentityProcessorServices {
             result = """
  import com.avbravo.jmoordbcorecomponent.utils.FacesUtil;
  import com.avbravo.jmoordbcorecomponent.utils.JmoordbCoreResourcesFiles;
+ import com.avbravo.jmoordbcorecomponent.utils.JmoordbCoreContext
  import jakarta.inject.Named;
  import jakarta.enterprise.context.ApplicationScoped;
  import jakarta.inject.Inject;
@@ -28,7 +31,7 @@ public class SecurityIdentityProcessorServices {
  import java.util.Arrays;
  import java.util.HashSet;
                            """;
-
+   result += "import " + ProcessorUtil.getPackageNameModel(packagePath) + ".*;\n";
         } catch (Exception e) {
             System.out.println(" " + e.getLocalizedMessage());
         }
