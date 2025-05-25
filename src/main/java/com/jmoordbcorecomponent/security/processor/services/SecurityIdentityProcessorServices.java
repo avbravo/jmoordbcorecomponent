@@ -20,7 +20,7 @@ public class SecurityIdentityProcessorServices {
             result = """
  import com.avbravo.jmoordbcorecomponent.utils.FacesUtil;
  import com.avbravo.jmoordbcorecomponent.utils.JmoordbCoreResourcesFiles;
- import com.avbravo.jmoordbcorecomponent.utils.JmoordbCoreContext
+ import com.avbravo.jmoordbcorecomponent.utils.JmoordbCoreContext;
  import jakarta.inject.Named;
  import jakarta.enterprise.context.ApplicationScoped;
  import jakarta.inject.Inject;
