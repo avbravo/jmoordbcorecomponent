@@ -542,7 +542,6 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
       public String login() {
           try {
               if (isLogged) {
-                  System.out.println("" + FacesUtil.nameOfMethod() + "isLogged" + isLogged);
                   JmoordbCoreContext.put("pageInView", "index.xhtml");
                   return "/" + applicativeLogged.getPath() + "/" + "index.xhmtl";
               }
