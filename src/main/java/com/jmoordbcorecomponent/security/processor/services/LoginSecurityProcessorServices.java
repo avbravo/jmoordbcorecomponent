@@ -195,7 +195,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="inicializar()">
 
-    public String inicializar(){
+    public String inicializar() {
         String result = "";
         try {
             result = """
@@ -577,14 +577,14 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
                   contadorIntentos++;
                   return "";
               }
-
+              JmoordbCoreContext.put("LoginFaces.profileLogged", profileLogged);
               /**
-               * Guarda el role en el Conext
+               * Guarda el role en el Context
                */
               if (!validateApplicativeRole(rf, applicativeLogged, profileLogged)) {
                   return "";
               }
-              JmoordbCoreContext.put("LoginFaces.profileLogged", profileLogged);
+         
               JmoordbCoreContext.put("LoginFaces.applicativeroleLogged", applicativeLogged);
               JmoordbCoreContext.put("LoginFaces.applicative", applicativeLogged);
 
@@ -787,7 +787,7 @@ public String reset() {
 // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="goDashboard()">
 
-    public String goDashboard(){
+    public String goDashboard() {
         String result = new String();
         try {
             result = """
@@ -811,7 +811,7 @@ public String reset() {
     }
 // </editor-fold>
 
-      // <editor-fold defaultstate="collapsed" desc="validateApplicativeRole()">
+    // <editor-fold defaultstate="collapsed" desc="validateApplicativeRole()">
     public String validateApplicativeRole() {
         String result = new String();
         try {
@@ -861,10 +861,9 @@ public Boolean validateApplicativeRole(JmoordbCoreResourcesFiles rf, Applicative
         return result.toString();
     }
 // </editor-fold>
-    
- // <editor-fold defaultstate="collapsed" desc="continueAuthentication()">
 
-    public String continueAuthentication(){
+    // <editor-fold defaultstate="collapsed" desc="continueAuthentication()">
+    public String continueAuthentication() {
         String result = new String();
         try {
             result = """
@@ -887,8 +886,8 @@ private AuthenticationStatus continueAuthentication() {
         return result.toString();
     }
 // </editor-fold>   
-    
-      // <editor-fold defaultstate="collapsed" desc="validateProfileUser()">
+
+    // <editor-fold defaultstate="collapsed" desc="validateProfileUser()">
     public String validateProfileUser() {
         String result = "";
         try {
@@ -992,5 +991,5 @@ public Boolean validateRoles(JmoordbCoreResourcesFiles rf, Applicative applicati
         return result;
     }
 // </editor-fold>
-  
+
 }
