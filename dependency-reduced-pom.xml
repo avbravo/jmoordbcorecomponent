@@ -34,6 +34,12 @@
       </plugin>
     </plugins>
   </build>
+  <repositories>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+    </repository>
+  </repositories>
   <dependencies>
     <dependency>
       <groupId>com.google.auto.service</groupId>
@@ -47,6 +53,7 @@
     <exec.mainClass>com.avbravo.jmoordbcorecomponent.Jmoordbcorecomponent.Main</exec.mainClass>
     <auto-service.version>1.1.1</auto-service.version>
     <mongodb.version>4.6.0</mongodb.version>
+    <jmoordb-core-annotations.version>2.0.2</jmoordb-core-annotations.version>
     <openpdf.version>2.0.3</openpdf.version>
     <primefaces.version>15.0.3</primefaces.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -17,6 +17,8 @@
         <openpdf.version>2.0.3</openpdf.version>
          <primefaces.version>15.0.3</primefaces.version>
               <auto-service.version>1.1.1</auto-service.version>
+              <jmoordb-core-annotations.version>2.0.2</jmoordb-core-annotations.version>
+
     </properties>
     <dependencies>
         
@@ -81,6 +83,13 @@
             <version>${primefaces.version}</version>
             <classifier>jakarta</classifier>
         </dependency>
+        
+           
+        <dependency>
+            <groupId>com.github.avbravo</groupId>
+            <artifactId>jmoordb-core-annotations</artifactId>
+            <version>${jmoordb-core-annotations.version}</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -133,5 +142,12 @@
             </plugin>
         </plugins>
     </build>
-    
+     <repositories>
+      
+        
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
 </project>
