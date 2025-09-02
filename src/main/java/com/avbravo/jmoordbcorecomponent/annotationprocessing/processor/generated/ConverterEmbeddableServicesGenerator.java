@@ -15,13 +15,14 @@ import java.util.Optional;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.PackageElement;
+import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 
 /**
  *
  * @author avbravo
  */
-public class ConverterServicesGenerator {
+public class ConverterEmbeddableServicesGenerator {
 
     String pluralName = "s";
 
@@ -50,7 +51,7 @@ public class ConverterServicesGenerator {
                 bufferedWriter.append(builderName);
                 bufferedWriter.append("  implements Serializable, ConverterInterface<"+element.getSimpleName().toString()+">");
                 bufferedWriter.append("{");
-                bufferedWriter = inject(bufferedWriter, element.getSimpleName().toString());
+              
                 bufferedWriter = fields(bufferedWriter, element.getSimpleName().toString());
 
                 bufferedWriter.newLine();
@@ -59,7 +60,7 @@ public class ConverterServicesGenerator {
                  * Imprime los set/get de todos los campos Falta mejorarlo
                  */
 //                 bufferedWriter = setGet(bufferedWriter, element,builderName);
-          
+               
                 bufferedWriter = get(bufferedWriter, element.getSimpleName().toString(), idInformation);
                 bufferedWriter = getUnsupported(bufferedWriter, element.getSimpleName().toString(), idInformation);
                 bufferedWriter = add(bufferedWriter, element.getSimpleName().toString(), idInformation);
@@ -75,8 +76,14 @@ public class ConverterServicesGenerator {
                 resultGeneration.setMessage(e.toString());
             }
         } catch (Exception e) {
-      System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+            System.out.println("Error " + e.getLocalizedMessage());
         }
+        
+         /**
+             * Generar el ConverterServer
+             * Se invoca a la clase que lo maneja
+             */
+         
         return resultGeneration;
     }
 
@@ -99,7 +106,7 @@ public class ConverterServicesGenerator {
             bufferedWriter.append("import " + ProcessorTools.removeLastPackage(packageElement.getQualifiedName().toString()) + ".services.*;\n");
 
         } catch (Exception e) {
-          System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+            System.out.println("Error imports()" + e.getLocalizedMessage());
         }
         return bufferedWriter;
     }
@@ -116,11 +123,6 @@ public class ConverterServicesGenerator {
             bufferedWriter.append("\t    try {\n");
             bufferedWriter.append("\t        result = " + ProcessorTools.toLowercaseFirstLetter(nameOfClass) + pluralName + ".stream().filter(x -> x.get" + idInformation.getName() + "().equals(" + idInformation.getName() + ")).findFirst();\n");
             bufferedWriter.append("\t          if (!result.isPresent()) {\n");
-            bufferedWriter.append("\t              Optional<" + nameOfClass + "> " + ProcessorTools.toLowercaseFirstLetter(nameOfClass) + " = " + ProcessorTools.toLowercaseFirstLetter(nameOfClass) + "Services.findBy" + idInformation.getName() + "(" + idInformation.getName() + ");\n");
-            bufferedWriter.append("\t              if (" + ProcessorTools.toLowercaseFirstLetter(nameOfClass) + ".isPresent()) {\n");
-            bufferedWriter.append("\t                  " + ProcessorTools.toLowercaseFirstLetter(nameOfClass) + pluralName + ".add(" + ProcessorTools.toLowercaseFirstLetter(nameOfClass) + ".get());\n");
-            bufferedWriter.append("\t                    return " + ProcessorTools.toLowercaseFirstLetter(nameOfClass) + ";\n");
-            bufferedWriter.append("\t              }\n");
             bufferedWriter.append("\t              result = Optional.empty();\n");
             bufferedWriter.append("\t           }\n");
             bufferedWriter.append("\t           return result;\n");
@@ -131,7 +133,7 @@ public class ConverterServicesGenerator {
             bufferedWriter.append("\t}\n");
             bufferedWriter.append("\t// </editor-fold>\n\n");
         } catch (Exception e) {
-    System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+            System.out.println("Error add() " + e.getLocalizedMessage());
         }
         return bufferedWriter;
     }
@@ -176,7 +178,7 @@ public class ConverterServicesGenerator {
             bufferedWriter.append("\t}\n");
             bufferedWriter.append("\t// </editor-fold>\n\n");
         } catch (Exception e) {
-          System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+            System.out.println("Error add() " + e.getLocalizedMessage());
         }
         return bufferedWriter;
     }
@@ -197,7 +199,7 @@ public class ConverterServicesGenerator {
             bufferedWriter.append("\t}\n");
             bufferedWriter.append("\t// </editor-fold>\n\n");
         } catch (Exception e) {
-     System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+            System.out.println("Error add() " + e.getLocalizedMessage());
         }
         return bufferedWriter;
     }
@@ -218,27 +220,13 @@ public class ConverterServicesGenerator {
             bufferedWriter.append("\t// </editor-fold>\n\n");
 
         } catch (Exception e) {
-       System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+            System.out.println("Error destroyed() " + e.getLocalizedMessage());
         }
         return bufferedWriter;
     }
     // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="BufferedWriter inject(BufferedWriter bufferedWriter)">
-    public BufferedWriter inject(BufferedWriter bufferedWriter, String nameOfClass) {
-        try {
-            bufferedWriter.newLine();
-            bufferedWriter.append("\t@Inject");
-            bufferedWriter.newLine();
-            bufferedWriter.append("\t " + nameOfClass + "Services " + ProcessorTools.toLowercaseFirstLetter(nameOfClass) + "Services;");
-
-        } catch (Exception e) {
- System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
-        }
-        return bufferedWriter;
-    }
-
-    // </editor-fold>
+   
     // <editor-fold defaultstate="collapsed" desc="BufferedWriter fields(BufferedWriter bufferedWriter)">
     public BufferedWriter fields(BufferedWriter bufferedWriter, String nameOfClass) {
         try {
@@ -254,7 +242,7 @@ public class ConverterServicesGenerator {
             bufferedWriter.append("\t}\n");
 
         } catch (Exception e) {
-System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+            System.out.println("Error getAsString()" + e.getLocalizedMessage());
         }
         return bufferedWriter;
     }
@@ -292,53 +280,12 @@ System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedM
                 }
             }
         } catch (Exception e) {
-  System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+            System.out.println("Error setGet" + e.getLocalizedMessage());
         }
         return bufferedWriter;
     }
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="IdInformation analizeId()">
-    /**
-     * Encuentra la información de la llave primaria
-     *
-     * @return
-     */
-    public IdInformation analizeId(Element element) {
-        IdInformation idInformation = new IdInformation();
-        try {
-            String name = "";
-            String type = "";
-            String simpleName = "";
-            if (element.getKind().isClass()) {
-                for (Element enclosed : element.getEnclosedElements()) {
-                    if (enclosed.getKind().isField() & (enclosed.getModifiers().contains(Modifier.PRIVATE)
-                            | enclosed.getModifiers().contains(Modifier.PROTECTED))) {
-
-                        Id id = enclosed.getAnnotation(Id.class);
-                        if (id != null) {
-                            String field = enclosed.getSimpleName().toString();
-                            String s1 = field.substring(0, 1).toUpperCase();
-                            String nameCapitalized = s1 + field.substring(1);
-
-                            name = nameCapitalized;
-                            type = enclosed.asType().toString();
-                            simpleName = enclosed.getSimpleName().toString();
-                            break;
-                        }
-                    }
-                }
-            }
-            idInformation = new IdInformation.Builder()
-                    .name(name)
-                    .type(type)
-                    .simpleName(simpleName)
-                    .build();
-
-        } catch (Exception e) {
-System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
-        }
-        return idInformation;
-    }
-    // </editor-fold>
+    
 }

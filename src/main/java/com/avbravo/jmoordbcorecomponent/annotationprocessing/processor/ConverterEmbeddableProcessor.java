@@ -9,6 +9,8 @@ package com.avbravo.jmoordbcorecomponent.annotationprocessing.processor;
  * @author avbravo
  */
 import com.avbravo.jmoordbcorecomponent.annotationprocessing.ConverterEmbeddable;
+import com.avbravo.jmoordbcorecomponent.annotationprocessing.processor.generated.ConverterEmbeddableServicesGenerator;
+import com.avbravo.jmoordbcorecomponent.annotationprocessing.processor.generated.ConverterServicesGenerator;
 import com.avbravo.jmoordbcorecomponent.domains.IdInformation;
 import com.avbravo.jmoordbcorecomponent.domains.ResultGeneration;
 import com.avbravo.jmoordbcorecomponent.utils.ProcessorTools;
@@ -38,10 +40,11 @@ import javax.tools.JavaFileObject;
 public class ConverterEmbeddableProcessor extends AbstractProcessor {
 
     ResultGeneration resultGeneration = new ResultGeneration();
+    ConverterEmbeddableServicesGenerator converterEmbeddableServerGenerator = new ConverterEmbeddableServicesGenerator();
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-
+        IdInformation idInformation = new IdInformation();
         for (Element element : roundEnv.getElementsAnnotatedWith(ConverterEmbeddable.class)) {
 
             JavaFileObject builderClass = null;
@@ -51,7 +54,7 @@ public class ConverterEmbeddableProcessor extends AbstractProcessor {
                 String builderName = element.getSimpleName().toString() + "Converter";
 
                 String builderGenName = packageElement.getQualifiedName().toString() + "." + builderName;
-  /**
+                /**
                  * Obtener valores de los atributos de la anotacion
                  * ConverterEmbeddable
                  */
@@ -62,7 +65,7 @@ public class ConverterEmbeddableProcessor extends AbstractProcessor {
                 bufferedWriter.append("package ");
                 bufferedWriter.append(packageElement.getQualifiedName().toString());
                 bufferedWriter.append(";");
-                bufferedWriter = imports(bufferedWriter, packageElement,ce.imports()
+                bufferedWriter = imports(bufferedWriter, packageElement, ce.imports()
                 );
                 bufferedWriter.newLine();
                 bufferedWriter.append("@Named");
@@ -74,7 +77,6 @@ public class ConverterEmbeddableProcessor extends AbstractProcessor {
                 bufferedWriter.append("  implements Converter<" + element.getSimpleName().toString() + ">");
                 bufferedWriter.append("{");
 
-              
                 bufferedWriter = inject(bufferedWriter, element.getSimpleName().toString(), ce.injects());
 
                 bufferedWriter.newLine();
@@ -83,7 +85,7 @@ public class ConverterEmbeddableProcessor extends AbstractProcessor {
                  * Imprime los set/get de todos los campos Falta mejorarlo
                  */
 //                 bufferedWriter = setGet(bufferedWriter, element,builderName);
-                IdInformation idInformation = analizeColumn(element, ce.column());
+                idInformation = analizeColumn(element, ce.column());
 
                 bufferedWriter = getAsObject(bufferedWriter, element.getSimpleName().toString(), idInformation);
                 bufferedWriter = getAsString(bufferedWriter, element.getSimpleName().toString(), idInformation
@@ -95,9 +97,16 @@ public class ConverterEmbeddableProcessor extends AbstractProcessor {
                 bufferedWriter.newLine();
 
                 bufferedWriter.close();
+
+                if (!(resultGeneration = converterEmbeddableServerGenerator.generate(element, processingEnv, idInformation)).getSuccessful()) {
+                    processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, resultGeneration.getMessage());
+                }
             } catch (IOException e) {
                 processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, e.toString());
             }
+            /**
+             * Generar el ConverterServer Se invoca a la clase que lo maneja
+             */
 
         }
         return false;
@@ -118,7 +127,7 @@ public class ConverterEmbeddableProcessor extends AbstractProcessor {
             bufferedWriter.append("import com.avbravo.jmoordbcorecomponent.utils.FacesUtil;\n");
             bufferedWriter.append("import jakarta.faces.convert.ConverterException;\n");
             bufferedWriter.append("import " + ProcessorTools.removeLastPackage(packageElement.getQualifiedName().toString()) + ".services.*;\n");
- if (imports.length == 0) {
+            if (imports.length == 0) {
 
             } else {
                 for (int i = 0; i < imports.length; i++) {
@@ -126,7 +135,7 @@ public class ConverterEmbeddableProcessor extends AbstractProcessor {
                 }
             }
         } catch (Exception e) {
-            System.out.println("Error imports()" + e.getLocalizedMessage());
+       System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
         }
         return bufferedWriter;
     }
@@ -181,7 +190,7 @@ public class ConverterEmbeddableProcessor extends AbstractProcessor {
             bufferedWriter.append("\t}");
 
         } catch (Exception e) {
-            System.out.println("Error getAsString()" + e.getLocalizedMessage());
+          System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
         }
         return bufferedWriter;
     }
@@ -209,7 +218,7 @@ public class ConverterEmbeddableProcessor extends AbstractProcessor {
             bufferedWriter.append("\t}");
 
         } catch (Exception e) {
-            System.out.println("Error getAsString()" + e.getLocalizedMessage());
+           System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
         }
         return bufferedWriter;
     }
@@ -219,6 +228,11 @@ public class ConverterEmbeddableProcessor extends AbstractProcessor {
     public BufferedWriter inject(BufferedWriter bufferedWriter, String nameOfClass, String[] injects) {
         try {
             bufferedWriter.newLine();
+             bufferedWriter.newLine();
+            bufferedWriter.append("\t@Inject\n");
+            bufferedWriter.newLine();
+            bufferedWriter.append("\t " + nameOfClass + "ConverterServices " + ProcessorTools.toLowercaseFirstLetter(nameOfClass) + "ConverterServices;\n");
+
             if (injects.length == 0) {
 
             } else {
@@ -229,7 +243,7 @@ public class ConverterEmbeddableProcessor extends AbstractProcessor {
                 }
             }
         } catch (Exception e) {
-            System.out.println("Error inject()" + e.getLocalizedMessage());
+          System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
         }
         return bufferedWriter;
     }
@@ -267,7 +281,7 @@ public class ConverterEmbeddableProcessor extends AbstractProcessor {
                 }
             }
         } catch (Exception e) {
-            System.out.println("Error setGet" + e.getLocalizedMessage());
+         System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
         }
         return bufferedWriter;
     }
@@ -311,7 +325,7 @@ public class ConverterEmbeddableProcessor extends AbstractProcessor {
                     .build();
 
         } catch (Exception e) {
-            System.out.println("Error analizeId()" + e.getLocalizedMessage());
+       System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
         }
         return idInformation;
     }
@@ -355,7 +369,7 @@ public class ConverterEmbeddableProcessor extends AbstractProcessor {
                     .build();
 
         } catch (Exception e) {
-            System.out.println("Error analizeColumn() " + e.getLocalizedMessage());
+         System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
         }
         return idInformation;
     }

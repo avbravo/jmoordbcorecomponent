@@ -16,9 +16,10 @@ import java.util.List;
  */
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.TYPE)
-public @interface ConverterEmbeddable {
-     String column() default "";
-     String[] injects() default {};
-     String[] imports() default {};
-     
+public @interface RestClientServices {
+
+    public Class<?> entity();
+    public Class<?> restClient();
+
+ 
 }

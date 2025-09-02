@@ -8,8 +8,7 @@ package com.avbravo.jmoordbcorecomponent.annotationprocessing.processor;
  *
  * @author avbravo
  */
-import com.avbravo.jmoordbcorecomponent.annotationprocessing.Converter;
-import com.avbravo.jmoordbcorecomponent.annotationprocessing.processor.generated.ConverterServicesGenerator;
+import com.avbravo.jmoordbcorecomponent.annotationprocessing.RestClientServices;
 import com.avbravo.jmoordbcorecomponent.domains.IdInformation;
 import com.avbravo.jmoordbcorecomponent.domains.ResultGeneration;
 import com.avbravo.jmoordbcorecomponent.utils.ProcessorTools;
@@ -34,41 +33,42 @@ import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 
 @AutoService(Processor.class)
-@SupportedAnnotationTypes("com.avbravo.jmoordbcorecomponent.annotationprocessing.Converter")
+@SupportedAnnotationTypes("com.avbravo.jmoordbcorecomponent.annotationprocessing.RestClientServices")
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
-public class ConverterProcessor extends AbstractProcessor {
-    ConverterServicesGenerator converterServerGenerator = new ConverterServicesGenerator();
+public class RestClientServicesProcessor extends AbstractProcessor {
+
     ResultGeneration resultGeneration = new ResultGeneration();
+
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-IdInformation idInformation = new IdInformation();
-        for (Element element : roundEnv.getElementsAnnotatedWith(Converter.class)) {
-            
+        IdInformation idInformation = new IdInformation();
+        for (Element element : roundEnv.getElementsAnnotatedWith(RestClientServices.class)) {
+
             JavaFileObject builderClass = null;
             PackageElement packageElement = (PackageElement) element.getEnclosingElement();
             BufferedWriter bufferedWriter = null;
             try {
-                String builderName = element.getSimpleName().toString() + "Converter";
+                String builderName = element.getSimpleName().toString() + "Impl";
 
                 String builderGenName = packageElement.getQualifiedName().toString() + "." + builderName;
-
 
                 builderClass = processingEnv.getFiler().createSourceFile(builderGenName);
                 bufferedWriter = new BufferedWriter(builderClass.openWriter());
                 bufferedWriter.append("package ");
                 bufferedWriter.append(packageElement.getQualifiedName().toString());
                 bufferedWriter.append(";");
-                bufferedWriter = imports(bufferedWriter, packageElement );
+                bufferedWriter = imports(bufferedWriter, packageElement);
                 bufferedWriter.newLine();
                 bufferedWriter.append("@Named");
                 bufferedWriter.newLine();
-                bufferedWriter.append("@FacesConverter(forClass =" + element.getSimpleName().toString() + ".class, managed = true)");
+                bufferedWriter.append("@ApplicationScoped");
                 bufferedWriter.newLine();
                 bufferedWriter.append("\npublic class ");
                 bufferedWriter.append(builderName);
-                bufferedWriter.append("  implements Converter<" + element.getSimpleName().toString() + ">");
+                bufferedWriter.append("  implements " + element.getSimpleName().toString() + "");
                 bufferedWriter.append("{");
                 bufferedWriter = inject(bufferedWriter, element.getSimpleName().toString());
+                bufferedWriter = config(bufferedWriter);
 
                 bufferedWriter.newLine();
 
@@ -92,31 +92,23 @@ IdInformation idInformation = new IdInformation();
                 bufferedWriter.newLine();
 
                 bufferedWriter.close();
-                
-                 if(!(resultGeneration = converterServerGenerator.generate(element, processingEnv,idInformation)).getSuccessful()){
-                processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, resultGeneration.getMessage());
-          }
+
             } catch (IOException e) {
                 processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, e.toString());
             }
             /**
-             * Generar el ConverterServer
-             * Se invoca a la clase que lo maneja
+             * Generar el ConverterServer Se invoca a la clase que lo maneja
              */
-         
-          
 
         }
         return false;
     }
 
     // <editor-fold defaultstate="collapsed" desc="BufferedWriter imports(BufferedWriter bufferedWriter,PackageElement packageElement )">
-    public BufferedWriter imports(BufferedWriter bufferedWriter,PackageElement packageElement ) {
+    public BufferedWriter imports(BufferedWriter bufferedWriter, PackageElement packageElement) {
         try {
             bufferedWriter.newLine();
             bufferedWriter.append("import jakarta.inject.Inject;\n");
-            bufferedWriter.append("import jakarta.faces.convert.Converter;\n");
-            bufferedWriter.append("import jakarta.faces.convert.FacesConverter;\n");
             bufferedWriter.append("import jakarta.inject.Named;\n");
             bufferedWriter.append("import jakarta.faces.component.UIComponent;\n");
             bufferedWriter.append("import jakarta.faces.context.FacesContext;\n");
@@ -124,9 +116,13 @@ IdInformation idInformation = new IdInformation();
             bufferedWriter.append("import java.util.Optional;\n");
             bufferedWriter.append("import com.avbravo.jmoordbcorecomponent.utils.FacesUtil;\n");
             bufferedWriter.append("import jakarta.faces.convert.ConverterException;\n");
+            bufferedWriter.append("import jakarta.enterprise.context.ApplicationScoped;\n");            
+            bufferedWriter.append("import com.avbravo.jmoordbcorecomponent.utils.JmoordbCoreResourcesFiles;\n");
+            bufferedWriter.append("import org.eclipse.microprofile.config.Config;\n");
 
         } catch (Exception e) {
-          System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+
+            System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
         }
         return bufferedWriter;
     }
@@ -218,13 +214,31 @@ IdInformation idInformation = new IdInformation();
     // <editor-fold defaultstate="collapsed" desc="BufferedWriter inject(BufferedWriter bufferedWriter)">
     public BufferedWriter inject(BufferedWriter bufferedWriter, String nameOfClass) {
         try {
+
             bufferedWriter.newLine();
+            bufferedWriter.append("// <editor-fold defaultstate=\"collapsed\" desc=\"@Inject\">\n");
             bufferedWriter.append("\t@Inject");
             bufferedWriter.newLine();
-            bufferedWriter.append("\t " + nameOfClass + "ConverterServices " + ProcessorTools.toLowercaseFirstLetter(nameOfClass) + "ConverterServices;");
-
+            bufferedWriter.append("\t JmoordbCoreResourcesFiles rf;\n");
+            bufferedWriter.append("// </editor-fold>");
         } catch (Exception e) {
-           System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+            System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+        }
+        return bufferedWriter;
+    }
+
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="BufferedWriter config(BufferedWriter bufferedWriter)">
+    public BufferedWriter config(BufferedWriter bufferedWriter) {
+        try {
+            bufferedWriter.newLine();
+            bufferedWriter.append("// <editor-fold defaultstate=\"collapsed\" desc=\"@Config\">\n");
+            bufferedWriter.append("\t@Inject");
+            bufferedWriter.newLine();
+            bufferedWriter.append("\t private Config config;\n");
+            bufferedWriter.append("// </editor-fold>");
+        } catch (Exception e) {
+            System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
         }
         return bufferedWriter;
     }
@@ -262,7 +276,7 @@ IdInformation idInformation = new IdInformation();
                 }
             }
         } catch (Exception e) {
-          System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+            System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
         }
         return bufferedWriter;
     }
@@ -306,7 +320,7 @@ IdInformation idInformation = new IdInformation();
                     .build();
 
         } catch (Exception e) {
-         System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+            System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
         }
         return idInformation;
     }
