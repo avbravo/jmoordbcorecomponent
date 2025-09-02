@@ -8,8 +8,7 @@ package com.avbravo.jmoordbcorecomponent.annotationprocessing.processor;
  *
  * @author avbravo
  */
-import com.avbravo.jmoordbcorecomponent.annotationprocessing.Converter;
-import com.avbravo.jmoordbcorecomponent.annotationprocessing.processor.generated.ConverterServicesGenerator;
+import com.avbravo.jmoordbcorecomponent.annotationprocessing.ConverterEmbeddable;
 import com.avbravo.jmoordbcorecomponent.domains.IdInformation;
 import com.avbravo.jmoordbcorecomponent.domains.ResultGeneration;
 import com.avbravo.jmoordbcorecomponent.utils.ProcessorTools;
@@ -34,16 +33,17 @@ import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 
 @AutoService(Processor.class)
-@SupportedAnnotationTypes("com.avbravo.jmoordbcorecomponent.annotationprocessing.Converter")
+@SupportedAnnotationTypes("com.avbravo.jmoordbcorecomponent.annotationprocessing.ConverterEmbeddable")
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
-public class ConverterProcessor extends AbstractProcessor {
-    ConverterServicesGenerator converterServerGenerator = new ConverterServicesGenerator();
+public class ConverterEmbeddableProcessor extends AbstractProcessor {
+
     ResultGeneration resultGeneration = new ResultGeneration();
+
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
 
-        for (Element element : roundEnv.getElementsAnnotatedWith(Converter.class)) {
-            
+        for (Element element : roundEnv.getElementsAnnotatedWith(ConverterEmbeddable.class)) {
+
             JavaFileObject builderClass = null;
             PackageElement packageElement = (PackageElement) element.getEnclosingElement();
             BufferedWriter bufferedWriter = null;
@@ -51,14 +51,19 @@ public class ConverterProcessor extends AbstractProcessor {
                 String builderName = element.getSimpleName().toString() + "Converter";
 
                 String builderGenName = packageElement.getQualifiedName().toString() + "." + builderName;
-
+  /**
+                 * Obtener valores de los atributos de la anotacion
+                 * ConverterEmbeddable
+                 */
+                ConverterEmbeddable ce = element.getAnnotation(ConverterEmbeddable.class);
 
                 builderClass = processingEnv.getFiler().createSourceFile(builderGenName);
                 bufferedWriter = new BufferedWriter(builderClass.openWriter());
                 bufferedWriter.append("package ");
                 bufferedWriter.append(packageElement.getQualifiedName().toString());
                 bufferedWriter.append(";");
-                bufferedWriter = imports(bufferedWriter, packageElement );
+                bufferedWriter = imports(bufferedWriter, packageElement,ce.imports()
+                );
                 bufferedWriter.newLine();
                 bufferedWriter.append("@Named");
                 bufferedWriter.newLine();
@@ -68,7 +73,9 @@ public class ConverterProcessor extends AbstractProcessor {
                 bufferedWriter.append(builderName);
                 bufferedWriter.append("  implements Converter<" + element.getSimpleName().toString() + ">");
                 bufferedWriter.append("{");
-                bufferedWriter = inject(bufferedWriter, element.getSimpleName().toString());
+
+              
+                bufferedWriter = inject(bufferedWriter, element.getSimpleName().toString(), ce.injects());
 
                 bufferedWriter.newLine();
 
@@ -76,12 +83,8 @@ public class ConverterProcessor extends AbstractProcessor {
                  * Imprime los set/get de todos los campos Falta mejorarlo
                  */
 //                 bufferedWriter = setGet(bufferedWriter, element,builderName);
-                /**
-                 * Encuentra el Id
-                 *
-                 *
-                 */
-                IdInformation idInformation = analizeId(element);
+                IdInformation idInformation = analizeColumn(element, ce.column());
+
                 bufferedWriter = getAsObject(bufferedWriter, element.getSimpleName().toString(), idInformation);
                 bufferedWriter = getAsString(bufferedWriter, element.getSimpleName().toString(), idInformation
                 );
@@ -95,21 +98,13 @@ public class ConverterProcessor extends AbstractProcessor {
             } catch (IOException e) {
                 processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, e.toString());
             }
-            /**
-             * Generar el ConverterServer
-             * Se invoca a la clase que lo maneja
-             */
-          if(!(resultGeneration = converterServerGenerator.generate(element, processingEnv)).getSuccessful()){
-                processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, resultGeneration.getMessage());
-          }
-          
 
         }
         return false;
     }
 
-    // <editor-fold defaultstate="collapsed" desc="BufferedWriter imports(BufferedWriter bufferedWriter,PackageElement packageElement )">
-    public BufferedWriter imports(BufferedWriter bufferedWriter,PackageElement packageElement ) {
+    // <editor-fold defaultstate="collapsed" desc="BufferedWriter imports(BufferedWriter bufferedWriter,PackageElement packageElement, String[] imports )">
+    public BufferedWriter imports(BufferedWriter bufferedWriter, PackageElement packageElement, String[] imports) {
         try {
             bufferedWriter.newLine();
             bufferedWriter.append("import jakarta.inject.Inject;\n");
@@ -122,9 +117,16 @@ public class ConverterProcessor extends AbstractProcessor {
             bufferedWriter.append("import java.util.Optional;\n");
             bufferedWriter.append("import com.avbravo.jmoordbcorecomponent.utils.FacesUtil;\n");
             bufferedWriter.append("import jakarta.faces.convert.ConverterException;\n");
+            bufferedWriter.append("import " + ProcessorTools.removeLastPackage(packageElement.getQualifiedName().toString()) + ".services.*;\n");
+ if (imports.length == 0) {
 
+            } else {
+                for (int i = 0; i < imports.length; i++) {
+                    bufferedWriter.append("import " + imports[i] + ";\n");
+                }
+            }
         } catch (Exception e) {
-            System.out.println("Error getAsString()" + e.getLocalizedMessage());
+            System.out.println("Error imports()" + e.getLocalizedMessage());
         }
         return bufferedWriter;
     }
@@ -213,16 +215,21 @@ public class ConverterProcessor extends AbstractProcessor {
     }
     // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="BufferedWriter inject(BufferedWriter bufferedWriter)">
-    public BufferedWriter inject(BufferedWriter bufferedWriter, String nameOfClass) {
+    // <editor-fold defaultstate="collapsed" desc="BufferedWriter inject(BufferedWriter bufferedWriter, String[] injects)">
+    public BufferedWriter inject(BufferedWriter bufferedWriter, String nameOfClass, String[] injects) {
         try {
             bufferedWriter.newLine();
-            bufferedWriter.append("\t@Inject");
-            bufferedWriter.newLine();
-            bufferedWriter.append("\t " + nameOfClass + "ConverterServices " + ProcessorTools.toLowercaseFirstLetter(nameOfClass) + "ConverterServices;");
+            if (injects.length == 0) {
 
+            } else {
+                for (int i = 0; i < injects.length; i++) {
+                    bufferedWriter.append("\t@Inject");
+                    bufferedWriter.newLine();
+                    bufferedWriter.append("\t " + injects[i] + " " + ProcessorTools.toLowercaseFirstLetter(injects[i]) + ";\n");
+                }
+            }
         } catch (Exception e) {
-            System.out.println("Error getAsString()" + e.getLocalizedMessage());
+            System.out.println("Error inject()" + e.getLocalizedMessage());
         }
         return bufferedWriter;
     }
@@ -304,7 +311,51 @@ public class ConverterProcessor extends AbstractProcessor {
                     .build();
 
         } catch (Exception e) {
-            System.out.println("Error setGet" + e.getLocalizedMessage());
+            System.out.println("Error analizeId()" + e.getLocalizedMessage());
+        }
+        return idInformation;
+    }
+
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="IdInformation analizeColumn(Element element, String column)">
+    /**
+     * Encuentra la información de la llave primaria
+     *
+     * @return
+     */
+    public IdInformation analizeColumn(Element element, String column) {
+        IdInformation idInformation = new IdInformation();
+        try {
+            String name = "";
+            String type = "";
+            String simpleName = "";
+            if (element.getKind().isClass()) {
+                for (Element enclosed : element.getEnclosedElements()) {
+                    if (enclosed.getKind().isField() & (enclosed.getModifiers().contains(Modifier.PRIVATE)
+                            | enclosed.getModifiers().contains(Modifier.PROTECTED))) {
+
+                        if (enclosed.getSimpleName().toString().equals(column.trim())) {
+                            String field = enclosed.getSimpleName().toString();
+                            String s1 = field.substring(0, 1).toUpperCase();
+                            String nameCapitalized = s1 + field.substring(1);
+
+                            name = nameCapitalized;
+                            type = enclosed.asType().toString();
+                            simpleName = enclosed.getSimpleName().toString();
+                            break;
+                        }
+
+                    }
+                }
+            }
+            idInformation = new IdInformation.Builder()
+                    .name(name)
+                    .type(type)
+                    .simpleName(simpleName)
+                    .build();
+
+        } catch (Exception e) {
+            System.out.println("Error analizeColumn() " + e.getLocalizedMessage());
         }
         return idInformation;
     }
