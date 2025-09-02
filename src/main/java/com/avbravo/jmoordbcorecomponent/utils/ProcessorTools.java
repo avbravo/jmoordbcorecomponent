@@ -5,6 +5,7 @@
 package com.avbravo.jmoordbcorecomponent.utils;
 
 import com.jmoordb.core.util.MessagesUtil;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.TypeMirror;
 
 /**
@@ -78,7 +79,7 @@ public class ProcessorTools {
     }
     // </editor-fold>
     
-    // <editor-fold defaultstate="collapsed" desc="method">
+    // <editor-fold defaultstate="collapsed" desc="String removeLastPackage(String packagePath)">
     public static String removeLastPackage(String packagePath){
         String result ="";
         try {
@@ -88,6 +89,18 @@ public class ProcessorTools {
               MessagesUtil.error(MessagesUtil.nameOfClassAndMethod() + " error() " + e.getLocalizedMessage());
         }
         return result;
+    }
+// </editor-fold>
+    
+     // <editor-fold defaultstate="collapsed" desc="String nameOfMethod(ExecutableElement executableElement)">
+    public static String nameOfMethod(ExecutableElement executableElement) {
+        String name = "";
+        try {
+            name = executableElement.getSimpleName().toString();
+        } catch (Exception e) {
+            MessagesUtil.error(MessagesUtil.nameOfClassAndMethod() + " error() " + e.getLocalizedMessage());
+        }
+        return name;
     }
 // </editor-fold>
 }

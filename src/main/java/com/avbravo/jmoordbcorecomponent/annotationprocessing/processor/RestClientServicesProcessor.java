@@ -26,9 +26,20 @@ import javax.lang.model.element.TypeElement;
 
 import com.google.auto.service.AutoService;
 import com.jmoordb.core.annotation.Id;
+import com.jmoordb.core.annotation.date.ExcludeTime;
+import com.jmoordb.core.annotation.date.IncludeTime;
+import com.avbravo.jmoordbcorecomponent.model.RestClientServicesMethod;
+import com.jmoordb.core.processor.fields.Parametro;
 import java.io.BufferedWriter;
+import java.util.ArrayList;
+import java.util.List;
+import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.PackageElement;
+import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 
@@ -38,6 +49,7 @@ import javax.tools.JavaFileObject;
 public class RestClientServicesProcessor extends AbstractProcessor {
 
     ResultGeneration resultGeneration = new ResultGeneration();
+    List<RestClientServicesMethod> restClientServicesMethods = new ArrayList<>();
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
@@ -77,14 +89,20 @@ public class RestClientServicesProcessor extends AbstractProcessor {
                  */
 //                 bufferedWriter = setGet(bufferedWriter, element,builderName);
                 /**
-                 * Encuentra el Id
-                 *
+                 * Encuentra la firma de los metodos
                  *
                  */
+                restClientServicesMethods = analizeMethod(element);
                 idInformation = analizeId(element);
-                bufferedWriter = getAsObject(bufferedWriter, element.getSimpleName().toString(), idInformation);
-                bufferedWriter = getAsString(bufferedWriter, element.getSimpleName().toString(), idInformation
-                );
+
+                if (restClientServicesMethods.isEmpty() || restClientServicesMethods.size() == 0 || restClientServicesMethods == null) {
+
+                } else {
+                    for (RestClientServicesMethod rcsm : restClientServicesMethods) {
+                        bufferedWriter = generateMethods(bufferedWriter, element.getSimpleName().toString(), rcsm, idInformation);
+                    }
+
+                }
 
                 bufferedWriter.newLine();
                 bufferedWriter.append("}");
@@ -116,7 +134,7 @@ public class RestClientServicesProcessor extends AbstractProcessor {
             bufferedWriter.append("import java.util.Optional;\n");
             bufferedWriter.append("import com.avbravo.jmoordbcorecomponent.utils.FacesUtil;\n");
             bufferedWriter.append("import jakarta.faces.convert.ConverterException;\n");
-            bufferedWriter.append("import jakarta.enterprise.context.ApplicationScoped;\n");            
+            bufferedWriter.append("import jakarta.enterprise.context.ApplicationScoped;\n");
             bufferedWriter.append("import com.avbravo.jmoordbcorecomponent.utils.JmoordbCoreResourcesFiles;\n");
             bufferedWriter.append("import org.eclipse.microprofile.config.Config;\n");
 
@@ -127,81 +145,30 @@ public class RestClientServicesProcessor extends AbstractProcessor {
         return bufferedWriter;
     }
 // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="BufferedWriter getAsObject(BufferedWriter bufferedWriter,IdInformation idInformation)">
-
-    public BufferedWriter getAsObject(BufferedWriter bufferedWriter, String nameOfClass, IdInformation idInformation) {
+    public BufferedWriter generateMethods(BufferedWriter bufferedWriter, String nameOfClass, RestClientServicesMethod restClientServicesMethod, IdInformation idInformation) {
         try {
-            bufferedWriter.newLine();
-            bufferedWriter.append("\t@Override");
-            bufferedWriter.newLine();
-            bufferedWriter.append("\tpublic " + nameOfClass + " getAsObject(FacesContext fc, UIComponent uic, String submittedValue) {");
-            bufferedWriter.newLine();
-            bufferedWriter.append("\t\t" + nameOfClass + " obj = new  " + nameOfClass + "();\n");
-            bufferedWriter.append("\t\tif (submittedValue == null || submittedValue.isEmpty()) {\n");
-            bufferedWriter.append("\t\t    return null;\n");
-            bufferedWriter.append("\t\t}\n");
-            bufferedWriter.append("\t\ttry{\n");
-            if (idInformation.getType().equals("java.lang.Integer")) {
-                bufferedWriter.append("\t\tInteger id = Integer.parseInt(submittedValue);\n");
-                bufferedWriter.append("\t\tOptional<" + nameOfClass + "> optional = " + ProcessorTools.toLowercaseFirstLetter(nameOfClass) + "ConverterServices.get( id );\n");
-                bufferedWriter.append("\t\tif (optional.isPresent()) {;\n");
-                bufferedWriter.append("\t\t  obj = optional.get();\n");
-                bufferedWriter.append("\t\t }\n");
-                bufferedWriter.append("\t\t return obj;\n");
+            String parameters = "";
+            String separator = "";
+            if (restClientServicesMethod.getParametros().size() == 0) {
+
             } else {
-                if (idInformation.getType().equals("java.lang.Long")) {
-                    bufferedWriter.append("\t\tInteger id0 = Integer.parseInt(submittedValue);\n");
-                    bufferedWriter.append("\t\tLong id = id0.longValue();\n");
-
-                    bufferedWriter.append("\t\tOptional<" + nameOfClass + "> optional = " + ProcessorTools.toLowercaseFirstLetter(nameOfClass) + "ConverterServices.get(id);\n");
-                    bufferedWriter.append("\t\tif (optional.isPresent()) {;\n");
-                    bufferedWriter.append("\t\t  obj = optional.get();\n");
-                    bufferedWriter.append("\t\t }\n");
-                    bufferedWriter.append("\t\t return obj;\n");
-                } else {
-                    bufferedWriter.append("\t\tString id = Integer.parseInt(submittedValue);\n");
-                    bufferedWriter.append("\t\tOptional<" + nameOfClass + "> optional = " + ProcessorTools.toLowercaseFirstLetter(nameOfClass) + "ConverterServices.get(id);\n");
-                    bufferedWriter.append("\t\tif (optional.isPresent()) {\n");
-                    bufferedWriter.append("\t\t  obj = optional.get();\n");
-                    bufferedWriter.append("\t\t }\n");
-                    bufferedWriter.append("\t\t return obj;\n");
-
+                for (Parametro p : restClientServicesMethod.getParametros()) {
+                    parameters += separator + p.getType() + " " + p.getName();
+                    separator = ", ";
                 }
             }
-
-            bufferedWriter.append("\t\t } catch (Exception e) {\n");
-            bufferedWriter.append("\t\t   System.out.println(FacesUtil.nameOfClassAndMethod() + \" \" + e.getLocalizedMessage());\n");
-            bufferedWriter.append("\t\t  throw new ConverterException(new FacesMessage(submittedValue + \" is not a valid selecction from Converter\"), e);\n");
-            bufferedWriter.append("\t\t}\n");
-            bufferedWriter.newLine();
-            bufferedWriter.append("\t}");
-
-        } catch (Exception e) {
-            System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
-        }
-        return bufferedWriter;
-    }
-    // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="BufferedWriter getAsString(BufferedWriter bufferedWriter,IdInformation idInformation)">
-
-    public BufferedWriter getAsString(BufferedWriter bufferedWriter, String nameOfClass, IdInformation idInformation) {
-        try {
             bufferedWriter.newLine();
             bufferedWriter.append("\t@Override");
             bufferedWriter.newLine();
-            bufferedWriter.append("\tpublic String getAsString(FacesContext fc, UIComponent uic," + nameOfClass + " t) {");
+            bufferedWriter.append("\tpublic " + restClientServicesMethod.getReturnTypeValue() + " " + restClientServicesMethod.getNameOfMethod() + "(" + parameters + "){\n");
+            bufferedWriter.append("\ttry{\n");
+
+            bufferedWriter.append("\t\t } catch (Exception e) {\n");
+            bufferedWriter.append("\t\t  FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + \" \" + e.getLocalizedMessage());\n");
+            bufferedWriter.append("\t\t}\n");
             bufferedWriter.newLine();
-            bufferedWriter.append("\t    try {\n");
-            bufferedWriter.append("\t    if (t == null) {\n");
-            bufferedWriter.append("\t       return \"\";\n");
-            bufferedWriter.append("\t     }\n");
-            bufferedWriter.append("\t     if (t.get" + idInformation.getName() + "() != null) {\n");
-            bufferedWriter.append("\t         return t.get" + idInformation.getName() + "().toString();\n");
-            bufferedWriter.append("\t     }\n");
-            bufferedWriter.append("\t    } catch (Exception e) {\n");
-            bufferedWriter.append("\t       new FacesMessage(\"Error en converter  \" + e.getLocalizedMessage());\n");
-            bufferedWriter.append("\t    }\n");
-            bufferedWriter.append("\t    return \"\";\n");
             bufferedWriter.append("\t}");
 
         } catch (Exception e) {
@@ -323,6 +290,86 @@ public class RestClientServicesProcessor extends AbstractProcessor {
             System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
         }
         return idInformation;
+    }
+
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="IdInformation analizeId()">
+    /**
+     * Encuentra la información de la llave primaria
+     *
+     * @return
+     */
+    public List<RestClientServicesMethod> analizeMethod(Element element) {
+        List<RestClientServicesMethod> results = new ArrayList<>();
+        List<Parametro> parametros = new ArrayList<>();
+        try {
+
+            for (ExecutableElement executableElement : ElementFilter.methodsIn(element.getEnclosedElements())) {
+                //metodo que almacena la información del repositorio
+
+                if (executableElement.getKind() != ElementKind.METHOD) {
+
+                    continue;
+                }
+                /**
+                 * Obtiene el nombre del metodo
+                 */
+                String methodName = ProcessorTools.nameOfMethod(executableElement);
+
+                /**
+                 * Obtengo el valor de retorno convierte a ReturnType.
+                 */
+                TypeMirror returnTypeOfMethod = executableElement.getReturnType();
+
+                /**
+                 * Parametros
+                 */
+           parametros = new ArrayList<>();
+                List<? extends VariableElement> parameters = executableElement.getParameters();
+                if (parameters.size() <= 0) {
+
+                } else {
+                    for (int i = 0; i < parameters.size(); i++) {
+
+                        VariableElement param = parameters.get(i);
+
+                        TypeMirror secondArgumentType = param.asType();
+
+                        /**
+                         * Revisa las anotaciones que tiene
+                         */
+//                        if (parameters.get(i).getAnnotation(IncludeTime.class) != null) {
+//                            //    isIncludeTime = Boolean.TRUE;
+//                        } else {
+//
+//                            if (parameters.get(i).getAnnotation(ExcludeTime.class) != null) {
+//
+//                                //  isExcludeTime = Boolean.TRUE;
+//                            } else {
+//                                //  isIncludeTime = Boolean.FALSE;
+//                                // isExcludeTime = Boolean.FALSE;
+//                            }
+//                        }
+                        Parametro parametro = new Parametro.Builder()
+                                .name(param.getSimpleName().toString())
+                                .type(param.asType().toString())
+                                .build();
+                        parametros.add(parametro);
+
+                    }
+                }
+                RestClientServicesMethod restClientServicesMethod = new RestClientServicesMethod.Builder()
+                        .nameOfMethod(methodName)
+                        .returnType(returnTypeOfMethod.toString())
+                        .parametros(parametros)
+                        .build();
+                results.add(restClientServicesMethod);
+            }
+
+        } catch (Exception e) {
+            System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+        }
+        return results;
     }
     // </editor-fold>
 }
