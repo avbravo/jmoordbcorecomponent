@@ -5,7 +5,9 @@
 package com.avbravo.jmoordbcorecomponent.utils;
 
 import com.jmoordb.core.util.MessagesUtil;
+import java.util.function.Supplier;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;
 
 /**
@@ -13,6 +15,7 @@ import javax.lang.model.type.TypeMirror;
  * @author avbravo
  */
 public class ProcessorTools {
+
     public static String toLowercaseFirstLetter(String str) {
         if (str == null || str.isEmpty()) {
             return str; // Handle null or empty strings
@@ -21,7 +24,7 @@ public class ProcessorTools {
         return Character.toLowerCase(str.charAt(0)) + str.substring(1);
     }
 
-     // <editor-fold defaultstate="collapsed" desc="String packageOfTypeMirror(TypeMirror typeMirror)">
+    // <editor-fold defaultstate="collapsed" desc="String packageOfTypeMirror(TypeMirror typeMirror)">
     /**
      *
      * @param typeMirror
@@ -38,8 +41,8 @@ public class ProcessorTools {
         return packageOfEntity;
     }
 // </editor-fold>
-    
-     // <editor-fold defaultstate="collapsed" desc="String nameOfFileInPath(String filenamePath)">
+
+    // <editor-fold defaultstate="collapsed" desc="String nameOfFileInPath(String filenamePath)">
     /**
      *
      * @param filenamePath
@@ -56,8 +59,7 @@ public class ProcessorTools {
     }
 
     // </editor-fold>
-    
-       // <editor-fold defaultstate="collapsed" desc="nameOfClassAndMethod()">
+    // <editor-fold defaultstate="collapsed" desc="nameOfClassAndMethod()">
     public static String nameOfClassAndMethod() {
         final StackTraceElement e = Thread.currentThread().getStackTrace()[2];
         final String s = e.getClassName();
@@ -78,21 +80,21 @@ public class ProcessorTools {
         return e.getMethodName();
     }
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="String removeLastPackage(String packagePath)">
-    public static String removeLastPackage(String packagePath){
-        String result ="";
+    public static String removeLastPackage(String packagePath) {
+        String result = "";
         try {
 
-        result = packagePath.substring(0,packagePath.lastIndexOf("."));
+            result = packagePath.substring(0, packagePath.lastIndexOf("."));
         } catch (Exception e) {
-              MessagesUtil.error(MessagesUtil.nameOfClassAndMethod() + " error() " + e.getLocalizedMessage());
+            MessagesUtil.error(MessagesUtil.nameOfClassAndMethod() + " error() " + e.getLocalizedMessage());
         }
         return result;
     }
 // </editor-fold>
-    
-     // <editor-fold defaultstate="collapsed" desc="String nameOfMethod(ExecutableElement executableElement)">
+
+    // <editor-fold defaultstate="collapsed" desc="String nameOfMethod(ExecutableElement executableElement)">
     public static String nameOfMethod(ExecutableElement executableElement) {
         String name = "";
         try {
@@ -103,4 +105,13 @@ public class ProcessorTools {
         return name;
     }
 // </editor-fold>
+
+    public static TypeMirror mirror(Supplier<Class<?>> classValue) {
+        try {
+            var ignored = classValue.get();
+            throw new IllegalStateException("Expected a MirroredTypeException to be thrown but got " + ignored);
+        } catch (MirroredTypeException e) {
+            return e.getTypeMirror();
+        }
+    }
 }
