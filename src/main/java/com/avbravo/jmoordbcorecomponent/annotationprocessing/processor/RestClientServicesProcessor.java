@@ -49,7 +49,8 @@ public class RestClientServicesProcessor extends AbstractProcessor {
 
     ResultGeneration resultGeneration = new ResultGeneration();
     List<RestClientServicesMethod> restClientServicesMethods = new ArrayList<>();
-  RestClientServicesInformation  restClientServicesInformation = new RestClientServicesInformation();
+    RestClientServicesInformation restClientServicesInformation = new RestClientServicesInformation();
+
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         IdInformation idInformation = new IdInformation();
@@ -71,13 +72,13 @@ public class RestClientServicesProcessor extends AbstractProcessor {
                 RestClientServices restClientServices = element.getAnnotation(RestClientServices.class);
                 TypeMirror typeEntity = ProcessorTools.mirror(restClientServices::entity);
                 TypeMirror typeRestClient = ProcessorTools.mirror(restClientServices::restClient);
-                
+
                 restClientServicesInformation = new RestClientServicesInformation.Builder()
                         .entity(typeEntity.toString())
                         .restClient(typeRestClient.toString())
                         .restClientVar(ProcessorTools.toLowercaseFirstLetter(ProcessorTools.nameOfFileInPath(typeRestClient.toString())))
                         .build();
-                
+
                 bufferedWriter = new BufferedWriter(builderClass.openWriter());
                 bufferedWriter.append("package ");
                 bufferedWriter.append(packageElement.getQualifiedName().toString());
@@ -92,7 +93,7 @@ public class RestClientServicesProcessor extends AbstractProcessor {
                 bufferedWriter.append(builderName);
                 bufferedWriter.append("  implements " + element.getSimpleName().toString() + "");
                 bufferedWriter.append("{");
-                bufferedWriter = inject(bufferedWriter, element.getSimpleName().toString(),restClientServicesInformation);
+                bufferedWriter = inject(bufferedWriter, element.getSimpleName().toString(), restClientServicesInformation);
                 bufferedWriter = config(bufferedWriter);
 
                 bufferedWriter.newLine();
@@ -101,8 +102,6 @@ public class RestClientServicesProcessor extends AbstractProcessor {
                  * Imprime los set/get de todos los campos Falta mejorarlo
                  */
 //                 bufferedWriter = setGet(bufferedWriter, element,builderName);
-                
-
 //                  System.out.println("typeEntity.toString() "+typeEntity.toString());
 //                  System.out.println("typeRestClient.toString() "+typeRestClient.toString());
                 /**
@@ -165,7 +164,7 @@ public class RestClientServicesProcessor extends AbstractProcessor {
 // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="BufferedWriter generateMethods(BufferedWriter bufferedWriter,IdInformation idInformation, RestClientServicesInformation  restClientServicesInformation)">
-    public BufferedWriter generateMethods(BufferedWriter bufferedWriter, String nameOfClass, RestClientServicesMethod restClientServicesMethod, IdInformation idInformation, RestClientServicesInformation  restClientServicesInformation) {
+    public BufferedWriter generateMethods(BufferedWriter bufferedWriter, String nameOfClass, RestClientServicesMethod restClientServicesMethod, IdInformation idInformation, RestClientServicesInformation restClientServicesInformation) {
         try {
             String parameters = "";
             String separator = "";
@@ -179,19 +178,29 @@ public class RestClientServicesProcessor extends AbstractProcessor {
             }
             bufferedWriter.newLine();
             bufferedWriter.newLine();
+
+            bufferedWriter.append("// <editor-fold defaultstate=\"collapsed\" desc=\"" + restClientServicesMethod.getReturnTypeValue() + " " + restClientServicesMethod.getNameOfMethod() + "(" + parameters + ")" + "\">\n");
+
             bufferedWriter.append("\t@Override");
             bufferedWriter.newLine();
             bufferedWriter.append("\tpublic " + restClientServicesMethod.getReturnTypeValue() + " " + restClientServicesMethod.getNameOfMethod() + "(" + parameters + "){\n");
 
             switch (restClientServicesMethod.getNameOfMethod()) {
                 case "save":
-                    bufferedWriter = generateMethodsSave(bufferedWriter, nameOfClass, restClientServicesMethod, idInformation, restClientServicesInformation);
+                    bufferedWriter = save(bufferedWriter, nameOfClass, restClientServicesMethod, idInformation, restClientServicesInformation);
+                    break;
+                case "update":
+                    bufferedWriter = update(bufferedWriter, nameOfClass, restClientServicesMethod, idInformation, restClientServicesInformation);
+                    break;
+                case "delete":
+                    bufferedWriter = delete(bufferedWriter, nameOfClass, restClientServicesMethod, idInformation, restClientServicesInformation);
                     break;
 
             }
 
             bufferedWriter.newLine();
-            bufferedWriter.append("\t}");
+            bufferedWriter.append("\t}\n");
+            bufferedWriter.append("\t// </editor-fold>\n");
 
         } catch (Exception e) {
             System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
@@ -200,19 +209,19 @@ public class RestClientServicesProcessor extends AbstractProcessor {
     }
 
     // </editor-fold
-    // <editor-fold defaultstate="collapsed" desc="BufferedWriter generateMethodsSave(BufferedWriter bufferedWriter,IdInformation idInformation, RestClientServicesInformation  restClientServicesInformation)">
-    public BufferedWriter generateMethodsSave(BufferedWriter bufferedWriter, String nameOfClass, RestClientServicesMethod restClientServicesMethod, IdInformation idInformation, RestClientServicesInformation  restClientServicesInformation) {
+    // <editor-fold defaultstate="collapsed" desc="BufferedWriter save(BufferedWriter bufferedWriter,IdInformation idInformation, RestClientServicesInformation  restClientServicesInformation)">
+    public BufferedWriter save(BufferedWriter bufferedWriter, String nameOfClass, RestClientServicesMethod restClientServicesMethod, IdInformation idInformation, RestClientServicesInformation restClientServicesInformation) {
         try {
-            String nameParameter = restClientServicesMethod.getParametros().size() ==0 ?"":restClientServicesMethod.getParametros().get(0).getName();
+            String nameParameter = restClientServicesMethod.getParametros().size() == 0 ? "" : restClientServicesMethod.getParametros().get(0).getName();
 
             bufferedWriter.newLine();
             bufferedWriter.append("\ttry{\n");
-            bufferedWriter.append("\t   Response response = " + restClientServicesInformation.getRestClientVar()+ ".save(" + nameParameter + ");\n");
+            bufferedWriter.append("\t   Response response = " + restClientServicesInformation.getRestClientVar() + ".save(" + nameParameter + ");\n");
             bufferedWriter.append("\t   if (response.getStatus() == 400) {\n");
             bufferedWriter.append("\t      String error = (response.readEntity(String.class));\n");
             bufferedWriter.append("\t      return Optional.empty();\n");
             bufferedWriter.append("\t   }\n");
-            bufferedWriter.append("\t   " + restClientServicesInformation.getEntity() + " result = (" + restClientServicesInformation.getEntity()+ ") (response.readEntity("+restClientServicesInformation.getEntity() +".class));\n");
+            bufferedWriter.append("\t   " + restClientServicesInformation.getEntity() + " result = (" + restClientServicesInformation.getEntity() + ") (response.readEntity(" + restClientServicesInformation.getEntity() + ".class));\n");
             bufferedWriter.append("\t   return Optional.of(result);\n");
             bufferedWriter.append("\t} catch (Exception e) {\n");
             bufferedWriter.append("\t  FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + \" \" + e.getLocalizedMessage());\n");
@@ -224,17 +233,61 @@ public class RestClientServicesProcessor extends AbstractProcessor {
         return bufferedWriter;
     }
     // </editor-fold
+    // <editor-fold defaultstate="collapsed" desc="BufferedWriter update(BufferedWriter bufferedWriter,IdInformation idInformation, RestClientServicesInformation  restClientServicesInformation)">
+    public BufferedWriter update(BufferedWriter bufferedWriter, String nameOfClass, RestClientServicesMethod restClientServicesMethod, IdInformation idInformation, RestClientServicesInformation restClientServicesInformation) {
+        try {
+            String nameParameter = restClientServicesMethod.getParametros().size() == 0 ? "" : restClientServicesMethod.getParametros().get(0).getName();
+            bufferedWriter.newLine();
+            bufferedWriter.append("\tBoolean result = Boolean.FALSE;\n");
+            bufferedWriter.append("\ttry{\n");
+            bufferedWriter.append("\t   Integer status = " + restClientServicesInformation.getRestClientVar() + ".update(" + nameParameter + ").getStatus();\n");
+            bufferedWriter.append("\t   if (status == 201) {\n");
+            bufferedWriter.append("\t      result = Boolean.TRUE;\n");
+            bufferedWriter.append("\t   }\n");
+            bufferedWriter.append("\t} catch (Exception e) {\n");
+            bufferedWriter.append("\t  FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + \" \" + e.getLocalizedMessage());\n");
+            bufferedWriter.append("\t}\n");
+            bufferedWriter.append("\treturn result;\n");
+        } catch (Exception e) {
+            System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+        }
+        return bufferedWriter;
+    }
+    
+    // </editor-fold
+// <editor-fold defaultstate="collapsed" desc="BufferedWriter delete(BufferedWriter bufferedWriter,IdInformation idInformation, RestClientServicesInformation  restClientServicesInformation)">
+    public BufferedWriter delete(BufferedWriter bufferedWriter, String nameOfClass, RestClientServicesMethod restClientServicesMethod, IdInformation idInformation, RestClientServicesInformation restClientServicesInformation) {
+        try {
+            String nameParameter = restClientServicesMethod.getParametros().size() == 0 ? "" : restClientServicesMethod.getParametros().get(0).getName();
+            bufferedWriter.newLine();
+            bufferedWriter.append("\tBoolean result = Boolean.FALSE;\n");
+            bufferedWriter.append("\ttry{\n");
+            bufferedWriter.append("\t   Integer status = " + restClientServicesInformation.getRestClientVar() + ".delete(" + nameParameter + ").getStatus();\n");
+            bufferedWriter.append("\t   if (status == 201) {\n");
+            bufferedWriter.append("\t      result = Boolean.TRUE;\n");
+            bufferedWriter.append("\t   }\n");
+            bufferedWriter.append("\t} catch (Exception e) {\n");
+            bufferedWriter.append("\t  FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + \" \" + e.getLocalizedMessage());\n");
+            bufferedWriter.append("\t}\n");
+            bufferedWriter.append("\treturn result;\n");
+        } catch (Exception e) {
+            System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+        }
+        return bufferedWriter;
+    }
+    
+    // </editor-fold
 
     // <editor-fold defaultstate="collapsed" desc="BufferedWriter inject(BufferedWriter bufferedWriter, String nameOfClass, RestClientServicesInformation  restClientServicesInformation)">
-    public BufferedWriter inject(BufferedWriter bufferedWriter, String nameOfClass, RestClientServicesInformation  restClientServicesInformation) {
+    public BufferedWriter inject(BufferedWriter bufferedWriter, String nameOfClass, RestClientServicesInformation restClientServicesInformation) {
         try {
 
             bufferedWriter.newLine();
             bufferedWriter.append("// <editor-fold defaultstate=\"collapsed\" desc=\"@Inject\">\n");
-            bufferedWriter.append("\t@Inject\n");            
+            bufferedWriter.append("\t@Inject\n");
             bufferedWriter.append("\t JmoordbCoreResourcesFiles rf;\n");
-            bufferedWriter.append("\t@Inject\n");            
-            bufferedWriter.append("\t "+restClientServicesInformation.getRestClient() +" "+restClientServicesInformation.getRestClientVar() + "; \n");
+            bufferedWriter.append("\t@Inject\n");
+            bufferedWriter.append("\t " + restClientServicesInformation.getRestClient() + " " + restClientServicesInformation.getRestClientVar() + "; \n");
             bufferedWriter.append("// </editor-fold>");
         } catch (Exception e) {
             System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());

@@ -1,0 +1,45 @@
+// src/main/resources/repository-template.mustache
+package {{packageName}};
+
+import com.example.repository.CrudRepository;
+import com.example.repository.Search;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+public class {{repositoryClassName}} implements {{repositoryInterfaceName}} {
+
+    private final List<{{entityClassName}}> entities = new ArrayList<>();
+
+    // Implementaciones de CrudRepository
+    @Override
+    public {{entityClassName}} save({{entityClassName}} entity) {
+        entities.add(entity);
+        return entity;
+    }
+
+    @Override
+    public Optional<{{entityClassName}}> findById(Long id) {
+        return entities.stream().filter(e -> e.getId().equals(id)).findFirst();
+    }
+
+    @Override
+    public List<{{entityClassName}}> findAll() {
+        return new ArrayList<>(entities);
+    }
+
+    @Override
+    public void delete({{entityClassName}} entity) {
+        entities.remove(entity);
+    }
+
+
+
+    // Métodos personalizados de la interfaz {{repositoryInterfaceName}}
+{{#customMethods}}
+    @Override
+    public {{returnType}} {{name}}({{parameters}}) {
+        {{body}}
+    }
+{{/customMethods}}
+}

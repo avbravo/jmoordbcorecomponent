@@ -1,0 +1,21 @@
+package {{packageName}};
+
+/**
+*Hola
+*/ 
+public class {{builderClassName}} {
+    private final {{className}} target = new {{className}}();
+
+    public static {{builderClassName}} builder() {
+        return new {{builderClassName}}();
+    }
+{{#fields}}
+    public {{builderClassName}} {{setterName}}({{type}} {{name}}) {
+        target.set{{capitalizename}}({{name}});
+        return this;
+    }
+{{/fields}}
+    public {{className}} build() {
+        return target;
+    }
+}

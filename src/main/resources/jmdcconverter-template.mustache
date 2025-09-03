@@ -1,0 +1,45 @@
+package {{packageName}};
+
+
+import jakarta.inject.Inject;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.convert.FacesConverter;
+import jakarta.inject.Named;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.application.FacesMessage;
+import java.util.Optional;
+import com.avbravo.jmoordbcorecomponent.utils.FacesUtil;
+import jakarta.faces.convert.ConverterException;
+{{import}}
+
+@Named
+@FacesConverter(forClass =Applicative.class, managed = true)
+public class {{repositoryClassName}} implements Converter<{{entityClassName}}> {
+   @Inject
+   {{entityClassName}}ConverterServices {{entityClassNameVar}}ConverterServices;
+    private final List<{{entityClassName}}> entities = new ArrayList<>();
+
+    @Override
+    public {{entityClassName}} save({{entityClassName}} entity) {
+        // Lógica de guardado simplificada
+        entities.add(entity);
+        return entity;
+    }
+
+    @Override
+    public Optional<{{entityClassName}}> findById({{idType}} id) {
+        // Lógica de búsqueda por ID
+        return entities.stream().filter(e -> e.getId().equals(id)).findFirst();
+    }
+
+    @Override
+    public List<{{entityClassName}}> findAll() {
+        return new ArrayList<>(entities);
+    }
+
+    @Override
+    public void delete({{entityClassName}} entity) {
+        entities.remove(entity);
+    }
+}

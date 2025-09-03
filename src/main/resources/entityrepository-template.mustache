@@ -1,0 +1,34 @@
+package {{packageName}};
+
+import com.avbravo.jmoordbcorecomponent.interfaces.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.ArrayList;
+
+public class {{repositoryClassName}} implements Repository<{{entityClassName}}, {{idType}}> {
+
+    private final List<{{entityClassName}}> entities = new ArrayList<>();
+
+    @Override
+    public {{entityClassName}} save({{entityClassName}} entity) {
+        // Lógica de guardado simplificada
+        entities.add(entity);
+        return entity;
+    }
+
+    @Override
+    public Optional<{{entityClassName}}> findById({{idType}} id) {
+        // Lógica de búsqueda por ID
+        return entities.stream().filter(e -> e.getId().equals(id)).findFirst();
+    }
+
+    @Override
+    public List<{{entityClassName}}> findAll() {
+        return new ArrayList<>(entities);
+    }
+
+    @Override
+    public void delete({{entityClassName}} entity) {
+        entities.remove(entity);
+    }
+}
