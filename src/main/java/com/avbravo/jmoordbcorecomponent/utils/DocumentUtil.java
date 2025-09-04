@@ -4,8 +4,12 @@
  */
 package com.avbravo.jmoordbcorecomponent.utils;
 
+import com.avbravo.jmoordbcore.model.Search;
+import com.avbravo.jmoordbcore.model.Sorted;
 import com.avbravo.jmoordbcorecomponent.utils.date.JmoordbCoreDateUtil;
 import static com.avbravo.jmoordbcorecomponent.utils.date.JmoordbCoreDateUtil.setHourToDate;
+import com.jmoordb.core.model.Pagination;
+import com.jmoordb.core.util.MessagesUtil;
 import static com.mongodb.MongoClientSettings.getDefaultCodecRegistry;
 import com.mongodb.client.model.Filters;
 import java.util.Date;
@@ -19,9 +23,14 @@ import org.bson.conversions.Bson;
  *
  * @author avbravo
  */
+
+
+/**
+ *
+ * @author avbravo
+ */
 public class DocumentUtil {
-    
-    
+
     // <editor-fold defaultstate="collapsed" desc="Document jsonToDocument(String json)">
     /**
      * Convierte un Json a Document
@@ -72,7 +81,7 @@ public class DocumentUtil {
 
             }
         } catch (Exception e) {
-            FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + "error: " + e.getLocalizedMessage());
+            MessagesUtil.error(MessagesUtil.nameOfClassAndMethod() + "error: " + e.getLocalizedMessage());
         }
         return sort;
     }
@@ -100,7 +109,7 @@ public class DocumentUtil {
                     ordernumber = 1;
             }
         } catch (Exception e) {
-            FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + "error: " + e.getLocalizedMessage());
+            MessagesUtil.error(MessagesUtil.nameOfClassAndMethod() + "error: " + e.getLocalizedMessage());
         }
         return ordernumber;
     }
@@ -144,7 +153,7 @@ public class DocumentUtil {
             }
 
         } catch (Exception e) {
-            FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + "error: " + e.getLocalizedMessage());
+            MessagesUtil.error(MessagesUtil.nameOfClassAndMethod() + "error: " + e.getLocalizedMessage());
         }
         return null;
 
@@ -171,13 +180,13 @@ public class DocumentUtil {
             filter = Filters.and(Filters.gte(fieldnamestart, dateStart), Filters.lte(fieldlimitname, dateEnd));
             return filter;
         } catch (Exception e) {
-            FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + "error: " + e.getLocalizedMessage());
+            MessagesUtil.error(MessagesUtil.nameOfClassAndMethod() + "error: " + e.getLocalizedMessage());
         }
 
         return filter;
     }
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="Bson createBsonBetweenDateWithoutHoursIsoDate(String fieldnamestart, Date datestartvalue, String fieldlimitname, Date datelimitvalue) {">
     /**
      * crea un filtro Bson entre fechas tomando en cuenta la hora
@@ -194,49 +203,116 @@ public class DocumentUtil {
         try {
 
             Date dateStart = setHourToDate(datestartvalue, 0, 0);
-            System.out.println("[[[[[[[>>>>>> dateStart "+dateStart);
-       dateStart =     JmoordbCoreDateUtil.stringToISODate(JmoordbCoreDateUtil.isoDateToString(dateStart));
-            System.out.println("[[[[[[[>>>>> con isoDate "+dateStart);
+            System.out.println("[[[[[[[>>>>>> dateStart " + dateStart);
+            dateStart = JmoordbCoreDateUtil.stringToISODate(JmoordbCoreDateUtil.isoDateToString(dateStart));
+            System.out.println("[[[[[[[>>>>> con isoDate " + dateStart);
             Date dateEnd = setHourToDate(datelimitvalue, 23, 59);
-             dateEnd =     JmoordbCoreDateUtil.stringToISODate(JmoordbCoreDateUtil.isoDateToString(dateEnd));
-            
+            dateEnd = JmoordbCoreDateUtil.stringToISODate(JmoordbCoreDateUtil.isoDateToString(dateEnd));
+
             filter = Filters.and(Filters.gte(fieldnamestart, dateStart), Filters.lte(fieldlimitname, dateEnd));
             return filter;
         } catch (Exception e) {
-            FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + "error: " + e.getLocalizedMessage());
+            MessagesUtil.error(MessagesUtil.nameOfClassAndMethod() + "error: " + e.getLocalizedMessage());
         }
 
         return filter;
     }
     // </editor-fold>
-    
-    
-     // <editor-fold defaultstate="collapsed" desc="Bson createBsonBetweenDateUsingHours(String fieldnamestart, Date datestartvalue, String fieldlimitname, Date datelimitvalue)">
+
+    // <editor-fold defaultstate="collapsed" desc="Bson createBsonBetweenDateUsingHours(String fieldnamestart, Date datestartvalue, String fieldlimitname, Date datelimitvalue)">
     /**
      * crea un filtro Bson entre fechas sin tomar en cuenta la hora
+     *
      * @param fieldnamestart
      * @param datestartvalue
      * @param fieldlimitname
      * @param datelimitvalue
-     * @return 
+     * @return
      */
     public static Bson createBsonBetweenDateUsingHours(String fieldnamestart, Date datestartvalue, String fieldlimitname, Date datelimitvalue) {
-   Bson filter = new Document();
+        Bson filter = new Document();
         try {
-      
-              Date dateStart = setHourToDate(datestartvalue, 0, 0);
-            Date dateEnd = setHourToDate(datelimitvalue, 23, 59);
-            filter = Filters.and(Filters.gte(fieldnamestart, datestartvalue), Filters.lte(fieldlimitname,  datelimitvalue));
-            
 
-return filter;
+            Date dateStart = setHourToDate(datestartvalue, 0, 0);
+            Date dateEnd = setHourToDate(datelimitvalue, 23, 59);
+            filter = Filters.and(Filters.gte(fieldnamestart, datestartvalue), Filters.lte(fieldlimitname, datelimitvalue));
+
+            return filter;
         } catch (Exception e) {
-          FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + "error: " + e.getLocalizedMessage());
+            MessagesUtil.error(MessagesUtil.nameOfClassAndMethod() + "error: " + e.getLocalizedMessage());
         }
 
         return filter;
     }
     // </editor-fold>
 
-  
+    // <editor-fold defaultstate="collapsed" desc="Search convertForLookup( String filter, String sort, Integer page,  Integer size)">
+    /**
+     * Convierte a un Search para ser usado en un lookup
+     *
+     * @param filter
+     * @param sort
+     * @param page
+     * @param size
+     * @return
+     */
+    public static Search convertForLookup(String filter, String sort, Integer page, Integer size) {
+        Search search = new Search();
+        try {
+
+            Document docFilter = DocumentUtil.jsonToDocument(filter);
+            Document docSort = DocumentUtil.jsonToDocument(sort);
+
+            Pagination pagination = new Pagination(page, size);
+
+            Sorted sorted = new Sorted();
+            sorted.setSort(docSort);
+
+            search.setFilter(docFilter);
+            search.setSorted(sorted);
+            search.setPagination(pagination);
+        } catch (Exception e) {
+            MessagesUtil.error(MessagesUtil.nameOfClassAndMethod() + "error: " + e.getLocalizedMessage());
+        }
+
+        return search;
+    }
+// </editor-fold>
+    
+    
+    // <editor-fold defaultstate="collapsed" desc="Search convertForLookup(Bson filter, Document sort, Integer page, Integer size)">
+
+    /**
+     * Convierte a un Search para ser usado en un lookup
+     *
+     * @param filter
+     * @param sort
+     * @param page
+     * @param size
+     * @return
+     */
+    public static Search convertForLookup(Bson filter, Document sort, Integer page, Integer size) {
+        Search search = new Search();
+        try {
+
+            Document docFilter = jsonToDocument(filter.toBsonDocument().toJson());
+            Document docSort = jsonToDocument(sort.toBsonDocument().toJson());
+            Pagination pagination = new Pagination(page, size);
+
+            Sorted sorted = new Sorted();
+            sorted.setSort(docSort);
+
+            search.setFilter(docFilter);
+            search.setSorted(sorted);
+            search.setPagination(pagination);
+        } catch (Exception e) {
+            MessagesUtil.error(MessagesUtil.nameOfClassAndMethod() + "error: " + e.getLocalizedMessage());
+        }
+
+        return search;
+    }
+// </editor-fold>
 }
+
+
+  
