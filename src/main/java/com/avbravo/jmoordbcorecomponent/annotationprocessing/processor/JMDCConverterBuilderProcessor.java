@@ -43,6 +43,8 @@ public class JMDCConverterBuilderProcessor extends AbstractProcessor {
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         IdInformation idInformation = new IdInformation();
+        System.out.println("..........................................................");
+        System.out.println("............................... iniciando JMDCCONVERTER");
         for (Element element : roundEnv.getElementsAnnotatedWith(JMDCConverter.class)) {
             if (element instanceof TypeElement) {
                 TypeElement classElement = (TypeElement) element;

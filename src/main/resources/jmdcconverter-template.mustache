@@ -14,7 +14,7 @@ import jakarta.faces.convert.ConverterException;
 {{import}}
 
 @Named
-@FacesConverter(forClass =Applicative.class, managed = true)
+@FacesConverter(forClass ={{entityClassName}}>.class, managed = true)
 public class {{repositoryClassName}} implements Converter<{{entityClassName}}> {
    @Inject
    {{entityClassName}}ConverterServices {{entityClassNameVar}}ConverterServices;
