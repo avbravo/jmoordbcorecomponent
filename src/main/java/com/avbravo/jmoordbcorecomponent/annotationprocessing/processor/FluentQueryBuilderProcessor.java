@@ -1,4 +1,4 @@
- /*
+/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -29,7 +29,7 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 import javax.tools.JavaFileObject;
-import com.avbravo.jmoordbcorecomponent.utils.ProcessorTools;
+import com.avbravo.jmoordbcorecomponent.annotationprocessing.EntityRepository;
 import com.jmoordb.core.annotation.FluentQuery;
 
 @AutoService(Processor.class)
@@ -47,7 +47,7 @@ public class FluentQueryBuilderProcessor extends AbstractProcessor {
             if (element instanceof TypeElement) {
                 TypeElement classElement = (TypeElement) element;
                 try {
-                    generateConverter(classElement);
+                    generateRepository(classElement);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -60,23 +60,22 @@ public class FluentQueryBuilderProcessor extends AbstractProcessor {
         return false;
     }
 
-    private void generateConverter(TypeElement classElement) throws IOException {
+    private void generateRepository(TypeElement classElement) throws IOException {
         String entityClassName = classElement.getSimpleName().toString();
         String packageName = processingEnv.getElementUtils().getPackageOf(classElement).getQualifiedName().toString();
-        String repositoryClassName = entityClassName + "Converter";
+        String repositoryClassName = entityClassName + "Repository";
 
         // Obtener el tipo de la clave primaria (asumimos que hay un método getId())
         // En un caso real, esto sería más complejo, por ejemplo, buscando una anotación @Id
         String idType = "Long";
-        System.out.println("----paso 1");
+
         // Datos para la plantilla de Mustache
         Map<String, Object> data = new HashMap<>();
         data.put("packageName", packageName);
         data.put("repositoryClassName", repositoryClassName);
         data.put("entityClassName", entityClassName);
-        data.put("entityClassNameVar",ProcessorTools.toLowercaseFirstLetter(entityClassName));
         data.put("idType", idType);
-System.out.println("----paso 2");
+
         // Generar el nuevo archivo de código fuente
         JavaFileObject repositoryFile = processingEnv.getFiler().createSourceFile(packageName + "." + repositoryClassName);
         try (Writer writer = repositoryFile.openWriter()) {

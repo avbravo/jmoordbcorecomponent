@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.avbravo</groupId>
     <artifactId>jmoordbcorecomponent</artifactId>
-    <version>0.6.2</version>
+    <version>0.6.4</version>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -17,7 +17,7 @@
         <openpdf.version>2.0.3</openpdf.version>
          <primefaces.version>15.0.3</primefaces.version>
               <auto-service.version>1.1.1</auto-service.version>
-              <jmoordb-core-annotations.version>2.2</jmoordb-core-annotations.version>
+              <jmoordb-core-annotations.version>2.3</jmoordb-core-annotations.version>
 
     </properties>
     <dependencies>
@@ -85,14 +85,18 @@
         </dependency>
         
            
-        <dependency>
+<!--        <dependency>
             <groupId>com.github.avbravo</groupId>
             <artifactId>jmoordb-core-annotations</artifactId>
             <version>${jmoordb-core-annotations.version}</version>
         </dependency>
-        
-        
-         <dependency>
+        -->
+        <dependency>
+            <groupId>com.avbravo.jmoordb.core.processor</groupId>
+            <artifactId>jmoordb-core-annotations</artifactId>
+            <version>2.3</version>
+        </dependency>
+        <dependency>
             <groupId>com.github.spullara.mustache.java</groupId>
             <artifactId>compiler</artifactId>
             <version>0.9.10</version>

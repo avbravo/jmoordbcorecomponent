@@ -2,13 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.avbravo.jmoordbcorecomponent.annotationprocessing.processor;
+package com.avbravo.jmoordbcorecomponent.annotationprocessing.processor.builder;
 
 /**
  *
  * @author avbravo
  */
-import com.avbravo.jmoordbcorecomponent.annotationprocessing.GenerateBuilder;
 import com.avbravo.jmoordbcorecomponent.domains.IdInformation;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
@@ -33,19 +32,20 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import javax.lang.model.element.VariableElement;
 import javax.tools.JavaFileObject;
+import com.jmoordb.core.annotation.builder.CoreBuilder;
 
 @AutoService(Processor.class)
-@SupportedAnnotationTypes("com.avbravo.jmoordbcorecomponent.annotationprocessing.GenerateBuilder")
+@SupportedAnnotationTypes("com.jmoordb.core.annotation.builder.CoreBuilder")
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
-public class GenerateBuilderProcessor extends AbstractProcessor {
+public class CoreBuilderProcessor extends AbstractProcessor {
 
     private final MustacheFactory mf = new DefaultMustacheFactory();
-    private final Mustache mustache = mf.compile("builder-template.mustache");
+    private final Mustache mustache = mf.compile("corebuilder-template.mustache");
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         IdInformation idInformation = new IdInformation();
-        for (Element element : roundEnv.getElementsAnnotatedWith(GenerateBuilder.class)) {
+        for (Element element : roundEnv.getElementsAnnotatedWith(CoreBuilder.class)) {
             if (element instanceof TypeElement) {
                 TypeElement classElement = (TypeElement) element;
                 try {

@@ -1,8 +1,8 @@
- /*
+/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.avbravo.jmoordbcorecomponent.annotationprocessing.processor;
+package com.avbravo.jmoordbcorecomponent.annotationprocessing.processor.faces;
 
 /**
  *
@@ -29,13 +29,13 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 import javax.tools.JavaFileObject;
-import com.avbravo.jmoordbcorecomponent.annotationprocessing.JMDCConverter;
 import com.avbravo.jmoordbcorecomponent.utils.ProcessorTools;
+import com.jmoordb.core.annotation.faces.CoreConverter;
 
 @AutoService(Processor.class)
-@SupportedAnnotationTypes("com.avbravo.jmoordbcorecomponent.annotationprocessing.JMDCConverter")
+@SupportedAnnotationTypes("com.jmoordb.core.annotation.faces.CoreConverter")
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
-public class JMDCConverterBuilderProcessor extends AbstractProcessor {
+public class CoreConverterBuilderProcessor extends AbstractProcessor {
 
     private final MustacheFactory mf = new DefaultMustacheFactory();
     private final Mustache mustache = mf.compile("jmdcconverter-template.mustache");
@@ -45,7 +45,7 @@ public class JMDCConverterBuilderProcessor extends AbstractProcessor {
         IdInformation idInformation = new IdInformation();
         System.out.println("..........................................................");
         System.out.println("............................... iniciando JMDCCONVERTER");
-        for (Element element : roundEnv.getElementsAnnotatedWith(JMDCConverter.class)) {
+        for (Element element : roundEnv.getElementsAnnotatedWith(CoreConverter.class)) {
             if (element instanceof TypeElement) {
                 TypeElement classElement = (TypeElement) element;
                 try {
@@ -76,9 +76,9 @@ public class JMDCConverterBuilderProcessor extends AbstractProcessor {
         data.put("packageName", packageName);
         data.put("repositoryClassName", repositoryClassName);
         data.put("entityClassName", entityClassName);
-        data.put("entityClassNameVar",ProcessorTools.toLowercaseFirstLetter(entityClassName));
+        data.put("entityClassNameVar", ProcessorTools.toLowercaseFirstLetter(entityClassName));
         data.put("idType", idType);
-System.out.println("----paso 2");
+        System.out.println("----paso 2");
         // Generar el nuevo archivo de código fuente
         JavaFileObject repositoryFile = processingEnv.getFiler().createSourceFile(packageName + "." + repositoryClassName);
         try (Writer writer = repositoryFile.openWriter()) {

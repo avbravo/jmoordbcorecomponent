@@ -2,12 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.avbravo.jmoordbcorecomponent.annotationprocessing.processor;
+package com.avbravo.jmoordbcorecomponent.annotationprocessing.processor.builder;
 
 /**
  *
  * @author avbravo
  */
+import com.github.mustachejava.DefaultMustacheFactory;
+import com.github.mustachejava.Mustache;
+import com.github.mustachejava.MustacheFactory;
 import java.io.IOException;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -23,17 +26,29 @@ import javax.lang.model.element.TypeElement;
 
 import com.google.auto.service.AutoService;
 import java.io.PrintWriter;
+import java.io.Writer;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.ExecutableType;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 
 @AutoService(Processor.class)
-@SupportedAnnotationTypes("com.avbravo.jmoordbcorecomponent.annotationprocessing.BuilderProperty")
+@SupportedAnnotationTypes("com.jmoordb.core.annotation.builder.OldCoreBuilderProperty")
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
-public class BuilderPropertyProcessor extends AbstractProcessor{
+public class CoreBuilderPropertyProcessorCodeOld extends AbstractProcessor{
 
+       private final MustacheFactory mf = new DefaultMustacheFactory();
+    private final Mustache mustache = mf.compile("coresetterbuilder-template.mustache");
+    
+    /**
+     * Procesar los metodos set que tengan la anotación
+     * @param annotations
+     * @param roundEnv
+     * @return 
+     */
    @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         for (TypeElement annotation : annotations) {
@@ -45,7 +60,7 @@ public class BuilderPropertyProcessor extends AbstractProcessor{
             List<Element> setters = annotatedMethods.get(true);
             List<Element> otherMethods = annotatedMethods.get(false);
 
-            otherMethods.forEach(element -> processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "@BuilderProperty must be applied to a setXxx method with a single argument", element));
+            otherMethods.forEach(element -> processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "@CoreSetterBuilderProperty must be applied to a setXxx method with a single argument", element));
 
             if (setters.isEmpty()) {
                 continue;
@@ -131,4 +146,7 @@ public class BuilderPropertyProcessor extends AbstractProcessor{
 
         }
     }
+    
+            
+
 }
