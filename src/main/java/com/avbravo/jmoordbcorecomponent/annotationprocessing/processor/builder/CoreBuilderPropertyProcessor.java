@@ -34,6 +34,7 @@ import javax.lang.model.element.VariableElement;
 import javax.tools.JavaFileObject;
 import com.jmoordb.core.annotation.builder.CoreBuilder;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.lang.model.type.ExecutableType;
 import javax.tools.Diagnostic;
 
@@ -45,7 +46,7 @@ public class CoreBuilderPropertyProcessor extends AbstractProcessor {
     private final MustacheFactory mf = new DefaultMustacheFactory();
     private final Mustache mustache = mf.compile("corebuilderproperty-template.mustache");
 
-        public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         for (TypeElement annotation : annotations) {
 
             Set<? extends Element> annotatedElements = roundEnv.getElementsAnnotatedWith(annotation);
@@ -62,12 +63,12 @@ public class CoreBuilderPropertyProcessor extends AbstractProcessor {
             }
 
             String className = ((TypeElement) setters.get(0).getEnclosingElement()).getQualifiedName().toString();
-String packageName = processingEnv.getElementUtils().getPackageOf(((TypeElement) setters.get(0).getEnclosingElement())).getQualifiedName().toString();
+            String packageName = processingEnv.getElementUtils().getPackageOf(((TypeElement) setters.get(0).getEnclosingElement())).getQualifiedName().toString();
             Map<String, String> setterMap = setters.stream().collect(Collectors.toMap(setter -> setter.getSimpleName().toString(), setter -> ((ExecutableType) setter.asType()).getParameterTypes().get(0).toString()));
 
             try {
-               writeBuilderFile(className, setterMap);
-                writeBuilderFileMustache(className, packageName,setterMap);
+                writeBuilderFile(className, setterMap);
+                writeBuilderFileMustache(className, packageName, setterMap);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -76,9 +77,7 @@ String packageName = processingEnv.getElementUtils().getPackageOf(((TypeElement)
 
         return true;
     }
-        
-       
-        
+
     private void writeBuilderFile(String className, Map<String, String> setterMap) throws IOException {
 
         String packageName = null;
@@ -144,9 +143,8 @@ String packageName = processingEnv.getElementUtils().getPackageOf(((TypeElement)
 
         }
     }
-    private void writeBuilderFileMustache(String className, String packageName,Map<String, String> setterMap) throws IOException {
 
-
+    private void writeBuilderFileMustache(String className, String packageName, Map<String, String> setterMap) throws IOException {
 
         int lastDot = className.lastIndexOf('.');
         if (lastDot > 0) {
@@ -154,25 +152,42 @@ String packageName = processingEnv.getElementUtils().getPackageOf(((TypeElement)
         }
 
         String simpleClassName = className.substring(lastDot + 1);
-    //    String builderClassName = className + "Builder";
+        //    String builderClassName = className + "Builder";
 //        String builderSimpleClassName = builderClassName.substring(lastDot + 1);
-        
-        
-         // Create a data map for Mustache
+
+        List<Map<String, String>> metodos = new ArrayList<>();
+
+        setterMap.entrySet().forEach(setter -> {
+            String methodName = setter.getKey();
+            String argumentType = setter.getValue();
+            Map<String, String> fieldMethod = new HashMap<>();
+            fieldMethod.put("methodName", methodName);
+            fieldMethod.put("argumentType", argumentType);
+            fieldMethod.put("capitalizename", capitalize(methodName));
+            fieldMethod.put("setterName", "with" + capitalize(methodName));
+            metodos.add(fieldMethod);
+        });
+
+        // Create a data map for Mustache
         Map<String, Object> data = new HashMap<>();
         data.put("packageName", packageName);
-        data.put("className", simpleClassName );
-        data.put("builderClassName", simpleClassName  + "Builder");
+        data.put("className", simpleClassName);
+        data.put("builderClassName", simpleClassName + "Builder");
 //        data.put("className", className);
 //        data.put("builderClassName", className + "Builder");
-        data.put("methods", setterMap);
+//        data.put("methods", setterMap);
+        data.put("methods", metodos);
 
         // Generate the new source file
+        
+        System.out.println(">>>>> generated");
+        System.out.println(">>>>> packageName "+packageName);
+        System.out.println(">>>>> className"+ className);
         JavaFileObject builderFile = processingEnv.getFiler().createSourceFile(packageName + "." + className + "Builder");
         try (Writer writer = builderFile.openWriter()) {
             mustache.execute(writer, data).flush();
         }
-      
+
     }
 
     private void generateBuilder(TypeElement classElement) throws IOException {
@@ -213,4 +228,5 @@ String packageName = processingEnv.getElementUtils().getPackageOf(((TypeElement)
         }
         return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
+    
 }

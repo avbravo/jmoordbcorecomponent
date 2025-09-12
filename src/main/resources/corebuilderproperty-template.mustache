@@ -10,8 +10,8 @@ public class {{builderClassName}} {
         return new {{builderClassName}}();
     }
 {{#methods}}
-    public {{builderClassName}} {{setterName}}({{type}} {{name}}) {
-        target.set{{capitalizename}}({{name}});
+    public {{builderClassName}} {{methodName}}({{argumentType}} value) {
+        target.{{methodName}}(value);
         return this;
     }
 {{/methods}}
