@@ -67,7 +67,7 @@ public class CoreBuilderPropertyProcessor extends AbstractProcessor {
             Map<String, String> setterMap = setters.stream().collect(Collectors.toMap(setter -> setter.getSimpleName().toString(), setter -> ((ExecutableType) setter.asType()).getParameterTypes().get(0).toString()));
 
             try {
-                writeBuilderFile(className, setterMap);
+                //writeBuilderFile(className, setterMap);
                 writeBuilderFileMustache(className, packageName, setterMap);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -183,7 +183,7 @@ public class CoreBuilderPropertyProcessor extends AbstractProcessor {
         System.out.println(">>>>> generated");
         System.out.println(">>>>> packageName "+packageName);
         System.out.println(">>>>> className"+ className);
-        JavaFileObject builderFile = processingEnv.getFiler().createSourceFile(packageName + "." + className + "Builder");
+        JavaFileObject builderFile = processingEnv.getFiler().createSourceFile(packageName + "." + simpleClassName + "Builder");
         try (Writer writer = builderFile.openWriter()) {
             mustache.execute(writer, data).flush();
         }
