@@ -9,12 +9,12 @@ public class {{builderClassName}} {
     public static {{builderClassName}} builder() {
         return new {{builderClassName}}();
     }
-{{#fields}}
+{{#methods}}
     public {{builderClassName}} {{setterName}}({{type}} {{name}}) {
         target.set{{capitalizename}}({{name}});
         return this;
     }
-{{/fields}}
+{{/methods}}
     public {{className}} build() {
         return target;
     }

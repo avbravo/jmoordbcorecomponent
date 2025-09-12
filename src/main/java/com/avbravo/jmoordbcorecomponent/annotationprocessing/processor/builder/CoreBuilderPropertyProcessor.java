@@ -62,11 +62,12 @@ public class CoreBuilderPropertyProcessor extends AbstractProcessor {
             }
 
             String className = ((TypeElement) setters.get(0).getEnclosingElement()).getQualifiedName().toString();
-
+String packageName = processingEnv.getElementUtils().getPackageOf(((TypeElement) setters.get(0).getEnclosingElement())).getQualifiedName().toString();
             Map<String, String> setterMap = setters.stream().collect(Collectors.toMap(setter -> setter.getSimpleName().toString(), setter -> ((ExecutableType) setter.asType()).getParameterTypes().get(0).toString()));
 
             try {
-                writeBuilderFile(className, setterMap);
+               writeBuilderFile(className, setterMap);
+                writeBuilderFileMustache(className, packageName,setterMap);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -142,6 +143,36 @@ public class CoreBuilderPropertyProcessor extends AbstractProcessor {
             out.println("}");
 
         }
+    }
+    private void writeBuilderFileMustache(String className, String packageName,Map<String, String> setterMap) throws IOException {
+
+
+
+        int lastDot = className.lastIndexOf('.');
+        if (lastDot > 0) {
+            packageName = className.substring(0, lastDot);
+        }
+
+        String simpleClassName = className.substring(lastDot + 1);
+    //    String builderClassName = className + "Builder";
+//        String builderSimpleClassName = builderClassName.substring(lastDot + 1);
+        
+        
+         // Create a data map for Mustache
+        Map<String, Object> data = new HashMap<>();
+        data.put("packageName", packageName);
+        data.put("className", simpleClassName );
+        data.put("builderClassName", simpleClassName  + "Builder");
+//        data.put("className", className);
+//        data.put("builderClassName", className + "Builder");
+        data.put("methods", setterMap);
+
+        // Generate the new source file
+        JavaFileObject builderFile = processingEnv.getFiler().createSourceFile(packageName + "." + className + "Builder");
+        try (Writer writer = builderFile.openWriter()) {
+            mustache.execute(writer, data).flush();
+        }
+      
     }
 
     private void generateBuilder(TypeElement classElement) throws IOException {
