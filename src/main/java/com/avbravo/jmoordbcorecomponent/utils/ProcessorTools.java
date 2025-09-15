@@ -5,8 +5,16 @@
 package com.avbravo.jmoordbcorecomponent.utils;
 
 import com.jmoordb.core.util.MessagesUtil;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;
 
@@ -15,6 +23,8 @@ import javax.lang.model.type.TypeMirror;
  * @author avbravo
  */
 public class ProcessorTools {
+
+
 
     public static String toLowercaseFirstLetter(String str) {
         if (str == null || str.isEmpty()) {
@@ -114,4 +124,100 @@ public class ProcessorTools {
             return e.getTypeMirror();
         }
     }
+
+    // <editor-fold defaultstate="collapsed" desc="Boolean isRecord(TypeElement classElement)">
+    /**
+     * Determina si es una clase o un Java Record
+     *
+     * @param classElement
+     * @return
+     */
+    public static Boolean isRecord(TypeElement classElement, TypeElement superclassElement) {
+        Boolean result = Boolean.FALSE;
+        try {
+            TypeMirror superclassMirror = classElement.getSuperclass();
+
+            // Verificamos si la superclase existe y no es java.lang.Object
+            if (superclassMirror != null && !superclassMirror.toString().equals("java.lang.Object")) {
+                //TypeElement superclassElement = (TypeElement) ((javax.lang.model.util.Types) processingEnv.getTypeUtils()).asElement(superclassMirror);
+
+                if (superclassElement != null && superclassElement.getQualifiedName().contentEquals("java.lang.Record")) {
+                    result = Boolean.TRUE;
+//                            System.out.println("Es un Java Record: " + classElement.getQualifiedName());
+                } else {
+//                            System.out.println("Es una clase normal: " + classElement.getQualifiedName());
+                }
+            } else {
+//                        System.out.println("Es una clase normal: " + classElement.getQualifiedName());
+            }
+        } catch (Exception e) {
+            throw new IllegalStateException("isRecord() " + e.getLocalizedMessage());
+        }
+        return result;
+    }
+// </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="String capitalize(String str) ">
+    public static String capitalize(String str) {
+        if (str == null || str.isEmpty()) {
+            return str;
+        }
+        return str.substring(0, 1).toUpperCase() + str.substring(1);
+    }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="List<Map<String, String>> fields(TypeElement classElement)">
+    /**
+     * *
+     * Devuelve los campos y el separador "," o " " .
+     *
+     * @param classElement
+     * @return
+     */
+    public static List<Map<String, String>> fields(TypeElement classElement) {
+        List<Map<String, String>> result = new ArrayList<>();
+
+        try {
+           
+
+            List<VariableElement> filteredElements = classElement.getEnclosedElements().stream()
+                    .filter(e -> e.getKind().isField())
+                    .map(e -> (VariableElement) e)
+                    .collect(Collectors.toList());
+
+// 2. Procesa la lista con índices para agregar el atributo "isLast"
+            result = IntStream.range(0, filteredElements.size())
+                    .mapToObj(i -> {
+                        VariableElement field = filteredElements.get(i);
+                        Map<String, String> fieldData = new HashMap<>();
+                        String  type=field.asType().toString();
+//                        System.out.println("type as "+type);
+//                        if(type.toString().indexOf("&lt;")!=-1){
+//                            System.out.println(" Original "+type);
+//                            type=type.replaceAll("&lt;", "<");
+//                            
+//                          
+//                        } 
+//                        if(type.toString().indexOf("&gt;")!=-1){
+//                              type=type.replaceAll("&gt;", ">");
+//                        }
+//                        System.out.println("Type Converter"+type);
+System.out.println(" type "+type);
+                        fieldData.put("type", field.asType().toString());
+                        fieldData.put("name", field.getSimpleName().toString());
+                        fieldData.put("capitalizeName", ProcessorTools.capitalize(field.getSimpleName().toString()));
+                        fieldData.put("lista", "java.util.List<Persona>");
+                       // fieldData.put("setterName", "with" + ProcessorTools.capitalize(field.getSimpleName().toString()));
+                       
+                        // Añade el atributo booleano "isLast"
+                        boolean isLast = i == filteredElements.size() - 1;
+                        fieldData.put("separator", isLast ? "" : ",");
+                        return fieldData;
+                    })
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+        }
+        return result;
+    }
+// </editor-fold>
 }

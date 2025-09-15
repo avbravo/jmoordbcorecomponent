@@ -1,0 +1,96 @@
+package {{packageName}};
+import java.util.Objects;
+/**
+*
+*/ 
+public  class {{builderClassName}} {
+
+{{#fields}}
+  {{{type}}} {{name}};        
+{{/fields}}
+
+  public {{builderClassName}}(){
+  }
+
+/**
+Constructor
+**/
+ public {{builderClassName}}(
+{{#fields}}
+         {{{type}}} {{name}}  {{separator}}   
+{{/fields}}
+  ){
+{{#fields}}
+   this.{{name}} = {{name}};
+{{/fields}}
+ }
+
+/**
+Fields
+**/
+{{#fields}}
+    public void set{{capitalizeName}}({{{type}}} {{name}}) {
+      this.{{name}} = {{name}};
+    }
+
+    public {{{type}}} get{{capitalizeName}}() {
+    return {{name}};
+    }
+{{/fields}}
+
+
+/**
+ToString
+**/
+
+
+@Override
+public String toString() {
+
+        return "{{builderClassName}}{"
+{{#fields}}
+    + "{{name}}="+{{name}} +"{{separator}}"
+ 
+{{/fields}}
+
+ +'}';
+  
+
+  }
+
+
+@Override
+ public int hashCode() {
+        int hash = 7;
+{{#fields}}
+        hash = 97 * hash + Objects.hashCode(this.{{name}});
+{{/fields}}
+        return hash;
+}
+
+
+
+@Override
+public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final {{builderClassName}} other = ({{builderClassName}}) obj;
+       {{#fields}}
+       if (!Objects.equals(this.{{name}},other.{{name}})) {
+            return false;
+        }
+       {{/fields}}
+        
+        return true;
+}
+
+
+}
+

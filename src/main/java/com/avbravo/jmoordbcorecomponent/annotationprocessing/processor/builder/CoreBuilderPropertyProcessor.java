@@ -67,8 +67,8 @@ public class CoreBuilderPropertyProcessor extends AbstractProcessor {
             Map<String, String> setterMap = setters.stream().collect(Collectors.toMap(setter -> setter.getSimpleName().toString(), setter -> ((ExecutableType) setter.asType()).getParameterTypes().get(0).toString()));
 
             try {
-                //writeBuilderFile(className, setterMap);
-                writeBuilderFileMustache(className, packageName, setterMap);
+                
+                writeBuilderFile(className, packageName, setterMap);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -78,73 +78,8 @@ public class CoreBuilderPropertyProcessor extends AbstractProcessor {
         return true;
     }
 
-    private void writeBuilderFile(String className, Map<String, String> setterMap) throws IOException {
-
-        String packageName = null;
-        int lastDot = className.lastIndexOf('.');
-        if (lastDot > 0) {
-            packageName = className.substring(0, lastDot);
-        }
-
-        String simpleClassName = className.substring(lastDot + 1);
-        String builderClassName = className + "Builder";
-        String builderSimpleClassName = builderClassName.substring(lastDot + 1);
-        JavaFileObject builderFile = processingEnv.getFiler().createSourceFile(builderClassName);
-        try (PrintWriter out = new PrintWriter(builderFile.openWriter())) {
-
-            if (packageName != null) {
-                out.print("package ");
-                out.print(packageName);
-                out.println(";");
-                out.println();
-            }
-
-            out.print("public class ");
-            out.print(builderSimpleClassName);
-            out.println(" {");
-            out.println();
-
-            out.print("    private ");
-            out.print(simpleClassName);
-            out.print(" object = new ");
-            out.print(simpleClassName);
-            out.println("();");
-            out.println();
-
-            out.print("    public ");
-            out.print(simpleClassName);
-            out.println(" build() {");
-            out.println("        return object;");
-            out.println("    }");
-            out.println();
-
-            setterMap.entrySet().forEach(setter -> {
-                String methodName = setter.getKey();
-                String argumentType = setter.getValue();
-
-                out.print("    public ");
-                out.print(builderSimpleClassName);
-                out.print(" ");
-                out.print(methodName);
-
-                out.print("(");
-
-                out.print(argumentType);
-                out.println(" value) {");
-                out.print("        object.");
-                out.print(methodName);
-                out.println("(value);");
-                out.println("        return this;");
-                out.println("    }");
-                out.println();
-            });
-
-            out.println("}");
-
-        }
-    }
-
-    private void writeBuilderFileMustache(String className, String packageName, Map<String, String> setterMap) throws IOException {
+   
+    private void writeBuilderFile(String className, String packageName, Map<String, String> setterMap) throws IOException {
 
         int lastDot = className.lastIndexOf('.');
         if (lastDot > 0) {
@@ -180,9 +115,8 @@ public class CoreBuilderPropertyProcessor extends AbstractProcessor {
 
         // Generate the new source file
         
-        System.out.println(">>>>> generated");
-        System.out.println(">>>>> packageName "+packageName);
-        System.out.println(">>>>> className"+ className);
+
+        
         JavaFileObject builderFile = processingEnv.getFiler().createSourceFile(packageName + "." + simpleClassName + "Builder");
         try (Writer writer = builderFile.openWriter()) {
             mustache.execute(writer, data).flush();
@@ -190,38 +124,7 @@ public class CoreBuilderPropertyProcessor extends AbstractProcessor {
 
     }
 
-    private void generateBuilder(TypeElement classElement) throws IOException {
-        String className = classElement.getSimpleName().toString();
-        String packageName = processingEnv.getElementUtils().getPackageOf(classElement).getQualifiedName().toString();
-
-        // Collect fields to pass to the Mustache template
-        List<Map<String, String>> fields = classElement.getEnclosedElements().stream()
-                .filter(e -> e.getKind().isField())
-                .map(e -> (VariableElement) e)
-                .map(field -> {
-                    Map<String, String> fieldData = new HashMap<>();
-                    fieldData.put("type", field.asType().toString());
-                    fieldData.put("name", field.getSimpleName().toString());
-                    fieldData.put("capitalizename", capitalize(field.getSimpleName().toString()));
-                    fieldData.put("setterName", "with" + capitalize(field.getSimpleName().toString()));
-                    return fieldData;
-                })
-                .collect(Collectors.toList());
-
-        // Create a data map for Mustache
-        Map<String, Object> data = new HashMap<>();
-        data.put("packageName", packageName);
-        data.put("className", className);
-        data.put("builderClassName", className + "Builder");
-        data.put("fields", fields);
-
-        // Generate the new source file
-        JavaFileObject builderFile = processingEnv.getFiler().createSourceFile(packageName + "." + className + "Builder");
-        try (Writer writer = builderFile.openWriter()) {
-            mustache.execute(writer, data).flush();
-        }
-    }
-
+   
     private String capitalize(String str) {
         if (str == null || str.isEmpty()) {
             return str;

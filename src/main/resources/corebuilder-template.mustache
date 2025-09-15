@@ -10,8 +10,8 @@ public class {{builderClassName}} {
         return new {{builderClassName}}();
     }
 {{#fields}}
-    public {{builderClassName}} {{setterName}}({{type}} {{name}}) {
-        target.set{{capitalizename}}({{name}});
+    public {{builderClassName}} with{{capitalizeName}}({{{type}}} {{name}}) {
+        target.set{{capitalizeName}}({{name}});
         return this;
     }
 {{/fields}}

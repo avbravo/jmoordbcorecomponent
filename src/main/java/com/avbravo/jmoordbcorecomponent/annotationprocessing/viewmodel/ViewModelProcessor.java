@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.avbravo.jmoordbcorecomponent.annotationprocessing.processor.builder;
+package com.avbravo.jmoordbcorecomponent.annotationprocessing.viewmodel;
 
 /**
  *
@@ -25,30 +25,25 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 
 import com.google.auto.service.AutoService;
+import com.jmoordb.core.annotation.ViewModel;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import javax.lang.model.element.VariableElement;
 import javax.tools.JavaFileObject;
-import com.jmoordb.core.annotation.builder.CoreBuilder;
-import java.util.stream.IntStream;
-import javax.lang.model.type.TypeMirror;
-
 @AutoService(Processor.class)
-@SupportedAnnotationTypes("com.jmoordb.core.annotation.builder.CoreBuilder")
+@SupportedAnnotationTypes("com.jmoordb.core.annotation.ViewModel")
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
-public class CoreBuilderProcessor extends AbstractProcessor {
+public class ViewModelProcessor extends AbstractProcessor {
 
     private final MustacheFactory mf = new DefaultMustacheFactory();
-    private final Mustache mustache = mf.compile("corebuilder-template.mustache");
-    private final Mustache mustacheRecord = mf.compile("corerecordbuilder-template.mustache");
+    private final Mustache mustache = mf.compile("viewmodel-template.mustache");
+    private final Mustache mustacheRecord = mf.compile("viewmodelrecord-template.mustache");
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         IdInformation idInformation = new IdInformation();
-        for (Element element : roundEnv.getElementsAnnotatedWith(CoreBuilder.class)) {
+        for (Element element : roundEnv.getElementsAnnotatedWith(ViewModel.class)) {
             if (element instanceof TypeElement) {
                 TypeElement classElement = (TypeElement) element;
                 try {
@@ -82,13 +77,14 @@ public class CoreBuilderProcessor extends AbstractProcessor {
         Map<String, Object> data = new HashMap<>();
         data.put("packageName", packageName);
         data.put("className", className);
-        data.put("builderClassName", className + "Builder");
+        data.put("builderClassName", className + "ViewModel");
         data.put("fields", fields);
 
         // Generate the new source file
-        JavaFileObject builderFile = processingEnv.getFiler().createSourceFile(packageName + "." + className + "Builder");
+        JavaFileObject builderFile = processingEnv.getFiler().createSourceFile(packageName + "." + className + "ViewModel");
         try (Writer writer = builderFile.openWriter()) {
             mustache.execute(writer, data).flush();
+             System.out.println("Resultado de Mustache: " + writer.toString());
         }
     }
 
@@ -104,13 +100,14 @@ public class CoreBuilderProcessor extends AbstractProcessor {
         Map<String, Object> data = new HashMap<>();
         data.put("packageName", packageName);
         data.put("className", className);
-        data.put("builderClassName", className + "Builder");
+        data.put("builderClassName", className + "ViewModel");
         data.put("fields", fields);
 
         // Generate the new source file
-        JavaFileObject builderFile = processingEnv.getFiler().createSourceFile(packageName + "." + className + "Builder");
+        JavaFileObject builderFile = processingEnv.getFiler().createSourceFile(packageName + "." + className + "ViewModel");
         try (Writer writer = builderFile.openWriter()) {
             mustacheRecord.execute(writer, data).flush();
+            System.out.println("Resultado de Mustache: " + writer.toString());
         }
     }
 

@@ -1,0 +1,44 @@
+package {{packageName}};
+
+/**
+*
+*/ 
+public final class {{builderClassName}} {
+
+{{#fields}}
+  {{{type}}} {{name}};        
+{{/fields}}
+
+  public {{builderClassName}}(){
+  }
+
+/**
+Constructor
+**/
+ public {{builderClassName}}(
+{{#fields}}
+         {{{type}}} {{name}}  {{separator}}   
+{{/fields}}
+  ){
+ }
+
+/**
+Fields
+**/
+{{#fields}}
+public {{builderClassName}} {{name}}({{{type}}} {{name}}) {
+        this.{{name}} = {{name}};
+        return this;
+}
+{{/fields}}
+
+public {{className}} build() {
+        return new {{className}}(
+  {{#fields}}
+                   {{name}} {{separator}}
+  {{/fields}}
+ );
+}
+
+}
+
