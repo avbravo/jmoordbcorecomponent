@@ -8,7 +8,8 @@ package com.avbravo.jmoordbcorecomponent.annotationprocessing.processor.builder;
  *
  * @author avbravo
  */
-import com.avbravo.jmoordbcorecomponent.domains.IdInformation;
+import com.avbravo.jmoordbcorecomponent.utils.ProcessorTools;
+import static com.avbravo.jmoordbcorecomponent.utils.ProcessorTools.capitalize;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
@@ -30,10 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import javax.lang.model.element.VariableElement;
 import javax.tools.JavaFileObject;
-import com.jmoordb.core.annotation.builder.CoreBuilder;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.lang.model.type.ExecutableType;
 import javax.tools.Diagnostic;
@@ -98,8 +96,8 @@ public class CoreBuilderPropertyProcessor extends AbstractProcessor {
             Map<String, String> fieldMethod = new HashMap<>();
             fieldMethod.put("methodName", methodName);
             fieldMethod.put("argumentType", argumentType);
-            fieldMethod.put("capitalizename", capitalize(methodName));
-            fieldMethod.put("setterName", "with" + capitalize(methodName));
+            fieldMethod.put("capitalizename", ProcessorTools.capitalize(methodName));
+            fieldMethod.put("setterName", "with" + ProcessorTools.capitalize(methodName));
             metodos.add(fieldMethod);
         });
 
@@ -125,11 +123,6 @@ public class CoreBuilderPropertyProcessor extends AbstractProcessor {
     }
 
    
-    private String capitalize(String str) {
-        if (str == null || str.isEmpty()) {
-            return str;
-        }
-        return str.substring(0, 1).toUpperCase() + str.substring(1);
-    }
+   
     
 }

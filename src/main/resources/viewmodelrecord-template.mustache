@@ -80,6 +80,41 @@ public {{className}} toRecord(){
 
 
 
+ public Celular toRecord({{builderClassName}}... vm) {
+        if (vm.length != 0) {
+           return new {{className}}(
+{{#fields}}
+                   vm[0].{{name}} {{separator}}
+{{/fields}}
+            );
+        } else {
+              return new {{className}}(
+{{#fields}}
+                    {{name}} {{separator}}
+{{/fields}}
+               );
+        }
+}
+
+
+
+
+
+public {{builderClassName}} toViewModel({{className}} {{lowercaseInitialClassName}}){
+    {{builderClassName}} result = new {{builderClassName}}();
+    try{
+{{#fields}}
+         result.set{{capitalizeName}}({{lowercaseInitialClassName}}.{{lowercaseInitialName}}());
+{{/fields}}
+    } catch (Exception e) {
+            System.out.println("toViewModel() " + e.getLocalizedMessage());
+    }
+    return result;
+}
+
+
+
+
 
 @Override
 public boolean equals(Object obj) {

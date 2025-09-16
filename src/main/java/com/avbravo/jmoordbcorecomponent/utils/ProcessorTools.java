@@ -24,8 +24,6 @@ import javax.lang.model.type.TypeMirror;
  */
 public class ProcessorTools {
 
-
-
     public static String toLowercaseFirstLetter(String str) {
         if (str == null || str.isEmpty()) {
             return str; // Handle null or empty strings
@@ -164,6 +162,15 @@ public class ProcessorTools {
         }
         return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
+
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="String lowercaseInitial(String str) ">
+    public static String lowercaseInitial(String str) {
+        if (str == null || str.isEmpty()) {
+            return str;
+        }
+        return str.substring(0, 1).toLowerCase() + str.substring(1);
+    }
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="List<Map<String, String>> fields(TypeElement classElement)">
@@ -178,7 +185,6 @@ public class ProcessorTools {
         List<Map<String, String>> result = new ArrayList<>();
 
         try {
-           
 
             List<VariableElement> filteredElements = classElement.getEnclosedElements().stream()
                     .filter(e -> e.getKind().isField())
@@ -190,25 +196,12 @@ public class ProcessorTools {
                     .mapToObj(i -> {
                         VariableElement field = filteredElements.get(i);
                         Map<String, String> fieldData = new HashMap<>();
-                        String  type=field.asType().toString();
-//                        System.out.println("type as "+type);
-//                        if(type.toString().indexOf("&lt;")!=-1){
-//                            System.out.println(" Original "+type);
-//                            type=type.replaceAll("&lt;", "<");
-//                            
-//                          
-//                        } 
-//                        if(type.toString().indexOf("&gt;")!=-1){
-//                              type=type.replaceAll("&gt;", ">");
-//                        }
-//                        System.out.println("Type Converter"+type);
-System.out.println(" type "+type);
+                        String type = field.asType().toString();
                         fieldData.put("type", field.asType().toString());
                         fieldData.put("name", field.getSimpleName().toString());
                         fieldData.put("capitalizeName", ProcessorTools.capitalize(field.getSimpleName().toString()));
+                        fieldData.put("lowercaseInitialName", ProcessorTools.lowercaseInitial(field.getSimpleName().toString()));
                         fieldData.put("lista", "java.util.List<Persona>");
-                       // fieldData.put("setterName", "with" + ProcessorTools.capitalize(field.getSimpleName().toString()));
-                       
                         // Añade el atributo booleano "isLast"
                         boolean isLast = i == filteredElements.size() - 1;
                         fieldData.put("separator", isLast ? "" : ",");

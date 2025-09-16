@@ -30,6 +30,7 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 @AutoService(Processor.class)
 @SupportedAnnotationTypes("com.jmoordb.core.annotation.ViewModel")
@@ -37,7 +38,6 @@ import javax.tools.JavaFileObject;
 public class ViewModelProcessor extends AbstractProcessor {
 
     private final MustacheFactory mf = new DefaultMustacheFactory();
-    private final Mustache mustache = mf.compile("viewmodel-template.mustache");
     private final Mustache mustacheRecord = mf.compile("viewmodelrecord-template.mustache");
 
     @Override
@@ -51,7 +51,7 @@ public class ViewModelProcessor extends AbstractProcessor {
                     if (ProcessorTools.isRecord(classElement, (TypeElement) ((javax.lang.model.util.Types) processingEnv.getTypeUtils()).asElement(classElement.getSuperclass()))) {
                         generateBuilderRecord(classElement);
                     } else {
-                        generateBuilderClass(classElement);
+                       processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "@ViewModel must be applied to a Java Records.");
                     }
 
                 } catch (IOException e) {
@@ -66,29 +66,7 @@ public class ViewModelProcessor extends AbstractProcessor {
         return false;
     }
 
-// <editor-fold defaultstate="collapsed" desc="void generateBuilderClass(TypeElement classElement)">
-    private void generateBuilderClass(TypeElement classElement) throws IOException {
-        String className = classElement.getSimpleName().toString();
-        String packageName = processingEnv.getElementUtils().getPackageOf(classElement).getQualifiedName().toString();
 
-        List<Map<String, String>> fields = ProcessorTools.fields(classElement);
-
-        // Create a data map for Mustache
-        Map<String, Object> data = new HashMap<>();
-        data.put("packageName", packageName);
-        data.put("className", className);
-        data.put("builderClassName", className + "ViewModel");
-        data.put("fields", fields);
-
-        // Generate the new source file
-        JavaFileObject builderFile = processingEnv.getFiler().createSourceFile(packageName + "." + className + "ViewModel");
-        try (Writer writer = builderFile.openWriter()) {
-            mustache.execute(writer, data).flush();
-             System.out.println("Resultado de Mustache: " + writer.toString());
-        }
-    }
-
-    // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="void generateBuilderRecord(TypeElement classElement)">
     private void generateBuilderRecord(TypeElement classElement) throws IOException {
         String className = classElement.getSimpleName().toString();
@@ -100,6 +78,8 @@ public class ViewModelProcessor extends AbstractProcessor {
         Map<String, Object> data = new HashMap<>();
         data.put("packageName", packageName);
         data.put("className", className);
+        data.put("capitalizeClassName", ProcessorTools.capitalize(className));
+        data.put("lowercaseInitialClassName", ProcessorTools.lowercaseInitial(className));
         data.put("builderClassName", className + "ViewModel");
         data.put("fields", fields);
 
