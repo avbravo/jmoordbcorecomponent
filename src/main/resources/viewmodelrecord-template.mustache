@@ -70,6 +70,17 @@ public String toString() {
 
 
 
+public {{className}} toRecord(){
+     return new {{className}}(
+{{#fields}}
+         {{name}} {{separator}}
+{{/fields}}
+);
+}
+
+
+
+
 @Override
 public boolean equals(Object obj) {
         if (this == obj) {
