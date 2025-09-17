@@ -26,25 +26,26 @@ import javax.lang.model.element.TypeElement;
 
 import com.google.auto.service.AutoService;
 import com.jmoordb.core.annotation.ViewModel;
-import com.jmoordb.core.annotation.builder.CoreViewModelBuilder;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
+import com.jmoordb.core.annotation.builder.ViewModelBuilder;
+
 @AutoService(Processor.class)
-@SupportedAnnotationTypes("com.jmoordb.core.annotation.builder.CoreViewModelBuilder")
+@SupportedAnnotationTypes("com.jmoordb.core.annotation.builder.ViewModelBuilder")
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
-public class CoreViewModelBuilderProcessor extends AbstractProcessor {
+public class ViewModelBuilderProcessor extends AbstractProcessor {
 
     private final MustacheFactory mf = new DefaultMustacheFactory();
-    private final Mustache mustacheRecord = mf.compile("coreviewmodelbuilderrecord-template.mustache");
+    private final Mustache mustacheRecord = mf.compile("viewmodelbuilder-template.mustache");
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         IdInformation idInformation = new IdInformation();
-        for (Element element : roundEnv.getElementsAnnotatedWith(CoreViewModelBuilder.class)) {
+        for (Element element : roundEnv.getElementsAnnotatedWith(ViewModelBuilder.class)) {
             if (element instanceof TypeElement) {
                 TypeElement classElement = (TypeElement) element;
                 try {
@@ -52,7 +53,7 @@ public class CoreViewModelBuilderProcessor extends AbstractProcessor {
                     if (ProcessorTools.isRecord(classElement, (TypeElement) ((javax.lang.model.util.Types) processingEnv.getTypeUtils()).asElement(classElement.getSuperclass()))) {
                         generateBuilderRecord(classElement);
                     } else {
-                       processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "@CoreViewModelBuilder must be applied to a Java Records.");
+                        processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "@ViewModelBuilder must be applied to a Java Records.");
                     }
 
                 } catch (IOException e) {
@@ -67,7 +68,6 @@ public class CoreViewModelBuilderProcessor extends AbstractProcessor {
         return false;
     }
 
-
 // <editor-fold defaultstate="collapsed" desc="void generateBuilderRecord(TypeElement classElement)">
     private void generateBuilderRecord(TypeElement classElement) throws IOException {
         String className = classElement.getSimpleName().toString();
@@ -78,7 +78,7 @@ public class CoreViewModelBuilderProcessor extends AbstractProcessor {
         // Create a data map for Mustache
         Map<String, Object> data = new HashMap<>();
         data.put("packageName", packageName);
-        data.put("className", className);
+        data.put("className", className+"ViewModel");
         data.put("capitalizeClassName", ProcessorTools.capitalize(className));
         data.put("lowercaseInitialClassName", ProcessorTools.lowercaseInitial(className));
         data.put("builderClassName", className + "ViewModelBuilder");
@@ -88,7 +88,7 @@ public class CoreViewModelBuilderProcessor extends AbstractProcessor {
         JavaFileObject builderFile = processingEnv.getFiler().createSourceFile(packageName + "." + className + "ViewModelBuilder");
         try (Writer writer = builderFile.openWriter()) {
             mustacheRecord.execute(writer, data).flush();
-       
+
         }
     }
 
