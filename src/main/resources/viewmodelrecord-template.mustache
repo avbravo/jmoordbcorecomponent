@@ -118,23 +118,22 @@ public {{builderClassName}} toViewModel({{className}} {{lowercaseInitialClassNam
 
 @Override
 public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final {{builderClassName}} other = ({{builderClassName}}) obj;
-       {{#fields}}
+    if (this == obj) {
+         return true;
+    }
+    if (obj == null) {
+         return false;
+    }
+    if (getClass() != obj.getClass()) {
+        return false;
+    }
+    final {{builderClassName}} other = ({{builderClassName}}) obj;
+    {{#fields}}
        if (!Objects.equals(this.{{name}},other.{{name}})) {
-            return false;
-        }
-       {{/fields}}
-        
-        return true;
+           return false;
+    }
+    {{/fields}} 
+    return true;
 }
 
 
