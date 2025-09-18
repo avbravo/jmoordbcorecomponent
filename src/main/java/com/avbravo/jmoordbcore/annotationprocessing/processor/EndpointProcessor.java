@@ -2,14 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.avbravo.jmoordbcorecomponent.annotationprocessing.processor;
+package com.avbravo.jmoordbcore.annotationprocessing.processor;
 
 /**
  *
  * @author avbravo
  */
-import com.avbravo.jmoordbcorecomponent.annotationprocessing.EndpointController;
-import com.avbravo.jmoordbcorecomponent.annotationprocessing.GetEndpoint;
+import com.avbravo.jmoordbcore.annotationprocessing.EndpointController;
+import com.avbravo.jmoordbcore.annotationprocessing.GetEndpoint;
 import com.google.auto.service.AutoService;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;

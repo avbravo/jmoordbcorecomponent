@@ -2,13 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.avbravo.jmoordbcorecomponent.annotationprocessing.processor.faces;
+package com.avbravo.jmoordbcore.annotationprocessing.processor.converter;
 
 /**
  *
  * @author avbravo
  */
-import com.avbravo.jmoordbcorecomponent.domains.IdInformation;
+import com.avbravo.jmoordbcore.domains.DataID;
+import com.avbravo.jmoordbcore.domains.IdInformation;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
@@ -38,18 +39,19 @@ import com.jmoordb.core.annotation.faces.CoreConverter;
 public class CoreConverterBuilderProcessor extends AbstractProcessor {
 
     private final MustacheFactory mf = new DefaultMustacheFactory();
-    private final Mustache mustache = mf.compile("jmdcconverter-template.mustache");
+    private final Mustache mustache = mf.compile("coreconverter-template.mustache");
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        IdInformation idInformation = new IdInformation();
+
         System.out.println("..........................................................");
         System.out.println("............................... iniciando JMDCCONVERTER");
         for (Element element : roundEnv.getElementsAnnotatedWith(CoreConverter.class)) {
             if (element instanceof TypeElement) {
                 TypeElement classElement = (TypeElement) element;
                 try {
-                    generateConverter(classElement);
+                    DataID dataID = ProcessorTools.getDataID(element);
+                    generateConverter(classElement,dataID);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -62,23 +64,24 @@ public class CoreConverterBuilderProcessor extends AbstractProcessor {
         return false;
     }
 
-    private void generateConverter(TypeElement classElement) throws IOException {
+    private void generateConverter(TypeElement classElement, DataID dataID) throws IOException {
         String entityClassName = classElement.getSimpleName().toString();
         String packageName = processingEnv.getElementUtils().getPackageOf(classElement).getQualifiedName().toString();
         String repositoryClassName = entityClassName + "Converter";
 
         // Obtener el tipo de la clave primaria (asumimos que hay un método getId())
         // En un caso real, esto sería más complejo, por ejemplo, buscando una anotación @Id
-        String idType = "Long";
-        System.out.println("----paso 1");
+
         // Datos para la plantilla de Mustache
         Map<String, Object> data = new HashMap<>();
         data.put("packageName", packageName);
         data.put("repositoryClassName", repositoryClassName);
         data.put("entityClassName", entityClassName);
         data.put("entityClassNameVar", ProcessorTools.toLowercaseFirstLetter(entityClassName));
-        data.put("idType", idType);
-        System.out.println("----paso 2");
+        data.put("idType", dataID.type());
+        data.put("idName", dataID.name());
+        data.put("idSimpleName", dataID.simpleName());
+
         // Generar el nuevo archivo de código fuente
         JavaFileObject repositoryFile = processingEnv.getFiler().createSourceFile(packageName + "." + repositoryClassName);
         try (Writer writer = repositoryFile.openWriter()) {

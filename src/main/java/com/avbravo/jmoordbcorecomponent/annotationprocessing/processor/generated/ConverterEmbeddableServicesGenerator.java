@@ -4,8 +4,8 @@
  */
 package com.avbravo.jmoordbcorecomponent.annotationprocessing.processor.generated;
 
-import com.avbravo.jmoordbcorecomponent.domains.IdInformation;
-import com.avbravo.jmoordbcorecomponent.domains.ResultGeneration;
+import com.avbravo.jmoordbcore.domains.IdInformation;
+import com.avbravo.jmoordbcore.domains.ResultGeneration;
 import com.avbravo.jmoordbcorecomponent.utils.ProcessorTools;
 import java.io.IOException;
 import javax.lang.model.element.Element;

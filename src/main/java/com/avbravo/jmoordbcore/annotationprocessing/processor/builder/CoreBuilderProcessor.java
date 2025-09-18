@@ -2,13 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.avbravo.jmoordbcorecomponent.annotationprocessing.processor.builder;
+package com.avbravo.jmoordbcore.annotationprocessing.processor.builder;
 
 /**
  *
  * @author avbravo
  */
-import com.avbravo.jmoordbcorecomponent.domains.IdInformation;
+import com.avbravo.jmoordbcore.domains.DataID;
+import com.avbravo.jmoordbcore.domains.IdInformation;
 import com.avbravo.jmoordbcorecomponent.utils.ProcessorTools;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
@@ -43,11 +44,12 @@ public class CoreBuilderProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        IdInformation idInformation = new IdInformation();
         for (Element element : roundEnv.getElementsAnnotatedWith(CoreBuilder.class)) {
             if (element instanceof TypeElement) {
                 TypeElement classElement = (TypeElement) element;
                 try {
+                    // Información del ID
+                    DataID dataID = ProcessorTools.getDataID(element);
                     // Verifica si es una clase Java o un Java Records
                     if (ProcessorTools.isRecord(classElement, (TypeElement) ((javax.lang.model.util.Types) processingEnv.getTypeUtils()).asElement(classElement.getSuperclass()))) {
                         generateBuilderRecord(classElement);

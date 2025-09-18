@@ -2,16 +2,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.avbravo.jmoordbcorecomponent.annotationprocessing.processor;
+package com.avbravo.jmoordbcore.annotationprocessing.processor;
 
 /**
  *
  * @author avbravo
  */
-import com.avbravo.jmoordbcorecomponent.annotationprocessing.RestClientServices;
-import com.avbravo.jmoordbcorecomponent.domains.IdInformation;
-import com.avbravo.jmoordbcorecomponent.domains.RestClientServicesInformation;
-import com.avbravo.jmoordbcorecomponent.domains.ResultGeneration;
+import com.avbravo.jmoordbcore.annotationprocessing.RestClientServices;
+import com.avbravo.jmoordbcore.domains.IdInformation;
+import com.avbravo.jmoordbcore.domains.RestClientServicesInformation;
+import com.avbravo.jmoordbcore.domains.ResultGeneration;
 import com.avbravo.jmoordbcorecomponent.utils.ProcessorTools;
 import java.io.IOException;
 import java.util.Set;

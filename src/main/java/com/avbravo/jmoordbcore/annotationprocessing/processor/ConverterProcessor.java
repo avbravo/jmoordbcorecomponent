@@ -2,16 +2,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.avbravo.jmoordbcorecomponent.annotationprocessing.processor;
+package com.avbravo.jmoordbcore.annotationprocessing.processor;
 
 /**
  *
  * @author avbravo
  */
-import com.avbravo.jmoordbcorecomponent.annotationprocessing.Converter;
+import com.avbravo.jmoordbcore.annotationprocessing.Converter;
 import com.avbravo.jmoordbcorecomponent.annotationprocessing.processor.generated.ConverterServicesGenerator;
-import com.avbravo.jmoordbcorecomponent.domains.IdInformation;
-import com.avbravo.jmoordbcorecomponent.domains.ResultGeneration;
+import com.avbravo.jmoordbcore.domains.IdInformation;
+import com.avbravo.jmoordbcore.domains.ResultGeneration;
 import com.avbravo.jmoordbcorecomponent.utils.ProcessorTools;
 import java.io.IOException;
 import java.util.Set;
@@ -34,7 +34,7 @@ import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 
 @AutoService(Processor.class)
-@SupportedAnnotationTypes("com.avbravo.jmoordbcorecomponent.annotationprocessing.Converter")
+@SupportedAnnotationTypes("com.avbravo.jmoordbcore.annotationprocessing.processor.converter.Converter")
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
 public class ConverterProcessor extends AbstractProcessor {
     ConverterServicesGenerator converterServerGenerator = new ConverterServicesGenerator();

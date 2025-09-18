@@ -2,13 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.avbravo.jmoordbcorecomponent.annotationprocessing.processor;
+package com.avbravo.jmoordbcore.annotationprocessing.processor;
 
 /**
  *
  * @author avbravo
  */
-import com.avbravo.jmoordbcorecomponent.domains.IdInformation;
+import com.avbravo.jmoordbcore.domains.IdInformation;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
@@ -29,21 +29,20 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 import javax.tools.JavaFileObject;
-import com.avbravo.jmoordbcorecomponent.annotationprocessing.EntityRepository;
-import com.jmoordb.core.annotation.FluentQuery;
+import com.avbravo.jmoordbcore.annotationprocessing.EntityRepository;
 
 @AutoService(Processor.class)
-@SupportedAnnotationTypes("com.jmoordb.core.annotation.FluentQuery")
+@SupportedAnnotationTypes("com.avbravo.jmoordbcorecomponent.annotationprocessing.EntityRepository")
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
-public class FluentQueryBuilderProcessor extends AbstractProcessor {
+public class EntityRepositoryBuilderProcessor extends AbstractProcessor {
 
     private final MustacheFactory mf = new DefaultMustacheFactory();
-    private final Mustache mustache = mf.compile("fluentquery-template.mustache");
+    private final Mustache mustache = mf.compile("entityrepository-template.mustache");
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         IdInformation idInformation = new IdInformation();
-        for (Element element : roundEnv.getElementsAnnotatedWith(FluentQuery.class)) {
+        for (Element element : roundEnv.getElementsAnnotatedWith(EntityRepository.class)) {
             if (element instanceof TypeElement) {
                 TypeElement classElement = (TypeElement) element;
                 try {

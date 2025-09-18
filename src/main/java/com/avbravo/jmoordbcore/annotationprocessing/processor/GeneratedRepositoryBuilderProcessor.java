@@ -2,13 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.avbravo.jmoordbcorecomponent.annotationprocessing.processor;
+package com.avbravo.jmoordbcore.annotationprocessing.processor;
 
 /**
  *
  * @author avbravo
  */
-import com.avbravo.jmoordbcorecomponent.domains.IdInformation;
+import com.avbravo.jmoordbcore.domains.IdInformation;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
@@ -29,8 +29,8 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 import javax.tools.JavaFileObject;
-import com.avbravo.jmoordbcorecomponent.annotationprocessing.EntityRepository;
-import com.avbravo.jmoordbcorecomponent.annotationprocessing.GeneratedRepository;
+import com.avbravo.jmoordbcore.annotationprocessing.EntityRepository;
+import com.avbravo.jmoordbcore.annotationprocessing.GeneratedRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.lang.model.element.ElementKind;

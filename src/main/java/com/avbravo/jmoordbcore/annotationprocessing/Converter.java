@@ -1,20 +1,20 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.avbravo.jmoordbcorecomponent.annotationprocessing;
+package com.avbravo.jmoordbcore.annotationprocessing;
 
-/**
- *
- * @author avbravo
- */
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Retention(RetentionPolicy.SOURCE)
+/**
+ *
+ * @author avbravo
+ */
+@Retention(RetentionPolicy.CLASS)
 @Target(ElementType.TYPE)
-public @interface EntityRepository {
+public @interface Converter {
     
 }

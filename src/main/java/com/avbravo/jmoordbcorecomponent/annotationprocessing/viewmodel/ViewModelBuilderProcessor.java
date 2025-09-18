@@ -8,7 +8,7 @@ package com.avbravo.jmoordbcorecomponent.annotationprocessing.viewmodel;
  *
  * @author avbravo
  */
-import com.avbravo.jmoordbcorecomponent.domains.IdInformation;
+import com.avbravo.jmoordbcore.domains.IdInformation;
 import com.avbravo.jmoordbcorecomponent.utils.ProcessorTools;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;

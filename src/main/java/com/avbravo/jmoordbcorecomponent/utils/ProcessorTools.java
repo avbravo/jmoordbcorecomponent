@@ -4,6 +4,9 @@
  */
 package com.avbravo.jmoordbcorecomponent.utils;
 
+import com.avbravo.jmoordbcore.domains.DataID;
+import com.avbravo.jmoordbcore.domains.IdInformation;
+import com.jmoordb.core.annotation.Id;
 import com.jmoordb.core.util.MessagesUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,7 +15,9 @@ import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.MirroredTypeException;
@@ -213,4 +218,88 @@ public class ProcessorTools {
         return result;
     }
 // </editor-fold>
+    
+     // <editor-fold defaultstate="collapsed" desc="IdInformation analizeId()">
+    /**
+     * Encuentra la información de la llave primaria
+     *
+     * @return
+     */
+    public static IdInformation analizeId(Element element) {
+        IdInformation idInformation = new IdInformation();
+        try {
+            String name = "";
+            String type = "";
+            String simpleName = "";
+            if (element.getKind().isClass()) {
+                for (Element enclosed : element.getEnclosedElements()) {
+                    if (enclosed.getKind().isField() & (enclosed.getModifiers().contains(Modifier.PRIVATE)
+                            | enclosed.getModifiers().contains(Modifier.PROTECTED))) {
+
+                        Id id = enclosed.getAnnotation(Id.class);
+                        if (id != null) {
+                            String field = enclosed.getSimpleName().toString();
+                            String s1 = field.substring(0, 1).toUpperCase();
+                            String nameCapitalized = s1 + field.substring(1);
+
+                            name = nameCapitalized;
+                            type = enclosed.asType().toString();
+                            simpleName = enclosed.getSimpleName().toString();
+                            break;
+                        }
+                    }
+                }
+            }
+            idInformation = new IdInformation.Builder()
+                    .name(name)
+                    .type(type)
+                    .simpleName(simpleName)
+                    .build();
+
+        } catch (Exception e) {
+         System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+        }
+        return idInformation;
+    }
+    // </editor-fold>
+     // <editor-fold defaultstate="collapsed" desc="DataID getDataID(Element element)">
+    /**
+     * Encuentra la información de la llave primaria
+     *
+     * @return
+     */
+    public static DataID getDataID(Element element) {
+      
+        try {
+            String name = "";
+            String type = "";
+            String simpleName = "";
+            if (element.getKind().isClass()) {
+                for (Element enclosed : element.getEnclosedElements()) {
+                    if (enclosed.getKind().isField() & (enclosed.getModifiers().contains(Modifier.PRIVATE)
+                            | enclosed.getModifiers().contains(Modifier.PROTECTED))) {
+
+                        Id id = enclosed.getAnnotation(Id.class);
+                        if (id != null) {
+                            String field = enclosed.getSimpleName().toString();
+                            String s1 = field.substring(0, 1).toUpperCase();
+                            String nameCapitalized = s1 + field.substring(1);
+
+                            name = nameCapitalized;
+                            type = enclosed.asType().toString();
+                            simpleName = enclosed.getSimpleName().toString();
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return new DataID(name, type, simpleName);
+
+        } catch (Exception e) {
+         System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+        }
+        return new DataID("", "", "");
+    }
+    // </editor-fold>
 }

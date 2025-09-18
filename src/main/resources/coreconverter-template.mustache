@@ -1,0 +1,61 @@
+package {{packageName}};
+
+
+import jakarta.inject.Inject;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.convert.FacesConverter;
+import jakarta.inject.Named;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.application.FacesMessage;
+import java.util.Optional;
+import com.avbravo.jmoordbcorecomponent.utils.FacesUtil;
+import jakarta.faces.convert.ConverterException;
+{{import}}
+
+@Named
+@FacesConverter(forClass ={{entityClassName}}>.class, managed = true)
+public class {{repositoryClassName}} implements Converter<{{entityClassName}}> {
+   @Inject
+   {{entityClassName}}ConverterServices {{entityClassNameVar}}ConverterServices;
+  //  private final List<{{entityClassName}}> entities = new ArrayList<>();
+
+   @Override
+   public {{entityClassName}} getAsObject(FacesContext fc, UIComponent uic, String submittedValue) {
+          {{entityClassName}} obj = new  {{entityClassName}}();
+	  if (submittedValue == null || submittedValue.isEmpty()) {
+	     return null;
+	  }
+	  try{
+	      Integer id0 = Integer.parseInt(submittedValue);
+	      Long id = id0.longValue();
+	      Optional<{{entityClassName}}> optional = {{entityClassNameVar}}ConverterServices.get(id);
+	      if (optional.isPresent()) {;
+		  obj = optional.get();
+	      }
+		return obj;
+	  } catch (Exception e) {
+	    System.out.println(FacesUtil.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+	    throw new ConverterException(new FacesMessage(submittedValue + " is not a valid selecction from Converter"), e);
+	 }
+   }
+
+	@Override
+	public String getAsString(FacesContext fc, UIComponent uic,{{entityClassName}} t) {
+	    try {
+	    if (t == null) {
+	       return "";
+	     }
+	     if (t.get{{idName}}() != null) {
+	         return t.get{{idName}}().toString();
+	     }
+	    } catch (Exception e) {
+	       new FacesMessage("Error en converter  " + e.getLocalizedMessage());
+	    }
+	    return "";
+	}
+
+
+
+
+}
