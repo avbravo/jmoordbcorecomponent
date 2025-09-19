@@ -203,9 +203,11 @@ public class ProcessorTools {
                         Map<String, String> fieldData = new HashMap<>();
                         String type = field.asType().toString();
                         fieldData.put("type", field.asType().toString());
-                        fieldData.put("name", field.getSimpleName().toString());
-                        fieldData.put("capitalizeName", ProcessorTools.capitalize(field.getSimpleName().toString()));
-                        fieldData.put("lowercaseInitialName", ProcessorTools.lowercaseInitial(field.getSimpleName().toString()));
+                        var fieldName = field.getSimpleName().toString();
+                        fieldData.put("name", fieldName);
+                        fieldName = !fieldName.substring(0,1).equals("_") ? fieldName : fieldName.substring(1, fieldName.length());
+                        fieldData.put("capitalizeName", capitalize(fieldName));
+                        fieldData.put("lowercaseInitialName", lowercaseInitial(fieldName));
                         fieldData.put("lista", "java.util.List<Persona>");
                         // Añade el atributo booleano "isLast"
                         boolean isLast = i == filteredElements.size() - 1;
@@ -218,8 +220,8 @@ public class ProcessorTools {
         return result;
     }
 // </editor-fold>
-    
-     // <editor-fold defaultstate="collapsed" desc="IdInformation analizeId()">
+
+    // <editor-fold defaultstate="collapsed" desc="IdInformation analizeId()">
     /**
      * Encuentra la información de la llave primaria
      *
@@ -257,19 +259,19 @@ public class ProcessorTools {
                     .build();
 
         } catch (Exception e) {
-         System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+            System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
         }
         return idInformation;
     }
     // </editor-fold>
-     // <editor-fold defaultstate="collapsed" desc="DataID getDataID(Element element)">
+    // <editor-fold defaultstate="collapsed" desc="DataID getDataID(Element element)">
     /**
      * Encuentra la información de la llave primaria
      *
      * @return
      */
     public static DataID getDataID(Element element) {
-      
+
         try {
             String name = "";
             String type = "";
@@ -297,7 +299,7 @@ public class ProcessorTools {
             return new DataID(name, type, simpleName);
 
         } catch (Exception e) {
-         System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
+            System.out.println(ProcessorTools.nameOfClassAndMethod() + " " + e.getLocalizedMessage());
         }
         return new DataID("", "", "");
     }
