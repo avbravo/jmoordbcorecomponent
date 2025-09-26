@@ -68,14 +68,14 @@ public interface CoreCrudRepository<T, PK> {
     @CoreException()
     public JmoordbException getJmoordbException();
 
-    public String createIndex(Bson bson);
+    public String createIndex(Bson bson,DynamicInfo...dynamicInfo);
 
-    public void dropIndex(Bson bson);
+    public void dropIndex(Bson bson,DynamicInfo...dynamicInfo);
 
-    public Optional<ListIndexesIterable<Document>> listIndexes();
+    public Optional<ListIndexesIterable<Document>> listIndexes(DynamicInfo...dynamicInfo);
 
-    public Optional<MongoIterable<String>> listCollectionNames();
+    public Optional<MongoIterable<String>> listCollectionNames(DynamicInfo...dynamicInfo);
 
-    public Optional<MongoCollection<Document>> getCollection();
+    public Optional<MongoCollection<Document>> getCollection(DynamicInfo...dynamicInfo);
 
 }
