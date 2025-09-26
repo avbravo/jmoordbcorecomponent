@@ -4,7 +4,6 @@
  */
 package com.avbravo.jmoordbcore.repository;
 
-import com.avbravo.jmoordbcore.context.ContextJMoordbCore;
 import com.avbravo.jmoordbcore.model.JmoordbException;
 import com.avbravo.jmoordbcore.model.Search;
 import com.avbravo.jmoordbcore.model.Sorted;
@@ -16,6 +15,7 @@ import com.jmoordb.core.annotation.repository.Lookup;
 import com.jmoordb.core.annotation.repository.Save;
 import com.jmoordb.core.annotation.repository.Update;
 import com.jmoordb.core.annotation.repository.UpdateMany;
+import com.jmoordb.core.model.DynamicInfo;
 import com.jmoordb.core.model.Pagination;
 import com.mongodb.client.ListIndexesIterable;
 import com.mongodb.client.MongoCollection;
@@ -29,65 +29,41 @@ import org.bson.conversions.Bson;
  *
  * @author avbravo
  */
-public interface CrudRepository<T, PK> {
+public interface CoreCrudRepository<T, PK> {
 
-    default public void setDynamicDatabase(String dataBase) {
-        ContextJMoordbCore.mongodbdatabase = dataBase;
-    }
-
-    default public String getDynamicDatabase() {
-        if (ContextJMoordbCore.mongodbdatabase == null) {
-            return "";
-        } else {
-            return ContextJMoordbCore.mongodbdatabase;
-        }
-
-    }
-
-    default public void setDynamicCollection(String collection) {
-        ContextJMoordbCore.mongodbcollection = collection;
-    }
-
-    default public String getDynamicCollection() {
-        if (ContextJMoordbCore.mongodbcollection == null) {
-            return "";
-        } else {
-            return ContextJMoordbCore.mongodbcollection;
-        }
-
-    }
+    
 
     @Save
-    public Optional<T> save(T t);
+    public Optional<T> save(T t, DynamicInfo...dynamicInfo );
 
     @Update
-    public Boolean update(T t);
+    public Boolean update(T t, DynamicInfo...dynamicInfo );
 
     @Find()
-    public List<T> findAll();
+    public List<T> findAll(DynamicInfo...dynamicInfo );
 
     @Find()
-    public List<T> findAllPagination(Pagination paginationt);
+    public List<T> findAllPagination(Pagination pagination, DynamicInfo...dynamicInfo );
 
     @Find()
-    public List<T> findAllSorted(Sorted sorted);
+    public List<T> findAllSorted(Sorted sorted, DynamicInfo...dynamicInfo );
 
     @Find()
-    public List<T> findAllPaginationSorted(Pagination pagination, Sorted sorted);
+    public List<T> findAllPaginationSorted(Pagination pagination, Sorted sorted, DynamicInfo...dynamicInfo );
 
-    public Optional<T> findByPk(PK id);
+    public Optional<T> findByPk(PK id, DynamicInfo...dynamicInfo );
 
     @DeleteBy
-    public Long deleteByPk(PK id);
+    public Long deleteByPk(PK id, DynamicInfo...dynamicInfo );
 
     @DeleteMany
-    public Long deleteMany(Search search);
+    public Long deleteMany(Search search, DynamicInfo...dynamicInfo );
 
     @UpdateMany
-    public Long updateMany(Bson query, Bson update);
+    public Long updateMany(Bson query, Bson update,DynamicInfo...dynamicInfo);
 
     @Lookup
-    public List<T> lookup(Search search);
+    public List<T> lookup(Search search,DynamicInfo...dynamicInfo);
 
     @CoreException()
     public JmoordbException getJmoordbException();
