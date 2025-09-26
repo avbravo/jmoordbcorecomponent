@@ -29,7 +29,7 @@ import org.bson.conversions.Bson;
  *
  * @author avbravo
  */
-public interface CoreCrudRepository<T, PK> {
+public interface CoreDynamicRepository<T, PK> {
 
     
 
