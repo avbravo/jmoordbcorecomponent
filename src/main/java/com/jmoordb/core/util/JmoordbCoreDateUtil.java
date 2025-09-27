@@ -3,16 +3,16 @@
 * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.avbravo.jmoordbcorecomponent.utils.date;
+package com.jmoordb.core.util;
 // <editor-fold defaultstate="collapsed" desc="import">  
 
-import com.avbravo.jmoordbcorecomponent.utils.FacesUtil;
-import static com.avbravo.jmoordbcorecomponent.utils.FacesUtil.showError;
+import static com.jmoordb.core.util.JmoordbCoreUtil.errorMessage;
 
 import java.util.List;
 import java.util.logging.Logger;
 import java.io.Serializable;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.Instant;
@@ -77,7 +77,7 @@ public class JmoordbCoreDateUtil implements Serializable {
                 return false;
             }
         } catch (Exception e) {
-            showError("isBisiesto() " + e.getLocalizedMessage());
+            errorMessage("isBisiesto() " + e.getLocalizedMessage());
         }
         return true;
     }
@@ -91,7 +91,7 @@ public class JmoordbCoreDateUtil implements Serializable {
 
             dias = numberDayOfMonth(anio, m.numeroMes(mes));
         } catch (Exception e) {
-            showError("numberDayOfMonth() " + e.getLocalizedMessage());
+            errorMessage("numberDayOfMonth() " + e.getLocalizedMessage());
         }
         return dias;
     }
@@ -136,7 +136,7 @@ public class JmoordbCoreDateUtil implements Serializable {
             }
 
         } catch (Exception e) {
-            showError("numberDayOfMonth() " + e.getLocalizedMessage());
+            errorMessage("numberDayOfMonth() " + e.getLocalizedMessage());
         }
         return dias;
     }
@@ -181,7 +181,7 @@ public class JmoordbCoreDateUtil implements Serializable {
             }
 
         } catch (Exception e) {
-            showError("numberDayOfMonth() " + e.getLocalizedMessage());
+            errorMessage("numberDayOfMonth() " + e.getLocalizedMessage());
         }
         return dias;
     }
@@ -283,7 +283,7 @@ public class JmoordbCoreDateUtil implements Serializable {
 
             h = dateFormatToString(fecha, f);
         } catch (Exception e) {
-            FacesUtil.showError("hourFromDateToString() " + e.getLocalizedMessage());
+            JmoordbCoreUtil.errorMessage("hourFromDateToString() " + e.getLocalizedMessage());
         }
         return h;
 
@@ -469,7 +469,7 @@ public class JmoordbCoreDateUtil implements Serializable {
     // <editor-fold defaultstate="collapsed" desc="mesToMonth"> 
     /**
      * Convierte un nombre de mes a un objeto Month Month month =
-     * MessagesUtil.mesToMonth("Febrero); Devuelve un month.FEBRARY;
+     * JmoordbCoreUtil.mesToMonth("Febrero); Devuelve un month.FEBRARY;
      *
      * @param mes
      * @return
@@ -519,7 +519,7 @@ public class JmoordbCoreDateUtil implements Serializable {
             }
 
         } catch (Exception e) {
-            showError("mesToMonth() " + e.getLocalizedMessage());
+            errorMessage("mesToMonth() " + e.getLocalizedMessage());
         }
         return month;
     }
@@ -549,7 +549,7 @@ public class JmoordbCoreDateUtil implements Serializable {
             int dia = calendar.get(Calendar.DAY_OF_MONTH);
             return mes;
         } catch (Exception e) {
-            FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + "error: " + e.getLocalizedMessage());
+            MessagesUtil.error(MessagesUtil.nameOfClassAndMethod() + "error: " + e.getLocalizedMessage());
         }
         return 0;
 
@@ -568,7 +568,7 @@ public class JmoordbCoreDateUtil implements Serializable {
             int dia = calendar.get(Calendar.DAY_OF_MONTH);
             return mes;
         } catch (Exception e) {
-            FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + "error: " + e.getLocalizedMessage());
+            MessagesUtil.error(MessagesUtil.nameOfClassAndMethod() + "error: " + e.getLocalizedMessage());
         }
         return 0;
 
@@ -651,8 +651,8 @@ public class JmoordbCoreDateUtil implements Serializable {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
 
-        int segundo = calendar.get(Calendar.SECOND);
-        return segundo;
+        int minuto = calendar.get(Calendar.SECOND);
+        return minuto;
     }
 // </editor-fold>
 
@@ -664,7 +664,7 @@ public class JmoordbCoreDateUtil implements Serializable {
     }
 // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc=" String nameOfDay(LocalDate date) "> 
+    // <editor-fold defaultstate="collapsed" desc="nameOfDay()"> 
     public static String nameOfDay(LocalDate date) {
         String nombre = "DOMINGO";
         try {
@@ -696,12 +696,12 @@ public class JmoordbCoreDateUtil implements Serializable {
             }
 
         } catch (Exception e) {
-            showError("nameOfDay() " + e.getLocalizedMessage());
+            errorMessage("nameOfDay() " + e.getLocalizedMessage());
         }
         return nombre;
     }
 // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="String nameOfDayMinuscula(LocalDate date)"> 
+    // <editor-fold defaultstate="collapsed" desc="nameOfDay()"> 
 
     public static String nameOfDayMinuscula(LocalDate date) {
         String nombre = "Domingo";
@@ -734,7 +734,7 @@ public class JmoordbCoreDateUtil implements Serializable {
             }
 
         } catch (Exception e) {
-            showError("nameOfDayMinusculas() " + e.getLocalizedMessage());
+            errorMessage("nameOfDayMinusculas() " + e.getLocalizedMessage());
         }
         return nombre;
     }
@@ -749,12 +749,12 @@ public class JmoordbCoreDateUtil implements Serializable {
                     .toLocalDate();
             nombre = nameOfDay(localDate);
         } catch (Exception e) {
-            showError("nameOfDay() " + e.getLocalizedMessage());
+            errorMessage("nameOfDay() " + e.getLocalizedMessage());
         }
         return nombre;
     }
 // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="String nameOfDayMinusculas(Date date)"> 
+    // <editor-fold defaultstate="collapsed" desc="nameOfDay(Date date)"> 
 
     public static String nameOfDayMinusculas(Date date) {
         String nombre = "";
@@ -764,7 +764,7 @@ public class JmoordbCoreDateUtil implements Serializable {
                     .toLocalDate();
             nombre = nameOfDayMinuscula(localDate);
         } catch (Exception e) {
-            showError("nameOfDay() " + e.getLocalizedMessage());
+            errorMessage("nameOfDay() " + e.getLocalizedMessage());
         }
         return nombre;
     }
@@ -786,7 +786,7 @@ public class JmoordbCoreDateUtil implements Serializable {
             }
 
         } catch (Exception e) {
-            showError("firsLetterOfDay() " + e.getLocalizedMessage());
+            errorMessage("firsLetterOfDay() " + e.getLocalizedMessage());
         }
         return letra;
     }
@@ -815,7 +815,7 @@ public class JmoordbCoreDateUtil implements Serializable {
 
             }
         } catch (Exception e) {
-            showError("nameDayOfMonth() " + e.getLocalizedMessage());
+            errorMessage("nameDayOfMonth() " + e.getLocalizedMessage());
         }
         return names;
     }
@@ -847,7 +847,7 @@ public class JmoordbCoreDateUtil implements Serializable {
 
             }
         } catch (Exception e) {
-            FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + "error: " + e.getLocalizedMessage());
+            MessagesUtil.error(MessagesUtil.nameOfClassAndMethod() + "error: " + e.getLocalizedMessage());
         }
         return fechaDiaUtilsList;
     }
@@ -981,6 +981,24 @@ public class JmoordbCoreDateUtil implements Serializable {
         return dateFormat.format(date);
     }
 // </editor-fold>
+// <editor-fold defaultstate="collapsed" desc=" Date datoToiSODateToDate(Date date)"> 
+    /**
+     * Convierte de Date a IsoDate a Date
+     * @param date
+     * @return 
+     */
+    public static Date dateToiSODateToDate(Date date) {
+        try {
+             String df = JmoordbCoreDateUtil.iSODate(date);
+                df = df.replace("Z", "");            
+                SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                Date dateconverter = isoFormat.parse(df);
+                return dateconverter;
+        } catch (Exception e) {
+        }
+        return new Date();
+    }
+// </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="tiempo"> 
     public static LocalTime tiempo() {
@@ -1025,7 +1043,7 @@ public class JmoordbCoreDateUtil implements Serializable {
         return d;
     }// </editor-fold>
 
-// <editor-fold defaultstate="collapsed" desc="Integer diferenciaEntreFechas(Date fechaMayor, Date fechaMenor)"> 
+// <editor-fold defaultstate="collapsed" desc="Integer minutosEntreFechas(Date fechaMayor, Date fechaMenor)"> 
     /**
      * Devuelve el tiempo entre dos fechas (dias,horas, munutos)
      *
@@ -1035,14 +1053,13 @@ public class JmoordbCoreDateUtil implements Serializable {
      */
     public static JmoordbCoreTiempo diferenciaEntreFechas(Date fechaMayor, Date fechaMenor) {
         int d = 0;
-        JmoordbCoreTiempo tiempo = new JmoordbCoreTiempo(0, 0, 0,0);
+        JmoordbCoreTiempo tiempo = new JmoordbCoreTiempo(0, 0, 0);
         try {
             int diferencia = (int) ((fechaMayor.getTime() - fechaMenor.getTime()) / 1000);
 
             int dias = 0;
             int horas = 0;
             int minutos = 0;
-            int segundos = 0;
             if (diferencia > 86400) {
                 dias = (int) Math.floor(diferencia / 86400);
                 diferencia = diferencia - (dias * 86400);
@@ -1055,11 +1072,7 @@ public class JmoordbCoreDateUtil implements Serializable {
                 minutos = (int) Math.floor(diferencia / 60);
                 diferencia = diferencia - (minutos * 60);
             }
-  segundos = horas % 60;
-  if(segundos >=60){
-      segundos=0;
-      minutos++;
-  }
+
             if (minutos >= 60) {
                 minutos = 0;
                 horas++;
@@ -1071,10 +1084,9 @@ public class JmoordbCoreDateUtil implements Serializable {
             tiempo.setDias(dias);
             tiempo.setHoras(horas);
             tiempo.setMinutos(minutos);
-            tiempo.setSegundos(segundos);
 
         } catch (Exception e) {
-            FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + "error: " + e.getLocalizedMessage());
+            MessagesUtil.error(MessagesUtil.nameOfClassAndMethod() + "error: " + e.getLocalizedMessage());
         }
 
         return tiempo;
@@ -1088,7 +1100,7 @@ public class JmoordbCoreDateUtil implements Serializable {
                 esmenor = true;
             }
         } catch (Exception e) {
-            FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + "error: " + e.getLocalizedMessage());
+            MessagesUtil.error(MessagesUtil.nameOfClassAndMethod() + "error: " + e.getLocalizedMessage());
         }
         return esmenor;
     }
@@ -1102,7 +1114,7 @@ public class JmoordbCoreDateUtil implements Serializable {
                 esmenor = true;
             }
         } catch (Exception e) {
-            FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + "error: " + e.getLocalizedMessage());
+            MessagesUtil.error(MessagesUtil.nameOfClassAndMethod() + "error: " + e.getLocalizedMessage());
         }
         return esmenor;
     }
@@ -1116,7 +1128,7 @@ public class JmoordbCoreDateUtil implements Serializable {
                 esmenor = true;
             }
         } catch (Exception e) {
-            FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + "error: " + e.getLocalizedMessage());
+            MessagesUtil.error(MessagesUtil.nameOfClassAndMethod() + "error: " + e.getLocalizedMessage());
         }
         return esmenor;
     }
@@ -1158,7 +1170,7 @@ public class JmoordbCoreDateUtil implements Serializable {
             dateresult = java.sql.Date.valueOf(localDate);
 
         } catch (Exception e) {
-            FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + "error: " + e.getLocalizedMessage());
+            MessagesUtil.error(MessagesUtil.nameOfClassAndMethod() + "error: " + e.getLocalizedMessage());
         }
         return dateresult;
     }// </editor-fold>
@@ -1182,7 +1194,7 @@ public class JmoordbCoreDateUtil implements Serializable {
             dateresult = java.sql.Date.valueOf(localDate);
 
         } catch (Exception e) {
-            FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + "error: " + e.getLocalizedMessage());
+            MessagesUtil.error(MessagesUtil.nameOfClassAndMethod() + "error: " + e.getLocalizedMessage());
         }
         return dateresult;
     }// </editor-fold>
@@ -1206,7 +1218,7 @@ public class JmoordbCoreDateUtil implements Serializable {
             dateresult = java.sql.Date.valueOf(localDate);
 
         } catch (Exception e) {
-            FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + "error: " + e.getLocalizedMessage());
+            MessagesUtil.error(MessagesUtil.nameOfClassAndMethod() + "error: " + e.getLocalizedMessage());
         }
         return dateresult;
     }// </editor-fold>
@@ -1220,7 +1232,7 @@ public class JmoordbCoreDateUtil implements Serializable {
             segundos = segundos % 60;
             resultado = twoDigitString(hours) + " : " + twoDigitString(minutes) + " : " + twoDigitString(segundos);
         } catch (Exception e) {
-            showError("segundosToHoraString() " + e.getLocalizedMessage());
+            errorMessage("segundosToHoraString() " + e.getLocalizedMessage());
         }
         return resultado;
     }
@@ -1273,26 +1285,26 @@ public class JmoordbCoreDateUtil implements Serializable {
         return Math.toIntExact(milisegundos);
     }// </editor-fold>
 
-// <editor-fold defaultstate="collapsed" desc="milisegundosTranscurridosmilisegundosTranscurridos(long t0, long t1)"> 
+// <editor-fold defaultstate="collapsed" desc="milisegundosTranscurridos"> 
     public static long milisegundosTranscurridos(long t0, long t1) {
         long milisegundos = 0;
         try {
             milisegundos = TimeUnit.NANOSECONDS.toMillis(t1 - t0);
 
         } catch (Exception e) {
-            showError("getMilisegundos() " + e.getLocalizedMessage());
+            errorMessage("getMilisegundos() " + e.getLocalizedMessage());
             System.out.println("getMilisegundos() " + e.getLocalizedMessage());
         }
         return milisegundos;
     }// </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="Integer milisegundosToSegundos(long milisegundos)"> 
+    // <editor-fold defaultstate="collapsed" desc="milisegundosToSegundos"> 
     public static Integer milisegundosToSegundos(long milisegundos) {
         Integer seconds = 0;
         try {
             seconds = (int) (milisegundos / 1000) % 60;
         } catch (Exception e) {
-            showError("miliseguntosToSegundos() " + e.getLocalizedMessage());
+            errorMessage("miliseguntosToSegundos() " + e.getLocalizedMessage());
         }
         return seconds;
     }
@@ -1304,7 +1316,7 @@ public class JmoordbCoreDateUtil implements Serializable {
         try {
             minutes = (int) ((milisegundos / (1000 * 60)) % 60);
         } catch (Exception e) {
-            showError("miliseguntosToMinutos() " + e.getLocalizedMessage());
+            errorMessage("miliseguntosToMinutos() " + e.getLocalizedMessage());
         }
         return minutes;
 
@@ -1317,7 +1329,7 @@ public class JmoordbCoreDateUtil implements Serializable {
         try {
             hours = (int) ((milisegundos / (1000 * 60 * 60)) % 24);
         } catch (Exception e) {
-            showError("miliseguntosToMinutos() " + e.getLocalizedMessage());
+            errorMessage("miliseguntosToMinutos() " + e.getLocalizedMessage());
         }
         return hours;
     }
@@ -1340,7 +1352,7 @@ public class JmoordbCoreDateUtil implements Serializable {
                     + milisegundosToMinutos(milisegundos) + " : " + milisegundosToSegundos(milisegundos);
 
         } catch (Exception e) {
-            showError("milisegundosToJmoordbTiempoString() " + e.getLocalizedMessage());
+            errorMessage("milisegundosToJmoordbTiempoString() " + e.getLocalizedMessage());
         }
         return tiempoString;
 
@@ -1397,7 +1409,7 @@ public class JmoordbCoreDateUtil implements Serializable {
                     break;
             }
         } catch (Exception e) {
-            showError("mesAnterior() " + e.getLocalizedMessage());
+            errorMessage("mesAnterior() " + e.getLocalizedMessage());
         }
         return mesanterior;
     }    // </editor-fold>
@@ -1431,7 +1443,7 @@ public class JmoordbCoreDateUtil implements Serializable {
 
             }
         } catch (Exception e) {
-            showError("letterDayOfMonth() " + e.getLocalizedMessage());
+            errorMessage("letterDayOfMonth() " + e.getLocalizedMessage());
         }
         return letters;
     }
@@ -1491,21 +1503,21 @@ public class JmoordbCoreDateUtil implements Serializable {
         try {
 
             if (anioselected <= 0) {
-                FacesUtil.showWarn(rs.getString("warning.anionegativo"));
+                JmoordbCoreUtil.warningMessage(rs.getString("warning.anionegativo"));
                 return false;
             }
             if (anioselected > getAnioActual()) {
-                FacesUtil.showWarn(rs.getString("warning.anomayorqueactual"));
+                JmoordbCoreUtil.warningMessage(rs.getString("warning.anomayorqueactual"));
                 return false;
             }
 
             Integer anio = getAnioActual() - anioselected;
             if (anio.intValue() > 1) {
-                FacesUtil.showWarn(rs.getString("warning.aniomuyantiguo"));
+                JmoordbCoreUtil.warningMessage(rs.getString("warning.aniomuyantiguo"));
                 return false;
             }
             if (anio.intValue() == 1 && !messelected.toLowerCase().equals("diciembre")) {
-                FacesUtil.showWarn(rs.getString("warning.debecerrardiciembredelañoanterior"));
+                JmoordbCoreUtil.warningMessage(rs.getString("warning.debecerrardiciembredelañoanterior"));
                 return false;
             }
             Integer diaactual = diaActual();
@@ -1514,16 +1526,16 @@ public class JmoordbCoreDateUtil implements Serializable {
             Integer numeromesseleccionado = numeroMes(messelected);
 
             if (numeromesseleccionado > mesactual) {
-                FacesUtil.showWarn(rs.getString("warning.mesacerrarmayoractual"));
+                JmoordbCoreUtil.warningMessage(rs.getString("warning.mesacerrarmayoractual"));
                 return false;
             }
             if (numeromesseleccionado.equals(mesactual) && diaactual < diaminimo) {
-                FacesUtil.showWarn(rs.getString("warning.estacerrandoelmesmuypronto"));
+                JmoordbCoreUtil.warningMessage(rs.getString("warning.estacerrandoelmesmuypronto"));
                 return false;
             }
             return true;
         } catch (Exception e) {
-            FacesUtil.showWarn("isValidCierreMensual" + e.getLocalizedMessage());
+            JmoordbCoreUtil.warningMessage("isValidCierreMensual" + e.getLocalizedMessage());
         }
         return false;
     }
@@ -1569,7 +1581,7 @@ public class JmoordbCoreDateUtil implements Serializable {
             }
             return "";
         } catch (Exception e) {
-            FacesUtil.showWarn("isValidCierreMensual" + e.getLocalizedMessage());
+            JmoordbCoreUtil.warningMessage("isValidCierreMensual" + e.getLocalizedMessage());
         }
         return "";
     }
@@ -1655,7 +1667,7 @@ public class JmoordbCoreDateUtil implements Serializable {
             decomposedDate.setYear(year);
 
         } catch (Exception e) {
-            showError("descomponerFechaMonthStartWith0() " + e.getLocalizedMessage());
+            errorMessage("descomponerFechaMonthStartWith0() " + e.getLocalizedMessage());
         }
         return decomposedDate;
     }
@@ -1685,7 +1697,7 @@ public class JmoordbCoreDateUtil implements Serializable {
             decomposedDate.setYear(year);
 
         } catch (Exception e) {
-            showError("descomponerFechaMonthStartWith1() " + e.getLocalizedMessage());
+            errorMessage("descomponerFechaMonthStartWith1() " + e.getLocalizedMessage());
         }
         return decomposedDate;
     }
@@ -1714,7 +1726,7 @@ public class JmoordbCoreDateUtil implements Serializable {
 
             }
         } catch (Exception e) {
-            FacesUtil.showError(FacesUtil.nameOfClassAndMethod() + "error: " + e.getLocalizedMessage());
+            MessagesUtil.error(MessagesUtil.nameOfClassAndMethod() + "error: " + e.getLocalizedMessage());
         }
         return meses;
     }
@@ -1748,7 +1760,7 @@ public class JmoordbCoreDateUtil implements Serializable {
             });
 
         } catch (Exception e) {
-            showError("validarRangoFechas() " + e.getLocalizedMessage());
+            errorMessage("validarRangoFechas() " + e.getLocalizedMessage());
         }
         return fechaDiaUtilsSaveList;
     }  // </editor-fold>
@@ -1759,7 +1771,7 @@ public class JmoordbCoreDateUtil implements Serializable {
         try {
             h = dateFormatToString(date, "dd/MM/yyyy");
         } catch (Exception e) {
-            FacesUtil.showError("showDate() " + e.getLocalizedMessage());
+            JmoordbCoreUtil.errorMessage("showDate() " + e.getLocalizedMessage());
         }
         return h;
     }// </editor-fold>
@@ -1770,7 +1782,7 @@ public class JmoordbCoreDateUtil implements Serializable {
         try {
             h = hourFromDateToString(date);
         } catch (Exception e) {
-            FacesUtil.showError("showHour() " + e.getLocalizedMessage());
+            JmoordbCoreUtil.errorMessage("showHour() " + e.getLocalizedMessage());
         }
         return h;
     }// </editor-fold>
@@ -2024,7 +2036,7 @@ public class JmoordbCoreDateUtil implements Serializable {
     }
     //  return date;
     // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="LocalDateTime convertToLocalDateTimeViaMilisecond2(Date dateToConvert)"> 
+    // <editor-fold defaultstate="collapsed" desc="LocalDateTime convertToLocalDateTimeViaMilisecond(Date dateToConvert)"> 
 
     /**
      * fuente https://www.baeldung.com/java-date-to-localdate-and-localdatetime
@@ -2091,6 +2103,7 @@ public class JmoordbCoreDateUtil implements Serializable {
      * @param fecha
      * @return
      */
+
     public static LocalDateTime dateToLocalDateTime(Date fecha) {
         LocalDateTime startTime = LocalDateTime.now();
         try {
@@ -2109,12 +2122,12 @@ public class JmoordbCoreDateUtil implements Serializable {
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="LocalDateTime dateToLocalDateTimeFirstHourOfDay(Date fecha)">
-    /**
-     * Devuelve la primera hora de una fecha como LocalDateTime
-     *
-     * @param fecha
-     * @return
-     */
+
+   /**
+    * Devuelve la primera hora de una fecha como LocalDateTime
+    * @param fecha
+    * @return 
+    */
     public static LocalDateTime dateToLocalDateTimeFirstHourOfDay(Date fecha) {
         LocalDateTime startTime = LocalDateTime.now();
         try {
@@ -2133,12 +2146,12 @@ public class JmoordbCoreDateUtil implements Serializable {
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="LocalDateTime dateToLocalDateTimeLastHourOfDay(Date fecha)">
-    /**
-     * Devuelve la ultima hora de una fecha como LocalDateTime
-     *
-     * @param fecha
-     * @return
-     */
+
+   /**
+    * Devuelve la ultima hora de una fecha como LocalDateTime
+    * @param fecha
+    * @return 
+    */
     public static LocalDateTime dateToLocalDateTimeLastHourOfDay(Date fecha) {
         LocalDateTime startTime = LocalDateTime.now();
         try {
@@ -2156,17 +2169,18 @@ public class JmoordbCoreDateUtil implements Serializable {
     }
 
     // </editor-fold>
+    
     // <editor-fold defaultstate="collapsed" desc="LocalDateTime dateToLocalDateTimeFirstHourOfDay(LocalDateTime fecha)">
-    /**
-     * Devuelve la ultima hora de una fecha como LocalDateTime
-     *
-     * @param fecha
-     * @return
-     */
+
+   /**
+    * Devuelve la ultima hora de una fecha como LocalDateTime
+    * @param fecha
+    * @return 
+    */
     public static LocalDateTime dateToLocalDateTimeFirstHourOfDay(LocalDateTime fecha) {
         LocalDateTime startTime = LocalDateTime.now();
         try {
-
+           
             startTime = LocalDateTime.of(fecha.getYear(), fecha.getMonth(), fecha.getDayOfMonth(), 0, 0, 0);
         } catch (Exception e) {
             System.out.println("dateToLocalDateTimeLastHourOfDay() " + e.getLocalizedMessage());
@@ -2176,16 +2190,16 @@ public class JmoordbCoreDateUtil implements Serializable {
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="LocalDateTime dateToLocalDateTimeLastHourOfDay(LocalDateTime fecha)">
-    /**
-     * Devuelve la ultima hora de una fecha como LocalDateTime
-     *
-     * @param fecha
-     * @return
-     */
+
+   /**
+    * Devuelve la ultima hora de una fecha como LocalDateTime
+    * @param fecha
+    * @return 
+    */
     public static LocalDateTime dateToLocalDateTimeLastHourOfDay(LocalDateTime fecha) {
         LocalDateTime startTime = LocalDateTime.now();
         try {
-
+           
             startTime = LocalDateTime.of(fecha.getYear(), fecha.getMonth(), fecha.getDayOfMonth(), 23, 59, 59);
         } catch (Exception e) {
             System.out.println("dateToLocalDateTimeLastHourOfDay() " + e.getLocalizedMessage());
@@ -2194,19 +2208,20 @@ public class JmoordbCoreDateUtil implements Serializable {
     }
 
     // </editor-fold>
+    
     // <editor-fold defaultstate="collapsed" desc="LocalDateTime dateToLocalDateTimeNextDayFirstHourOfDay(Date fecha)">
-    /**
-     * Devuelve el dia siguiente
-     *
-     * @param fecha
-     * @return
-     */
+
+   /**
+    * Devuelve el dia siguiente
+    * @param fecha
+    * @return 
+    */
     public static LocalDateTime dateToLocalDateTimeNextDayFirstHourOfDay(Date fecha) {
         LocalDateTime startTime = LocalDateTime.now();
         try {
             Integer anio = anioDeUnaFecha(fecha);
             Integer mes = mesDeUnaFecha(fecha);
-            Integer dia = diaDeUnaFecha(fecha);
+            Integer dia = diaDeUnaFecha(fecha) ;
             Integer hora = horaDeUnaFecha(fecha);
             Integer minutos = minutosDeUnaFecha(fecha);
             Integer segundos = segundosDeUnaFecha(fecha);
@@ -2219,19 +2234,21 @@ public class JmoordbCoreDateUtil implements Serializable {
     }
 
     // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="LocalDateTime dateToLocalDateTimeLastHourOfDay(LocalDateTime fecha)">
-    /**
-     * Devuelve la ultima hora de una fecha como LocalDateTime
-     *
-     * @param fecha
-     * @return
-     */
+    
+    
+     // <editor-fold defaultstate="collapsed" desc="LocalDateTime dateToLocalDateTimeLastHourOfDay(LocalDateTime fecha)">
+
+   /**
+    * Devuelve la ultima hora de una fecha como LocalDateTime
+    * @param fecha
+    * @return 
+    */
     public static LocalDateTime dateToLocalDateTimeNextDayFirstHourOfDay(LocalDateTime fecha) {
         LocalDateTime startTime = LocalDateTime.now();
         try {
-            LocalDateTime tomorrow = fecha.plusDays(1);
+           LocalDateTime tomorrow = fecha.plusDays(1); 
 //            startTime = LocalDateTime.of(fecha.getYear(), fecha.getMonth(), fecha.getDayOfMonth() +1, 0, 0, 0);
-            startTime = LocalDateTime.of(tomorrow.getYear(), tomorrow.getMonth(), tomorrow.getDayOfMonth(), 0, 0, 0);
+            startTime = LocalDateTime.of(tomorrow.getYear(), tomorrow.getMonth(), tomorrow.getDayOfMonth() , 0, 0, 0);
         } catch (Exception e) {
             System.out.println("dateToLocalDateTimeLastHourOfDay() " + e.getLocalizedMessage());
         }
@@ -2240,23 +2257,23 @@ public class JmoordbCoreDateUtil implements Serializable {
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="LocalDateTime dateToLocalDateTimeBeforeFirstHourOfDay((Date fecha)">
-    /**
-     * Devuelve el dia siguiente
-     *
-     * @param fecha
-     * @return
-     */
+
+   /**
+    * Devuelve el dia siguiente
+    * @param fecha
+    * @return 
+    */
     public static LocalDateTime dateToLocalDateTimeBeforeFirstHourOfDay(Date fecha) {
         LocalDateTime startTime = LocalDateTime.now();
         try {
             Integer anio = anioDeUnaFecha(fecha);
             Integer mes = mesDeUnaFecha(fecha);
-            Integer dia = diaDeUnaFecha(fecha);
+            Integer dia = diaDeUnaFecha(fecha) ;
             Integer hora = horaDeUnaFecha(fecha);
             Integer minutos = minutosDeUnaFecha(fecha);
             Integer segundos = segundosDeUnaFecha(fecha);
             startTime = LocalDateTime.of(anio, mes, dia, 0, 0, 0);
-            //  startTime = dateToLocalDateTimeNextDayFirstHourOfDay(startTime);
+          //  startTime = dateToLocalDateTimeNextDayFirstHourOfDay(startTime);
         } catch (Exception e) {
             System.out.println("dateToLocalDateTimeBeforeDayFirstHourOfDay() " + e.getLocalizedMessage());
         }
@@ -2264,18 +2281,20 @@ public class JmoordbCoreDateUtil implements Serializable {
     }
 
     // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="LocalDateTime dateToLocalDateTimeBeforeFirstHourOfDay(LocalDateTime fecha)">
-    /**
-     * Devuelve la ultima hora de una fecha como LocalDateTime
-     *
-     * @param fecha
-     * @return
-     */
+    
+    
+     // <editor-fold defaultstate="collapsed" desc="LocalDateTime dateToLocalDateTimeBeforeFirstHourOfDay(LocalDateTime fecha)">
+
+   /**
+    * Devuelve la ultima hora de una fecha como LocalDateTime
+    * @param fecha
+    * @return 
+    */
     public static LocalDateTime dateToLocalDateTimeBeforeFirstHourOfDay(LocalDateTime fecha) {
         LocalDateTime startTime = LocalDateTime.now();
         try {
-            LocalDateTime tomorrow = fecha;
-            startTime = LocalDateTime.of(tomorrow.getYear(), tomorrow.getMonth(), tomorrow.getDayOfMonth(), 0, 0, 0);
+          LocalDateTime tomorrow = fecha;
+          startTime = LocalDateTime.of(tomorrow.getYear(), tomorrow.getMonth(), tomorrow.getDayOfMonth() , 0, 0, 0);
         } catch (Exception e) {
             System.out.println("dateToLocalDateTimeBeforeDayFirstHourOfDay() " + e.getLocalizedMessage());
         }
@@ -2283,81 +2302,4 @@ public class JmoordbCoreDateUtil implements Serializable {
     }
 
     // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="String secondsToHourMinuteSeconds(Long seconds)">
-    public static String secondsToHourMinuteSeconds(Long seconds) {
-        var result = "";
-        try {
-
-            var hora = seconds / 3600;
-            var minutos = (seconds - (3600 * hora)) / 60;
-            var segundos = seconds - ((hora * 3600) + (minutos * 60));
-
-            result = hora + ":" + minutos + ":" + segundos;
-
-        } catch (Exception e) {
-            System.out.println("milisecondsToHourMinuteSeconds() " + e.getLocalizedMessage());
-        }
-        return result;
-
-    }
-
-    // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="String secondsToHourMinuteSeconds(Long seconds)">
-    public static JmoordbCoreTiempo secondsToHourMinuteSecondsTiempo(Long seconds) {
-        var result = new JmoordbCoreTiempo();
-        try {
-
-            Long hora = seconds / 3600;
-            Long minutos = (seconds - (3600 * hora)) / 60;
-            var segundos = seconds - ((hora * 3600) + (minutos * 60));
-            result.setDias(Integer.SIZE);
-            result.setHoras(hora.intValue());
-            result.setMinutos(minutos.intValue());
-
-         
-
-        } catch (Exception e) {
-            System.out.println("milisecondsToHourMinuteSeconds() " + e.getLocalizedMessage());
-        }
-        return result;
-
-    }
-    // </editor-fold>
-    
-    // <editor-fold defaultstate="collapsed" desc="Date sumarHorasMinutosToFecha(Date date, Integer hour, Integer minutes)">
-    
-    public static Date sumarHorasMinutosToFecha(Date date, Integer hour, Integer minutes){
-        var result =new Date();
-        try {
-            Calendar calendar = Calendar.getInstance();
-calendar.setTime(date);
-calendar.add(Calendar.HOUR,   hour); 
-calendar.add(Calendar.MINUTE, minutes); 
-
-
-result= calendar.getTime();
-       } catch (Exception e) {
-            System.out.println("sumarHorasMinutosToFecha() " + e.getLocalizedMessage());
-        }
-        return result;
-    }
-    // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc=" Date datoToiSODateToDate(Date date)"> 
-    /**
-     * Convierte de Date a IsoDate a Date
-     * @param date
-     * @return 
-     */
-    public static Date dateToiSODateToDate(Date date) {
-        try {
-             String df = JmoordbCoreDateUtil.iSODate(date);
-                df = df.replace("Z", "");            
-                SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                Date dateconverter = isoFormat.parse(df);
-                return dateconverter;
-        } catch (Exception e) {
-        }
-        return new Date();
-    }
-// </editor-fold>
 }

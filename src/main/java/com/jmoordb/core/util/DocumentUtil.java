@@ -2,14 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.avbravo.jmoordbcorecomponent.utils;
+package com.jmoordb.core.util;
 
-import com.avbravo.jmoordbcore.model.Search;
-import com.avbravo.jmoordbcore.model.Sorted;
-import com.avbravo.jmoordbcorecomponent.utils.date.JmoordbCoreDateUtil;
-import static com.avbravo.jmoordbcorecomponent.utils.date.JmoordbCoreDateUtil.setHourToDate;
 import com.jmoordb.core.model.Pagination;
-import com.jmoordb.core.util.MessagesUtil;
+import com.jmoordb.core.model.Search;
+import com.jmoordb.core.model.Sorted;
+import static com.jmoordb.core.util.JmoordbCoreDateUtil.setHourToDate;
 import static com.mongodb.MongoClientSettings.getDefaultCodecRegistry;
 import com.mongodb.client.model.Filters;
 import java.util.Date;
@@ -17,13 +15,6 @@ import java.util.HashMap;
 import org.bson.BsonDocument;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-
-
-/**
- *
- * @author avbravo
- */
-
 
 /**
  *
@@ -313,6 +304,3 @@ public class DocumentUtil {
     }
 // </editor-fold>
 }
-
-
-  

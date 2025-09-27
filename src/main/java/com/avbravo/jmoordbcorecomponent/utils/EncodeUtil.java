@@ -5,6 +5,7 @@
 package com.avbravo.jmoordbcorecomponent.utils;
 
 
+import com.jmoordb.core.util.DocumentUtil;
 import org.bson.conversions.Bson;
 import org.glassfish.jersey.uri.UriComponent;
 

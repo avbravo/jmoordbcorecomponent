@@ -3,7 +3,7 @@
 * To change this template file, choose Tools | Templates
  * and open the template in the editor.
 */
-package com.avbravo.jmoordbcorecomponent.utils.date;
+package com.jmoordb.core.util;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.List;
  * @authoravbravo
  */
 
-public class MonthUtils implements Serializable {
+public class JmoordbCoreMonthUtils implements Serializable {
 
     private static final long serialVersionUID = 1L;
 private List<String> listMeses = new ArrayList<>();
@@ -22,7 +22,7 @@ private List<String> listMeses = new ArrayList<>();
     /**
      * Creates a new instance of Meses
      */
-    public MonthUtils() {
+    public JmoordbCoreMonthUtils() {
         listMeses.add("Enero");
         listMeses.add("Febrero");
         listMeses.add("Marzo");

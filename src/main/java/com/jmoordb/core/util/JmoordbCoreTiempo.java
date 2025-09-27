@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.avbravo.jmoordbcorecomponent.utils.date;
+package com.jmoordb.core.util;
 
 /**
  *
@@ -16,31 +16,19 @@ public class JmoordbCoreTiempo {
   private  Integer dias = 0;
     private Integer horas = 0;
     private Integer minutos = 0;
-    private Integer segundos = 0;
 
     public JmoordbCoreTiempo() {
     }
 
     
     
-      public JmoordbCoreTiempo(Integer dias, Integer horas, Integer minutos,Integer segundos) {
+      public JmoordbCoreTiempo(Integer dias, Integer horas, Integer minutos) {
           this.dias=dias;
           this.horas=horas;
           this.minutos=minutos;
-          this.segundos=segundos;
-    }
-
-    public Integer getSegundos() {
-        return segundos;
-    }
-
-    public void setSegundos(Integer segundos) {
-        this.segundos = segundos;
     }
 
     
-      
-      
     public Integer getDias() {
         return dias;
     }

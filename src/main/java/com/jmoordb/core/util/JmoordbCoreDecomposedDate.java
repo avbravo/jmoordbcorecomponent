@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.avbravo.jmoordbcorecomponent.utils.date;
+package com.jmoordb.core.util;
 
 /**
  *
@@ -19,7 +19,6 @@ public class JmoordbCoreDecomposedDate {
     Integer hour;
     Integer minute;
     String nameOfMonth;
-
     public JmoordbCoreDecomposedDate() {
     }
 
