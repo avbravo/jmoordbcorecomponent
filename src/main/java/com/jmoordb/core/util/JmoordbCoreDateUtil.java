@@ -2400,4 +2400,46 @@ public class JmoordbCoreDateUtil implements Serializable {
         return results;
     }
     // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Date toDate(Integer anio, Integer mes, Integer dia)">
+    public static Date toDate(Integer anio, Integer mes, Integer dia){
+        Date date = new Date();
+        try {
+              Calendar cal = Calendar.getInstance();
+        cal.set(anio, mes - 1, dia, 0, 0, 0); // mes - 1 porque empieza en 0
+        cal.set(Calendar.MILLISECOND, 0);
+
+     date = cal.getTime();
+
+        } catch (Exception e) {
+        }
+        return date;
+    }
+// </editor-fold>
+    
+    
+    // <editor-fold defaultstate="collapsed" desc="List<InfoMes>getInfoMesEntreFechasString(String desde, String hasta)">
+
+   /**
+    * 
+    * @param desde
+    * @param hasta
+    * @param dateFormat dd/MM/yyyy
+    * @return 
+    */
+    
+    public static Date toDate(String dateString, String dateFormat){
+ Date date = new Date();
+//          SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+          SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+        try {
+             date = sdf.parse(dateString);
+              
+            
+        } catch (Exception e) {
+            System.out.println("toDate() "+e.getLocalizedMessage());
+        }
+        return date;
+    }
+    // </editor-fold>
 }
