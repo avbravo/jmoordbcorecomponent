@@ -6,13 +6,13 @@
 package com.jmoordb.core.util;
 // <editor-fold defaultstate="collapsed" desc="import">  
 
+import com.jmoordb.core.model.InfoMes;
 import static com.jmoordb.core.util.JmoordbCoreUtil.errorMessage;
 
 import java.util.List;
 import java.util.logging.Logger;
 import java.io.Serializable;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.Instant;
@@ -22,6 +22,7 @@ import java.time.LocalTime;
 import java.time.Month;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -2301,5 +2302,102 @@ public class JmoordbCoreDateUtil implements Serializable {
         return startTime;
     }
 
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="List<InfoMes>getInfoMesEntreFechasString(String desde, String hasta)">
+
+   /**
+    * 
+    * @param desde
+    * @param hasta
+    * @param dateFormat dd/MM/yyyy
+    * @return 
+    */
+    
+    public static List<InfoMes>getInfoMesEntreFechasString(String desde, String hasta, String dateFormat){
+        List<InfoMes> results= new ArrayList<>();
+//          SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+          SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+        try {
+              Date inicio = sdf.parse(desde);
+              Date fin = sdf.parse(hasta);
+              // Conversión a LocalDate
+        
+        results = getInfoMesEntreFechas( inicio,  fin);
+            
+        } catch (Exception e) {
+            System.out.println("getInfoMesEntreFechasString() "+e.getLocalizedMessage());
+        }
+        return results;
+    }
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="List<InfoMes>getInfoMesEntreFechas(Date desde, Date hasta)">
+
+    /**
+     * Devuelve
+     * @param inicio
+     * @param fin
+     * @return List<InfoMes> esta lista contiene el dia de inicio, mes y año de cada mes en el intervalo
+     */
+    
+    public static List<InfoMes>getInfoMesEntreFechas(Date desde, Date hasta){
+        List<InfoMes> results= new ArrayList<>();
+        try {
+            
+              // Conversión a LocalDate
+        LocalDate inicio= desde.toInstant()
+                                   .atZone(ZoneId.systemDefault())
+                                   .toLocalDate();
+        LocalDate fin= hasta.toInstant()
+                                   .atZone(ZoneId.systemDefault())
+                                   .toLocalDate();
+        
+        results = getInfoMesEntreFechasLocalDate( inicio,  fin);
+            
+        } catch (Exception e) {
+            System.out.println("getInfoMesEntreFechas() "+e.getLocalizedMessage());
+        }
+        return results;
+    }
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="List<InfoMes>getInfoMesEntreFechasLocalDate(LocalDate inicio, LocalDate fin)">
+
+    /**
+     * Devuelve
+     * @param inicio
+     * @param fin
+     * @return List<InfoMes> esta lista contiene el dia de inicio, mes y año de cada mes en el intervalo
+     */
+    public static List<InfoMes>getInfoMesEntreFechasLocalDate(LocalDate inicio, LocalDate fin){
+        List<InfoMes> results= new ArrayList<>();
+        try {
+            
+        LocalDate cursor = inicio.withDayOfMonth(1); // primer día del mes de la fecha inicial
+        LocalDate finMes;
+
+        while (!cursor.isAfter(fin)) {
+            finMes = cursor.with(TemporalAdjusters.lastDayOfMonth());
+
+            int diaInicio = (cursor.getMonthValue() == inicio.getMonthValue() &&
+                             cursor.getYear() == inicio.getYear())
+                            ? inicio.getDayOfMonth()
+                            : 1;
+
+            int diaFin = (cursor.getMonthValue() == fin.getMonthValue() &&
+                          cursor.getYear() == fin.getYear())
+                         ? fin.getDayOfMonth()
+                         : finMes.getDayOfMonth();
+
+            results.add(new InfoMes(cursor.getYear(), cursor.getMonthValue(), diaInicio, diaFin));
+
+            cursor = cursor.plusMonths(1).withDayOfMonth(1);
+        }
+
+        return results;
+            
+        } catch (Exception e) {
+            System.out.println("getInfoMesEntreFechasLocalDate() "+e.getLocalizedMessage());
+        }
+        return results;
+    }
     // </editor-fold>
 }
