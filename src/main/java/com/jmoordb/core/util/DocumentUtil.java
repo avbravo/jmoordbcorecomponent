@@ -9,9 +9,13 @@ import com.jmoordb.core.model.Search;
 import com.jmoordb.core.model.Sorted;
 import static com.jmoordb.core.util.JmoordbCoreDateUtil.setHourToDate;
 import static com.mongodb.MongoClientSettings.getDefaultCodecRegistry;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.MongoIterable;
 import com.mongodb.client.model.Filters;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import org.bson.BsonDocument;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -269,10 +273,8 @@ public class DocumentUtil {
         return search;
     }
 // </editor-fold>
-    
-    
-    // <editor-fold defaultstate="collapsed" desc="Search convertForLookup(Bson filter, Document sort, Integer page, Integer size)">
 
+    // <editor-fold defaultstate="collapsed" desc="Search convertForLookup(Bson filter, Document sort, Integer page, Integer size)">
     /**
      * Convierte a un Search para ser usado en un lookup
      *
@@ -303,4 +305,23 @@ public class DocumentUtil {
         return search;
     }
 // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="List<String> listOfCollection(MongoDatabase database)">
+    public static List<String> listOfCollection(MongoDatabase database) {
+        List<String> results = new ArrayList<>();
+        try {
+
+            // Get the names of all collections in the database
+            MongoIterable<String> collectionNames = database.listCollectionNames();
+
+            for (String name : collectionNames) {
+                results.add(name);
+            }
+
+        } catch (Exception e) {
+            System.out.println("lisfOfCollection() " + e.getLocalizedMessage());
+        }
+        return results;
+    }
+    // </editor-fold>
 }
