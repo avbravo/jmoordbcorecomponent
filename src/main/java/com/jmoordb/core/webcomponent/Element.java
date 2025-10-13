@@ -6,32 +6,32 @@ package com.jmoordb.core.webcomponent;
 
 import java.util.*;
 
-public class Label implements Component {
+public class Element implements Component {
 
     private final String name;
     private final List<Component> childs = new ArrayList<>();
     private final Map<String, String> attributes = new HashMap<>();
 
-    public Label(String name) {
+    public Element(String name) {
         this.name = name;
     }
 
     // --- Métodos de Chaining Fluido (El "Framework") ---
-    public Label withChild(Component child) {
+    public Element withChild(Component child) {
         childs.add(child);
         return this;
     }
 
-    public Label withText(String text) {
+    public Element withText(String text) {
         return withChild(new Text(text));
     }
 
-    public Label withClass(String className) {
+    public Element withClass(String className) {
         attributes.merge("class", className, (actual, nueva) -> actual + " " + nueva);
         return this;
     }
 
-    public Label withAttribute(String name, String value) {
+    public Element withAttribute(String name, String value) {
         attributes.put(name, value);
         return this;
     }

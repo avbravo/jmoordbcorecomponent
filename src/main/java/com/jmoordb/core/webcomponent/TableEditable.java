@@ -20,29 +20,29 @@ public class TableEditable implements Component {
     @Override
     public String render() {
         // Clases de Bootstrap: table, table-striped, table-hover, y table-responsive
-        Label tabla = new Label("table")
+        Element tabla = new Element("table")
             .withClass("table table-striped table-hover table-responsive"); 
         
         // Encabezados
-        Label thead = new Label("thead");
-        Label trHead = new Label("tr");
-        headers.forEach(h -> trHead.withChild(new Label("th").withText(h)));
+        Element thead = new Element("thead");
+        Element trHead = new Element("tr");
+        headers.forEach(h -> trHead.withChild(new Element("th").withText(h)));
         thead.withChild(trHead);
         tabla.withChild(thead);
 
         // Cuerpo (Datos)
-        Label tbody = new Label("tbody");
+        Element tbody = new Element("tbody");
         datos.forEach(fila -> {
-            Label trBody = new Label("tr");
+            Element trBody = new Element("tr");
             fila.forEach(celda -> {
                 // Generar un campo de entrada (input) para simular la edición
-                Label input = new Label("input")
+                Element input = new Element("input")
                     .withAttribute("type", "text")
                     .withAttribute("value", celda)
                     // Clase de Bootstrap para inputs pequeños
                     .withClass("form-control form-control-sm"); 
                 
-                trBody.withChild(new Label("td").withChild(input));
+                trBody.withChild(new Element("td").withChild(input));
             });
             tbody.withChild(trBody);
         });
